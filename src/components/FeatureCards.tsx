@@ -447,10 +447,10 @@ const FeatureCard3 = () => {
       // Reset state
       setPhase(0);
       
-      // Phase 1: Button pulse
+      // Phase 1: Session submitting (arrow animates down)
       setTimeout(() => { if (!isCancelled) setPhase(1); }, 500);
       
-      // Phase 2: Data orb animation
+      // Phase 2: OpenViking processing
       setTimeout(() => { if (!isCancelled) setPhase(2); }, 1500);
       
       // Phase 3: Memory updates appear
@@ -477,47 +477,84 @@ const FeatureCard3 = () => {
         <h3 className="text-xl font-semibold text-gradient mb-2">
           Context Self-Iteration
         </h3>
-        
       </div>
 
-      <div className="flex items-center justify-between gap-6 min-h-[200px]">
-        {/* Session Window */}
-        <div className="flex-1 space-y-3">
-          <div className="bg-muted/50 rounded-lg p-3 border border-border">
+      <div className="flex gap-6 min-h-[200px]">
+        {/* Left Column: Session + OpenViking (vertical flow) */}
+        <div className="flex flex-col items-center gap-3 w-40">
+          {/* Session Log */}
+          <div className="w-full bg-muted/50 rounded-lg p-3 border border-border">
             <p className="text-xs text-muted-foreground mb-2">Session Log</p>
             <p className="text-sm text-success flex items-center gap-2">
               <CheckCircle className="w-4 h-4" />
               Task Completed
             </p>
           </div>
-          <motion.button animate={phase >= 1 && phase < 2 ? {
-          scale: [1, 1.05, 1],
-          boxShadow: ["0 0 0 0 hsl(186 100% 50% / 0)", "0 0 20px 5px hsl(186 100% 50% / 0.3)", "0 0 0 0 hsl(186 100% 50% / 0)"]
-        } : {}} transition={{
-          duration: 1,
-          repeat: phase >= 1 && phase < 2 ? Infinity : 0
-        }} className="w-full bg-primary/20 border border-primary/50 text-primary text-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2">
-            <GitBranch className="w-4 h-4" />
-            Commit to OpenViking
-          </motion.button>
+          
+          {/* Arrow down */}
+          <motion.div 
+            animate={phase >= 1 && phase < 2 ? {
+              y: [0, 4, 0],
+              opacity: [0.5, 1, 0.5]
+            } : { opacity: phase >= 2 ? 1 : 0.3 }}
+            transition={{
+              duration: 0.6,
+              repeat: phase >= 1 && phase < 2 ? Infinity : 0
+            }}
+            className="text-primary"
+          >
+            <ArrowRight className="w-5 h-5 rotate-90" />
+          </motion.div>
+          
+          {/* OpenViking Logo */}
+          <motion.div 
+            className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0"
+            animate={phase >= 2 && phase < 3 ? {
+              boxShadow: ["0 0 0 0 hsl(var(--primary) / 0)", "0 0 20px 8px hsl(var(--primary) / 0.4)", "0 0 0 0 hsl(var(--primary) / 0)"]
+            } : {}}
+            transition={{
+              duration: 1,
+              repeat: phase >= 2 && phase < 3 ? Infinity : 0
+            }}
+          >
+            <img src={openVikingLogo} alt="OpenViking" className="w-full h-full object-contain" />
+            {/* Glow overlay */}
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl"
+              animate={phase >= 2 && phase < 3 ? { opacity: [0, 0.6, 0] } : { opacity: 0 }}
+              transition={{
+                duration: 0.8,
+                repeat: phase >= 2 && phase < 3 ? Infinity : 0
+              }}
+            />
+          </motion.div>
+          
+          {phase >= 2 && phase < 3 && (
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0.7, 1] }}
+              transition={{ duration: 0.8, repeat: Infinity }}
+              className="text-xs text-primary font-medium"
+            >
+              Processing...
+            </motion.p>
+          )}
         </div>
 
-        {/* Data Orb */}
-        <motion.div animate={phase >= 2 ? {
-        scale: [0, 1.2, 0.8],
-        opacity: [0, 1, 0]
-      } : {}} transition={{
-        duration: 1
-      }} className="w-16 h-16 rounded-full bg-gradient-to-br from-warning to-secondary flex items-center justify-center" style={{
-        display: phase >= 2 && phase < 3 ? "flex" : "none"
-      }}>
-          <span className="text-2xl">💡</span>
-        </motion.div>
+        {/* Arrow to Memory */}
+        <div className="flex items-center">
+          <motion.div
+            animate={phase >= 3 ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ArrowRight className="w-5 h-5 text-primary" />
+          </motion.div>
+        </div>
 
-        {/* Directory Update */}
+        {/* Right Column: Memory Updates */}
         <div className="flex-1">
-          <div className="bg-muted/30 rounded-lg p-3 relative overflow-hidden">
-            <p className="text-xs text-muted-foreground mb-2">Memory Updates</p>
+          <div className="bg-muted/30 rounded-lg p-3 relative overflow-hidden h-full">
+            <p className="text-xs text-muted-foreground mb-2">Memory/</p>
             {phase >= 3 && <>
                 <motion.div initial={{
               opacity: 0,
@@ -527,7 +564,7 @@ const FeatureCard3 = () => {
               x: 0
             }} className="flex items-center gap-2 text-sm text-warning mb-1">
                   <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-                  error_handler.pdf
+                  Experience in Error Handling
                 </motion.div>
                 <motion.div initial={{
               opacity: 0,
@@ -537,21 +574,9 @@ const FeatureCard3 = () => {
               x: 0
             }} transition={{
               delay: 0.2
-            }} className="flex items-center gap-2 text-sm text-warning mb-1">
-                  <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-                  validator.py
-                </motion.div>
-                <motion.div initial={{
-              opacity: 0,
-              x: -20
-            }} animate={{
-              opacity: 1,
-              x: 0
-            }} transition={{
-              delay: 0.4
             }} className="flex items-center gap-2 text-sm text-warning">
                   <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-                  Experience in Error Handling
+                  Validator Tool Usage
                 </motion.div>
               </>}
           </div>
@@ -564,7 +589,7 @@ const FeatureCard3 = () => {
           opacity: 1,
           y: 0
         }} transition={{
-          delay: 0.5
+          delay: 0.4
         }} className="mt-3 bg-success/10 border border-success/30 rounded-lg p-2 text-xs text-success flex items-center gap-2">
               <CheckCircle className="w-3 h-3" />
               Context Memory Iterated
