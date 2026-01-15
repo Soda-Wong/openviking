@@ -272,45 +272,37 @@ const FeatureCard2 = () => {
           // Phase 1: Cursor scanning around
           if (!isCancelled) setPhase(1);
           
-          // Phase 2: Locate first-level directories
+          // Phase 2: Locate Resource/ and drill to error_handler.pdf
           setTimeout(() => { 
             if (!isCancelled) {
               setPhase(2);
-              setHighlightPath(["Resource/"]);
+              setHighlightPath(["Resource/", "references/", "error_handler.pdf"]);
             }
           }, 800);
           
-          // Phase 3: Drill into second-level subdirectory
+          // Phase 3: Locate Skill/ and select validator.py
           setTimeout(() => { 
             if (!isCancelled) {
               setPhase(3);
-              setHighlightPath(["Resource/", "Auth/"]);
+              setHighlightPath(["Resource/", "references/", "error_handler.pdf", "Skill/", "validator.py"]);
             }
           }, 1600);
           
-          // Phase 4: Select third-level file
+          // Phase 4: Locate Memory/ and select Experience in Error Handling
           setTimeout(() => { 
             if (!isCancelled) {
               setPhase(4);
-              setHighlightPath(["Resource/", "Auth/", "error_handler.py"]);
+              setHighlightPath(["Resource/", "references/", "error_handler.pdf", "Skill/", "validator.py", "Memory/", "Experience in Error Handling"]);
             }
           }, 2400);
           
-          // Phase 5: Show second match - Memory path
+          // Phase 5: Context retrieved
           setTimeout(() => { 
-            if (!isCancelled) {
-              setPhase(5);
-              setHighlightPath(["Memory/", "Sessions/", "auth_logs.json"]);
-            }
+            if (!isCancelled) setPhase(5);
           }, 3200);
           
-          // Phase 6: Context retrieved
-          setTimeout(() => { 
-            if (!isCancelled) setPhase(6);
-          }, 4000);
-          
           // Hold for 3 seconds, then loop
-          setTimeout(() => { if (!isCancelled) runAnimation(); }, 7000);
+          setTimeout(() => { if (!isCancelled) runAnimation(); }, 6200);
         }
       }, 50);
       
@@ -324,7 +316,7 @@ const FeatureCard2 = () => {
     };
   }, [isInView]);
   
-  // Three-level directory structure
+  // Directory structure per user spec
   const getTreeData = () => {
     const isPathHighlighted = (path: string) => highlightPath.includes(path);
     
@@ -333,72 +325,41 @@ const FeatureCard2 = () => {
       type: "folder" as const,
       highlight: isPathHighlighted("Resource/"),
       children: [{
-        name: "Auth/",
+        name: "references/",
         type: "folder" as const,
-        highlight: isPathHighlighted("Auth/"),
+        highlight: isPathHighlighted("references/"),
         children: [{
-          name: "error_handler.py",
+          name: "error_handler.pdf",
           type: "file" as const,
-          highlight: isPathHighlighted("error_handler.py")
+          highlight: isPathHighlighted("error_handler.pdf")
         }, {
-          name: "oauth_config.yaml",
-          type: "file" as const
-        }]
-      }, {
-        name: "Docs/",
-        type: "folder" as const,
-        children: [{
-          name: "api_spec.md",
-          type: "file" as const
-        }, {
-          name: "readme.txt",
-          type: "file" as const
-        }]
-      }]
-    }, {
-      name: "Memory/",
-      type: "folder" as const,
-      highlight: isPathHighlighted("Memory/"),
-      children: [{
-        name: "Sessions/",
-        type: "folder" as const,
-        highlight: isPathHighlighted("Sessions/"),
-        children: [{
-          name: "auth_logs.json",
-          type: "file" as const,
-          highlight: isPathHighlighted("auth_logs.json")
-        }, {
-          name: "user_prefs.json",
-          type: "file" as const
-        }]
-      }, {
-        name: "Cache/",
-        type: "folder" as const,
-        children: [{
-          name: "token_cache.bin",
+          name: "best_practice.pdf",
           type: "file" as const
         }]
       }]
     }, {
       name: "Skill/",
       type: "folder" as const,
+      highlight: isPathHighlighted("Skill/"),
       children: [{
-        name: "Tools/",
-        type: "folder" as const,
-        children: [{
-          name: "validator.py",
-          type: "file" as const
-        }, {
-          name: "formatter.js",
-          type: "file" as const
-        }]
+        name: "validator.py",
+        type: "file" as const,
+        highlight: isPathHighlighted("validator.py")
       }, {
-        name: "Agents/",
-        type: "folder" as const,
-        children: [{
-          name: "auth_agent.yaml",
-          type: "file" as const
-        }]
+        name: "test.py",
+        type: "file" as const
+      }]
+    }, {
+      name: "Memory/",
+      type: "folder" as const,
+      highlight: isPathHighlighted("Memory/"),
+      children: [{
+        name: "Experience in Error Handling",
+        type: "file" as const,
+        highlight: isPathHighlighted("Experience in Error Handling")
+      }, {
+        name: "Coding Standards",
+        type: "file" as const
       }]
     }];
   };
@@ -437,8 +398,8 @@ const FeatureCard2 = () => {
           </span>
         </div>
 
-        {/* Directory with scanning indicator */}
-        <div className="relative bg-muted/30 rounded-lg p-3 min-h-[200px] overflow-visible">
+        {/* Directory with scanning indicator - scrollable */}
+        <div className="relative bg-muted/30 rounded-lg p-3 h-[120px] overflow-y-auto">
           {/* Scanning line animation */}
           {phase >= 1 && phase < 4 && <motion.div 
             key={`scan-${phase}`}
@@ -454,20 +415,17 @@ const FeatureCard2 = () => {
         </div>
 
         {/* Context Window */}
-        {phase >= 6 && <motion.div initial={{
+        {phase >= 5 && <motion.div initial={{
         opacity: 0,
         scale: 0.9
       }} animate={{
         opacity: 1,
         scale: 1
-      }} className="bg-success/10 border border-success/30 rounded-lg p-3">
-            <div className="flex items-center gap-2 text-success text-sm mb-2">
-              <CheckCircle className="w-4 h-4" />
-              <span>Context Retrieved</span>
+      }} className="bg-success/10 border border-success/30 rounded-lg p-2">
+            <div className="flex items-center gap-2 text-success text-xs">
+              <CheckCircle className="w-3 h-3" />
+              <span>3 contexts retrieved</span>
             </div>
-            <code className="text-xs text-muted-foreground font-mono">
-              def handle_auth_error(e): ...
-            </code>
           </motion.div>}
       </div>
     </motion.div>;
