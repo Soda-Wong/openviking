@@ -242,6 +242,8 @@ const FeatureCard2 = () => {
   });
   const [phase, setPhase] = useState(0);
   const [searchText, setSearchText] = useState("");
+  const [highlightPath, setHighlightPath] = useState<string[]>([]);
+  
   useEffect(() => {
     if (!isInView) return;
     let isCancelled = false;
@@ -252,6 +254,7 @@ const FeatureCard2 = () => {
       // Reset state
       setPhase(0);
       setSearchText("");
+      setHighlightPath([]);
       
       const fullText = "How does auth handle errors?";
       let i = 0;
@@ -266,11 +269,48 @@ const FeatureCard2 = () => {
           i++;
         } else {
           clearInterval(typeTimer);
+          // Phase 1: Cursor scanning around
           if (!isCancelled) setPhase(1);
-          setTimeout(() => { if (!isCancelled) setPhase(2); }, 1000);
-          setTimeout(() => { if (!isCancelled) setPhase(3); }, 2500);
+          
+          // Phase 2: Locate first-level directories
+          setTimeout(() => { 
+            if (!isCancelled) {
+              setPhase(2);
+              setHighlightPath(["Resource/"]);
+            }
+          }, 800);
+          
+          // Phase 3: Drill into second-level subdirectory
+          setTimeout(() => { 
+            if (!isCancelled) {
+              setPhase(3);
+              setHighlightPath(["Resource/", "Auth/"]);
+            }
+          }, 1600);
+          
+          // Phase 4: Select third-level file
+          setTimeout(() => { 
+            if (!isCancelled) {
+              setPhase(4);
+              setHighlightPath(["Resource/", "Auth/", "error_handler.py"]);
+            }
+          }, 2400);
+          
+          // Phase 5: Show second match - Memory path
+          setTimeout(() => { 
+            if (!isCancelled) {
+              setPhase(5);
+              setHighlightPath(["Memory/", "Sessions/", "auth_logs.json"]);
+            }
+          }, 3200);
+          
+          // Phase 6: Context retrieved
+          setTimeout(() => { 
+            if (!isCancelled) setPhase(6);
+          }, 4000);
+          
           // Hold for 3 seconds, then loop
-          setTimeout(() => { if (!isCancelled) runAnimation(); }, 5500);
+          setTimeout(() => { if (!isCancelled) runAnimation(); }, 7000);
         }
       }, 50);
       
@@ -283,36 +323,86 @@ const FeatureCard2 = () => {
       if (cleanup) cleanup();
     };
   }, [isInView]);
-  const treeData = [{
-    name: "Resources/",
-    type: "folder" as const,
-    children: [{
-      name: "security_protocol.pdf",
-      type: "file" as const,
-      highlight: phase >= 2
+  
+  // Three-level directory structure
+  const getTreeData = () => {
+    const isPathHighlighted = (path: string) => highlightPath.includes(path);
+    
+    return [{
+      name: "Resource/",
+      type: "folder" as const,
+      highlight: isPathHighlighted("Resource/"),
+      children: [{
+        name: "Auth/",
+        type: "folder" as const,
+        highlight: isPathHighlighted("Auth/"),
+        children: [{
+          name: "error_handler.py",
+          type: "file" as const,
+          highlight: isPathHighlighted("error_handler.py")
+        }, {
+          name: "oauth_config.yaml",
+          type: "file" as const
+        }]
+      }, {
+        name: "Docs/",
+        type: "folder" as const,
+        children: [{
+          name: "api_spec.md",
+          type: "file" as const
+        }, {
+          name: "readme.txt",
+          type: "file" as const
+        }]
+      }]
     }, {
-      name: "readme.md",
-      type: "file" as const
-    }]
-  }, {
-    name: "Skills/",
-    type: "folder" as const,
-    children: [{
-      name: "auth_handler.py",
-      type: "file" as const,
-      highlight: phase >= 2
+      name: "Memory/",
+      type: "folder" as const,
+      highlight: isPathHighlighted("Memory/"),
+      children: [{
+        name: "Sessions/",
+        type: "folder" as const,
+        highlight: isPathHighlighted("Sessions/"),
+        children: [{
+          name: "auth_logs.json",
+          type: "file" as const,
+          highlight: isPathHighlighted("auth_logs.json")
+        }, {
+          name: "user_prefs.json",
+          type: "file" as const
+        }]
+      }, {
+        name: "Cache/",
+        type: "folder" as const,
+        children: [{
+          name: "token_cache.bin",
+          type: "file" as const
+        }]
+      }]
     }, {
-      name: "utils.js",
-      type: "file" as const
-    }]
-  }, {
-    name: "Sessions/",
-    type: "folder" as const,
-    children: [{
-      name: "conversation_01.json",
-      type: "file" as const
-    }]
-  }];
+      name: "Skill/",
+      type: "folder" as const,
+      children: [{
+        name: "Tools/",
+        type: "folder" as const,
+        children: [{
+          name: "validator.py",
+          type: "file" as const
+        }, {
+          name: "formatter.js",
+          type: "file" as const
+        }]
+      }, {
+        name: "Agents/",
+        type: "folder" as const,
+        children: [{
+          name: "auth_agent.yaml",
+          type: "file" as const
+        }]
+      }]
+    }];
+  };
+  
   return <motion.div ref={ref} initial={{
     opacity: 0,
     y: 50
@@ -347,22 +437,24 @@ const FeatureCard2 = () => {
           </span>
         </div>
 
-        {/* Directory with pulse */}
-        <div className="relative bg-muted/30 rounded-lg p-3 min-h-[160px]">
-          {phase >= 1 && <motion.div initial={{
-          top: 0,
-          opacity: 0
-        }} animate={{
-          top: ["0%", "100%"],
-          opacity: [0, 1, 1, 0]
-        }} transition={{
-          duration: 1.5
-        }} className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-secondary to-transparent rounded" />}
-          <DirectoryTree data={treeData} showAnimation={false} />
+        {/* Directory with scanning indicator */}
+        <div className="relative bg-muted/30 rounded-lg p-3 min-h-[200px] overflow-visible">
+          {/* Scanning line animation */}
+          {phase >= 1 && phase < 4 && <motion.div 
+            key={`scan-${phase}`}
+            initial={{ top: 0, opacity: 0 }}
+            animate={{ 
+              top: ["0%", "100%"],
+              opacity: [0, 1, 1, 0]
+            }}
+            transition={{ duration: 1.2, repeat: phase < 4 ? Infinity : 0 }}
+            className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-secondary to-transparent rounded z-10" 
+          />}
+          <DirectoryTree data={getTreeData()} showAnimation={false} />
         </div>
 
         {/* Context Window */}
-        {phase >= 3 && <motion.div initial={{
+        {phase >= 6 && <motion.div initial={{
         opacity: 0,
         scale: 0.9
       }} animate={{
