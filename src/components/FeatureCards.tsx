@@ -508,7 +508,7 @@ const FeatureCard3 = () => {
               x: 0
             }} className="flex items-center gap-2 text-sm text-warning mb-1">
                   <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-                  user_profile.json
+                  error_handler.pdf
                 </motion.div>
                 <motion.div initial={{
               opacity: 0,
@@ -518,9 +518,21 @@ const FeatureCard3 = () => {
               x: 0
             }} transition={{
               delay: 0.2
+            }} className="flex items-center gap-2 text-sm text-warning mb-1">
+                  <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
+                  validator.py
+                </motion.div>
+                <motion.div initial={{
+              opacity: 0,
+              x: -20
+            }} animate={{
+              opacity: 1,
+              x: 0
+            }} transition={{
+              delay: 0.4
             }} className="flex items-center gap-2 text-sm text-warning">
                   <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-                  task_strategies.md
+                  Experience in Error Handling
                 </motion.div>
               </>}
           </div>
