@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Github, MessageCircle } from "lucide-react";
+import openVikingLogo from "@/assets/openviking-logo.png";
 
 const Footer = () => {
   const links = {
@@ -28,9 +29,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                <span className="text-xl font-bold text-primary-foreground">V</span>
-              </div>
+              <img 
+                src={openVikingLogo} 
+                alt="OpenViking Logo" 
+                className="w-10 h-10 object-contain"
+              />
               <span className="text-xl font-bold text-gradient">OpenViking</span>
             </div>
             <p className="text-sm text-muted-foreground">
