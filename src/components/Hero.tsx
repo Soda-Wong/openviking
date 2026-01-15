@@ -1,18 +1,28 @@
 import { motion } from "framer-motion";
 import { Github, ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
-import ParticleField from "./ParticleField";
+import ForceFieldBackground from "./ForceFieldBackground";
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background Effects */}
-      <div className="absolute inset-0 grid-pattern opacity-30" />
-      <ParticleField />
+      {/* Interactive Force Field Background */}
+      <ForceFieldBackground 
+        hue={185}
+        saturation={80}
+        spacing={8}
+        density={1.5}
+        minStroke={1}
+        maxStroke={4}
+        forceStrength={12}
+        magnifierRadius={180}
+        friction={0.92}
+        restoreSpeed={0.03}
+        className="opacity-60"
+      />
       
-      {/* Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 pointer-events-none" />
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
