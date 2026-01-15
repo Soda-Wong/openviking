@@ -24,20 +24,20 @@ const FeatureCard1 = () => {
         if (!isCancelled) setPhase(1);
       }, 500);
 
-      // Phase 2: Icons flow into funnel (2000ms)
+      // Phase 2: Processing animation starts (3000ms - icons still visible)
       const timer2 = setTimeout(() => {
         if (!isCancelled) setPhase(2);
-      }, 2000);
+      }, 3000);
 
-      // Phase 3: Directory tree expands (3500ms)
+      // Phase 3: Directory tree expands, icons disappear (4500ms)
       const timer3 = setTimeout(() => {
         if (!isCancelled) setPhase(3);
-      }, 3500);
+      }, 4500);
 
-      // Hold final state for 3 seconds, then loop (6500ms total = 3500 + 3000)
+      // Hold final state for 3 seconds, then loop (7500ms total = 4500 + 3000)
       const loopTimer = setTimeout(() => {
         if (!isCancelled) runAnimation();
-      }, 6500);
+      }, 7500);
       return () => {
         clearTimeout(timer1);
         clearTimeout(timer2);
@@ -158,12 +158,12 @@ const FeatureCard1 = () => {
         }, i) => <motion.div key={`${label}-${phase}`} initial={{
           opacity: 0,
           scale: 0
-        }} animate={phase >= 1 && phase < 2 ? {
+        }} animate={phase >= 1 && phase < 3 ? {
           opacity: 1,
           scale: 1,
           x: [0, 10, -10, 5],
           y: [0, -5, 10, -5]
-        } : phase >= 2 ? {
+        } : phase >= 3 ? {
           opacity: 0,
           x: 100,
           scale: 0.5
@@ -171,9 +171,9 @@ const FeatureCard1 = () => {
           opacity: 0,
           scale: 0
         }} transition={{
-          duration: phase >= 2 ? 0.5 : 2,
-          delay: phase >= 2 ? delay : delay,
-          repeat: phase >= 1 && phase < 2 ? Infinity : 0
+          duration: phase >= 3 ? 0.5 : 2,
+          delay: phase >= 3 ? delay : delay,
+          repeat: phase >= 1 && phase < 3 ? Infinity : 0
         }} className={`absolute ${color}`} style={{
           top: `${i % 3 * 30 + 20}%`,
           left: `${Math.floor(i / 3) * 50 + 10}%`
