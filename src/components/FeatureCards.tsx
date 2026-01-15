@@ -438,11 +438,30 @@ const FeatureCard3 = () => {
   });
   const [phase, setPhase] = useState(0);
   useEffect(() => {
-    if (isInView) {
-      setTimeout(() => setPhase(1), 500);
-      setTimeout(() => setPhase(2), 1500);
-      setTimeout(() => setPhase(3), 3000);
-    }
+    if (!isInView) return;
+    let isCancelled = false;
+    
+    const runAnimation = () => {
+      if (isCancelled) return;
+      
+      // Reset state
+      setPhase(0);
+      
+      // Phase 1: Button pulse
+      setTimeout(() => { if (!isCancelled) setPhase(1); }, 500);
+      
+      // Phase 2: Data orb animation
+      setTimeout(() => { if (!isCancelled) setPhase(2); }, 1500);
+      
+      // Phase 3: Memory updates appear
+      setTimeout(() => { if (!isCancelled) setPhase(3); }, 3000);
+      
+      // Hold for 3 seconds, then loop
+      setTimeout(() => { if (!isCancelled) runAnimation(); }, 6000);
+    };
+    
+    runAnimation();
+    return () => { isCancelled = true; };
   }, [isInView]);
   return <motion.div ref={ref} initial={{
     opacity: 0,
