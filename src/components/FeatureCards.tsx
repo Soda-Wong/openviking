@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import DirectoryTree from "./DirectoryTree";
+import openVikingLogo from "@/assets/openviking-logo.png";
 
 const FeatureCard1 = () => {
   const ref = useRef(null);
@@ -20,16 +21,50 @@ const FeatureCard1 = () => {
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
-    if (isInView) {
-      const timer1 = setTimeout(() => setPhase(1), 500);
-      const timer2 = setTimeout(() => setPhase(2), 2000);
-      const timer3 = setTimeout(() => setPhase(3), 3500);
+    if (!isInView) return;
+
+    let isCancelled = false;
+    
+    const runAnimation = () => {
+      if (isCancelled) return;
+      
+      // Reset to phase 0
+      setPhase(0);
+      
+      // Phase 1: Chaos icons appear and float (500ms delay)
+      const timer1 = setTimeout(() => {
+        if (!isCancelled) setPhase(1);
+      }, 500);
+      
+      // Phase 2: Icons flow into funnel (2000ms)
+      const timer2 = setTimeout(() => {
+        if (!isCancelled) setPhase(2);
+      }, 2000);
+      
+      // Phase 3: Directory tree expands (3500ms)
+      const timer3 = setTimeout(() => {
+        if (!isCancelled) setPhase(3);
+      }, 3500);
+      
+      // Hold final state for 3 seconds, then loop (6500ms total = 3500 + 3000)
+      const loopTimer = setTimeout(() => {
+        if (!isCancelled) runAnimation();
+      }, 6500);
+      
       return () => {
         clearTimeout(timer1);
         clearTimeout(timer2);
         clearTimeout(timer3);
+        clearTimeout(loopTimer);
       };
-    }
+    };
+    
+    const cleanup = runAnimation();
+    
+    return () => {
+      isCancelled = true;
+      if (cleanup) cleanup();
+    };
   }, [isInView]);
 
   const chaosIcons = [
@@ -41,33 +76,44 @@ const FeatureCard1 = () => {
     { Icon: Settings, label: "Config", color: "text-orange-400", delay: 0.5 },
   ];
 
-  const treeData = [
-    {
-      name: "Resource/",
-      type: "folder" as const,
-      highlight: phase >= 3,
-      children: [
-        { name: "processed_doc.md", type: "file" as const, highlight: phase >= 3 },
-        { name: "video_transcript.txt", type: "file" as const },
-      ],
-    },
-    {
-      name: "Memory/",
-      type: "folder" as const,
-      highlight: phase >= 3,
-      children: [
-        { name: "session_log.json", type: "file" as const, highlight: phase >= 3 },
-      ],
-    },
-    {
-      name: "Skill/",
-      type: "folder" as const,
-      highlight: phase >= 3,
-      children: [
-        { name: "tool_def.yaml", type: "file" as const, highlight: phase >= 3 },
-      ],
-    },
-  ];
+  // Dynamic tree data that expands when phase >= 3
+  const getTreeData = () => {
+    if (phase < 3) {
+      return [
+        { name: "Resource/", type: "folder" as const, children: [] },
+        { name: "Memory/", type: "folder" as const, children: [] },
+        { name: "Skill/", type: "folder" as const, children: [] },
+      ];
+    }
+    
+    return [
+      {
+        name: "Resource/",
+        type: "folder" as const,
+        highlight: true,
+        children: [
+          { name: "processed_doc.md", type: "file" as const, highlight: true },
+          { name: "video_transcript.txt", type: "file" as const, highlight: true },
+        ],
+      },
+      {
+        name: "Memory/",
+        type: "folder" as const,
+        highlight: true,
+        children: [
+          { name: "session_log.json", type: "file" as const, highlight: true },
+        ],
+      },
+      {
+        name: "Skill/",
+        type: "folder" as const,
+        highlight: true,
+        children: [
+          { name: "tool_def.yaml", type: "file" as const, highlight: true },
+        ],
+      },
+    ];
+  };
 
   return (
     <motion.div
@@ -87,7 +133,7 @@ const FeatureCard1 = () => {
         <div className="flex-1 relative h-48">
           {chaosIcons.map(({ Icon, label, color, delay }, i) => (
             <motion.div
-              key={label}
+              key={`${label}-${phase}`}
               initial={{ opacity: 0, scale: 0 }}
               animate={
                 phase >= 1 && phase < 2
@@ -117,30 +163,58 @@ const FeatureCard1 = () => {
           ))}
         </div>
 
-        {/* Funnel */}
+        {/* OpenViking Logo Funnel */}
         <motion.div
-          animate={phase >= 2 ? { scale: [1, 1.1, 1] } : {}}
-          transition={{ duration: 0.5, repeat: phase === 2 ? 3 : 0 }}
+          animate={phase === 2 ? { scale: [1, 1.15, 1] } : {}}
+          transition={{ duration: 0.4, repeat: phase === 2 ? 2 : 0 }}
           className="flex flex-col items-center"
         >
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center pulse-glow">
-            <span className="text-2xl font-bold text-primary-foreground">V</span>
-          </div>
+          <motion.div 
+            className="relative w-16 h-16 rounded-xl overflow-hidden"
+            animate={phase >= 2 ? { 
+              boxShadow: [
+                "0 0 0 0 hsl(var(--primary) / 0)",
+                "0 0 20px 8px hsl(var(--primary) / 0.4)",
+                "0 0 0 0 hsl(var(--primary) / 0)"
+              ]
+            } : {}}
+            transition={{ duration: 1, repeat: phase === 2 ? Infinity : 0 }}
+          >
+            <img 
+              src={openVikingLogo} 
+              alt="OpenViking" 
+              className="w-full h-full object-contain"
+            />
+            {/* Glow overlay */}
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl"
+              animate={phase >= 2 ? { opacity: [0, 0.6, 0] } : { opacity: 0 }}
+              transition={{ duration: 0.8, repeat: phase === 2 ? Infinity : 0 }}
+            />
+          </motion.div>
           <ArrowRight className="text-primary mt-2 w-5 h-5" />
           {phase === 2 && (
             <motion.p
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-xs text-primary mt-1"
+              animate={{ opacity: [0, 1, 0.7, 1] }}
+              transition={{ duration: 0.8, repeat: Infinity }}
+              className="text-xs text-primary mt-1 font-medium"
             >
               Processing...
             </motion.p>
           )}
         </motion.div>
 
-        {/* Directory Tree */}
+        {/* Directory Tree with Dynamic Expansion */}
         <div className="flex-1 bg-muted/30 rounded-lg p-3 h-48 overflow-hidden">
-          <DirectoryTree data={treeData} showAnimation={phase >= 3} />
+          <motion.div
+            key={phase >= 3 ? "expanded" : "collapsed"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <DirectoryTree data={getTreeData()} showAnimation={phase >= 3} />
+          </motion.div>
         </div>
       </div>
     </motion.div>
