@@ -147,9 +147,9 @@ const FeatureCard1 = () => {
         
       </div>
 
-      <div className="flex items-center gap-4 min-h-[200px]">
+      <div className="flex items-center gap-4 min-h-[220px]">
         {/* Chaos Zone */}
-        <div className="flex-1 relative h-48">
+        <div className="flex-1 relative h-52">
           {chaosIcons.map(({
           Icon,
           label,
@@ -175,8 +175,8 @@ const FeatureCard1 = () => {
           delay: phase >= 3 ? delay : delay,
           repeat: phase >= 1 && phase < 3 ? Infinity : 0
         }} className={`absolute ${color}`} style={{
-          top: `${i % 3 * 30 + 20}%`,
-          left: `${Math.floor(i / 3) * 50 + 10}%`
+          top: `${i % 3 * 25 + 15}%`,
+          left: `${Math.floor(i / 3) * 45 + 10}%`
         }}>
               <Icon className="w-8 h-8" />
             </motion.div>)}
@@ -188,7 +188,7 @@ const FeatureCard1 = () => {
       } : {}} transition={{
         duration: 0.4,
         repeat: phase === 2 ? 2 : 0
-      }} className="flex flex-col items-center">
+      }} className="flex flex-col items-center flex-shrink-0">
           <motion.div className="relative w-16 h-16 rounded-xl overflow-hidden" animate={phase >= 2 ? {
           boxShadow: ["0 0 0 0 hsl(var(--primary) / 0)", "0 0 20px 8px hsl(var(--primary) / 0.4)", "0 0 0 0 hsl(var(--primary) / 0)"]
         } : {}} transition={{
@@ -220,7 +220,7 @@ const FeatureCard1 = () => {
         </motion.div>
 
         {/* Directory Tree with Dynamic Expansion */}
-        <div className="flex-1 bg-muted/30 rounded-lg p-3 h-48 overflow-hidden">
+        <div className="flex-1 bg-muted/30 rounded-lg p-3 min-h-[210px] overflow-visible">
           <motion.div key={phase >= 3 ? "expanded" : "collapsed"} initial={{
           opacity: 0
         }} animate={{
