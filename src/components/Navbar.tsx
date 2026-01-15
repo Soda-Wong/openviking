@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
+import openVikingLogo from "@/assets/openviking-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,9 +51,11 @@ const Navbar = () => {
               whileTap={{ scale: 0.95 }}
               className="relative"
             >
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                <span className="text-xl font-bold text-primary-foreground">V</span>
-              </div>
+              <img 
+                src={openVikingLogo} 
+                alt="OpenViking Logo" 
+                className="w-10 h-10 object-contain"
+              />
               <div className="absolute inset-0 rounded-lg bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
             <span className="text-xl font-bold text-gradient">OpenViking</span>
