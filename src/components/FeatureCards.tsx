@@ -243,22 +243,45 @@ const FeatureCard2 = () => {
   const [phase, setPhase] = useState(0);
   const [searchText, setSearchText] = useState("");
   useEffect(() => {
-    if (isInView) {
+    if (!isInView) return;
+    let isCancelled = false;
+    
+    const runAnimation = () => {
+      if (isCancelled) return;
+      
+      // Reset state
+      setPhase(0);
+      setSearchText("");
+      
       const fullText = "How does auth handle errors?";
       let i = 0;
+      
       const typeTimer = setInterval(() => {
+        if (isCancelled) {
+          clearInterval(typeTimer);
+          return;
+        }
         if (i <= fullText.length) {
           setSearchText(fullText.slice(0, i));
           i++;
         } else {
           clearInterval(typeTimer);
-          setPhase(1);
-          setTimeout(() => setPhase(2), 1000);
-          setTimeout(() => setPhase(3), 2500);
+          if (!isCancelled) setPhase(1);
+          setTimeout(() => { if (!isCancelled) setPhase(2); }, 1000);
+          setTimeout(() => { if (!isCancelled) setPhase(3); }, 2500);
+          // Hold for 3 seconds, then loop
+          setTimeout(() => { if (!isCancelled) runAnimation(); }, 5500);
         }
       }, 50);
+      
       return () => clearInterval(typeTimer);
-    }
+    };
+    
+    const cleanup = runAnimation();
+    return () => {
+      isCancelled = true;
+      if (cleanup) cleanup();
+    };
   }, [isInView]);
   const treeData = [{
     name: "Resources/",
