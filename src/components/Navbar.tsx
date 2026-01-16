@@ -56,7 +56,7 @@ const Navbar = () => {
           {/* Right Links */}
           <div className="hidden md:flex items-center gap-2">
             {rightLinks.map((link) => (
-              <a key={link.name} href={link.path} target="_blank">
+              <a key={link.name} href={link.path} target="_blank" rel="noopener noreferrer">
                 <Button
                   variant={link.name === "Github" ? "outline" : "ghost"}
                   className={`text-sm font-medium transition-all duration-300 ${
