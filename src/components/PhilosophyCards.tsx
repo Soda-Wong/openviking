@@ -16,41 +16,38 @@ const Card1 = () => {
       return () => clearInterval(interval);
     }
   }, [isInView]);
-  const particles = [{
-    icon: "📄",
-    label: "PDF",
-    x: 20,
-    y: 20
-  }, {
-    icon: "🎬",
-    label: "Video",
-    x: 60,
-    y: 10
-  }, {
-    icon: "📊",
-    label: "JSON",
-    x: 80,
-    y: 30
-  }, {
-    icon: "💬",
-    label: "Chat",
-    x: 30,
-    y: 50
-  }, {
-    icon: "⚙️",
-    label: "Config",
-    x: 70,
-    y: 45
-  }];
-  return <motion.div ref={ref} initial={{
-    opacity: 0,
-    y: 50
-  }} animate={isInView ? {
-    opacity: 1,
-    y: 0
-  } : {}} transition={{
-    duration: 0.6
-  }} className="glass-card p-6 rounded-2xl glow-border">
+
+  const particles = [
+    { icon: File, label: "PDF", x: 15, y: 15 },
+    { icon: File, label: "Video", x: 55, y: 8 },
+    { icon: File, label: "JSON", x: 75, y: 25 },
+    { icon: File, label: "Chat", x: 25, y: 45 },
+    { icon: File, label: "Config", x: 65, y: 40 }
+  ];
+
+  const treeData = [
+    { 
+      name: "Resource", 
+      children: ["api_docs.md", "config.yaml"] 
+    },
+    { 
+      name: "Memory", 
+      children: ["session_01.json", "preferences.json"] 
+    },
+    { 
+      name: "Skill", 
+      children: ["validator.py", "formatter.ts"] 
+    }
+  ];
+
+  return (
+    <motion.div 
+      ref={ref} 
+      initial={{ opacity: 0, y: 50 }} 
+      animate={isInView ? { opacity: 1, y: 0 } : {}} 
+      transition={{ duration: 0.6 }} 
+      className="glass-card p-6 rounded-2xl glow-border"
+    >
       <h3 className="text-lg font-semibold text-gradient mb-2">
         File System Paradigm
       </h3>
@@ -59,44 +56,83 @@ const Card1 = () => {
       </p>
 
       <div className="relative h-48 bg-muted/20 rounded-lg overflow-hidden">
-        {/* Chaos particles */}
-        <div className="absolute inset-x-0 top-0 h-24">
-          {particles.map((p, i) => <motion.div key={i} animate={phase === 0 ? {
-          x: [0, 5, -5, 0],
-          y: [0, -3, 3, 0]
-        } : phase === 1 ? {
-          y: 80,
-          opacity: 0.5
-        } : {
-          y: 80,
-          opacity: 0
-        }} transition={{
-          duration: phase === 0 ? 1 : 0.5,
-          repeat: phase === 0 ? Infinity : 0
-        }} className="absolute text-xl" style={{
-          left: `${p.x}%`,
-          top: `${p.y}%`
-        }}>
-              {p.icon}
-            </motion.div>)}
+        {/* Chaos particles - unified file icons */}
+        <div className="absolute inset-x-0 top-0 h-20">
+          {particles.map((p, i) => (
+            <motion.div 
+              key={i} 
+              animate={phase === 0 ? {
+                x: [0, 5, -5, 0],
+                y: [0, -3, 3, 0]
+              } : phase === 1 ? {
+                y: 70,
+                opacity: 0.5
+              } : {
+                y: 70,
+                opacity: 0
+              }} 
+              transition={{
+                duration: phase === 0 ? 1 : 0.5,
+                repeat: phase === 0 ? Infinity : 0
+              }} 
+              className="absolute" 
+              style={{ left: `${p.x}%`, top: `${p.y}%` }}
+            >
+              <div className="w-7 h-7 rounded bg-primary/20 border border-primary/40 flex items-center justify-center backdrop-blur-sm">
+                <File className="w-3.5 h-3.5 text-primary" />
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Folder structure */}
-        <div className="absolute inset-x-4 bottom-4 space-y-1">
-          {["Resources", "Sessions", "Skills"].map((folder, i) => <motion.div key={folder} initial={{
-          opacity: 0.3
-        }} animate={{
-          opacity: phase >= 2 ? 1 : 0.3,
-          boxShadow: phase >= 2 ? "0 0 10px hsl(186 100% 50% / 0.5)" : "none"
-        }} transition={{
-          delay: i * 0.1
-        }} className="flex items-center gap-2 bg-muted/50 rounded px-3 py-1.5">
-              <Folder className="w-4 h-4 text-primary" />
-              <span className="text-sm">{folder}/</span>
-            </motion.div>)}
+        {/* Tree structure */}
+        <div className="absolute inset-x-3 bottom-2">
+          <div className="space-y-0.5 font-mono text-xs">
+            {treeData.map((folder, i) => (
+              <motion.div 
+                key={folder.name} 
+                initial={{ opacity: 0.3 }}
+                animate={{
+                  opacity: phase >= 2 ? 1 : 0.3,
+                }}
+                transition={{ delay: i * 0.1 }}
+              >
+                {/* Folder row */}
+                <div className="flex items-center gap-1.5 py-0.5">
+                  <span className="text-muted-foreground/50">{i === treeData.length - 1 ? "└" : "├"}</span>
+                  <motion.div
+                    animate={{
+                      boxShadow: phase >= 2 ? "0 0 8px hsl(186 100% 50% / 0.4)" : "none"
+                    }}
+                    className="flex items-center gap-1.5 bg-muted/50 rounded px-2 py-0.5"
+                  >
+                    <Folder className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-foreground/90">{folder.name}/</span>
+                  </motion.div>
+                </div>
+                {/* File children */}
+                {folder.children.map((file, j) => (
+                  <motion.div 
+                    key={file}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: phase >= 2 ? 0.7 : 0 }}
+                    transition={{ delay: i * 0.1 + j * 0.05 + 0.2 }}
+                    className="flex items-center gap-1.5 py-0.5 pl-4"
+                  >
+                    <span className="text-muted-foreground/30">
+                      {i === treeData.length - 1 ? " " : "│"} {j === folder.children.length - 1 ? "└" : "├"}
+                    </span>
+                    <File className="w-3 h-3 text-muted-foreground/60" />
+                    <span className="text-muted-foreground/80">{file}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
-    </motion.div>;
+    </motion.div>
+  );
 };
 const Card2 = () => {
   const ref = useRef(null);
