@@ -1,102 +1,212 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { Folder, File, Search, ArrowRight, RefreshCw } from "lucide-react";
+// Tree node component with visual branch lines
+const TreeNode = ({ 
+  name, 
+  depth = 0, 
+  isLast = false, 
+  flashTarget, 
+  icon: IconComponent,
+  iconColor = "text-primary"
+}: { 
+  name: string; 
+  depth?: number; 
+  isLast?: boolean; 
+  flashTarget?: string | null;
+  icon?: React.ComponentType<{ className?: string }>;
+  iconColor?: string;
+}) => {
+  const isFlashing = flashTarget === name;
+  const Icon = IconComponent || Folder;
+  
+  return (
+    <div className="relative">
+      {/* Branch lines for depth > 0 */}
+      {depth > 0 && (
+        <div 
+          className="absolute border-l border-slate-700" 
+          style={{ 
+            left: `${(depth - 1) * 16 + 6}px`, 
+            top: 0, 
+            height: isLast ? '12px' : '100%' 
+          }} 
+        />
+      )}
+      {depth > 0 && (
+        <div 
+          className="absolute border-b border-slate-700" 
+          style={{ 
+            left: `${(depth - 1) * 16 + 6}px`, 
+            top: '12px', 
+            width: '10px' 
+          }} 
+        />
+      )}
+      
+      <motion.div 
+        animate={isFlashing ? { 
+          boxShadow: ["0 0 0px hsl(186 100% 50% / 0)", "0 0 15px hsl(186 100% 50% / 0.8)", "0 0 0px hsl(186 100% 50% / 0)"],
+          color: ["inherit", "hsl(186 100% 70%)", "inherit"]
+        } : {}}
+        transition={{ duration: 0.5 }}
+        className="flex items-center gap-1.5 py-0.5"
+        style={{ paddingLeft: `${depth * 16}px` }}
+      >
+        <Icon className={`w-3.5 h-3.5 ${isFlashing ? 'text-primary' : iconColor}`} />
+        <span className={`text-xs ${isFlashing ? 'text-primary font-medium' : 'text-slate-300'}`}>
+          {name}
+        </span>
+      </motion.div>
+    </div>
+  );
+};
+
 const Card1 = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, {
     once: true,
     margin: "-100px"
   });
-  const [phase, setPhase] = useState(0);
+  const [activeParticle, setActiveParticle] = useState<number | null>(null);
+  const [flashTarget, setFlashTarget] = useState<string | null>(null);
+  const [cycle, setCycle] = useState(0);
+
+  const particles = [
+    { icon: "📄", label: "PDF", target: "Resources/", delay: 0 },
+    { icon: "💬", label: "Chat", target: "User Memories/", delay: 0.8 },
+    { icon: "⚙️", label: "Tool", target: "Skills/", delay: 1.6 },
+    { icon: "🧠", label: "Log", target: "Agent Memories/", delay: 2.4 },
+  ];
+
+  // Target positions for each folder (relative to tree container)
+  const targetPositions: Record<string, { x: number; y: number }> = {
+    "Resources/": { x: 85, y: 52 },
+    "User Memories/": { x: 110, y: 32 },
+    "Skills/": { x: 85, y: 88 },
+    "Agent Memories/": { x: 110, y: 108 },
+  };
+
   useEffect(() => {
-    if (isInView) {
-      const interval = setInterval(() => {
-        setPhase(p => (p + 1) % 3);
-      }, 2000);
-      return () => clearInterval(interval);
-    }
-  }, [isInView]);
-  const particles = [{
-    icon: "📄",
-    label: "PDF",
-    x: 20,
-    y: 20
-  }, {
-    icon: "🎬",
-    label: "Video",
-    x: 60,
-    y: 10
-  }, {
-    icon: "📊",
-    label: "JSON",
-    x: 80,
-    y: 30
-  }, {
-    icon: "💬",
-    label: "Chat",
-    x: 30,
-    y: 50
-  }, {
-    icon: "⚙️",
-    label: "Config",
-    x: 70,
-    y: 45
-  }];
-  return <motion.div ref={ref} initial={{
-    opacity: 0,
-    y: 50
-  }} animate={isInView ? {
-    opacity: 1,
-    y: 0
-  } : {}} transition={{
-    duration: 0.6
-  }} className="glass-card p-6 rounded-2xl glow-border">
+    if (!isInView) return;
+    
+    const runCycle = () => {
+      particles.forEach((p, i) => {
+        // Start particle animation
+        setTimeout(() => {
+          setActiveParticle(i);
+        }, p.delay * 1000);
+        
+        // Flash target folder when particle lands
+        setTimeout(() => {
+          setFlashTarget(p.target);
+          setTimeout(() => setFlashTarget(null), 500);
+        }, (p.delay + 0.6) * 1000);
+      });
+      
+      // Reset and loop
+      setTimeout(() => {
+        setActiveParticle(null);
+        setCycle(c => c + 1);
+      }, 5000);
+    };
+
+    runCycle();
+    const interval = setInterval(runCycle, 6000);
+    return () => clearInterval(interval);
+  }, [isInView, cycle]);
+
+  return (
+    <motion.div 
+      ref={ref} 
+      initial={{ opacity: 0, y: 50 }} 
+      animate={isInView ? { opacity: 1, y: 0 } : {}} 
+      transition={{ duration: 0.6 }} 
+      className="glass-card p-6 rounded-2xl glow-border"
+    >
       <h3 className="text-lg font-semibold text-gradient mb-2">
         File System Paradigm
       </h3>
-      <p className="text-sm text-muted-foreground mb-6">
+      <p className="text-sm text-muted-foreground mb-4">
         Organize memories, resources, and skills via a structured directory tree.
       </p>
 
-      <div className="relative h-48 bg-muted/20 rounded-lg overflow-hidden">
-        {/* Chaos particles */}
-        <div className="absolute inset-x-0 top-0 h-24">
-          {particles.map((p, i) => <motion.div key={i} animate={phase === 0 ? {
-          x: [0, 5, -5, 0],
-          y: [0, -3, 3, 0]
-        } : phase === 1 ? {
-          y: 80,
-          opacity: 0.5
-        } : {
-          y: 80,
-          opacity: 0
-        }} transition={{
-          duration: phase === 0 ? 1 : 0.5,
-          repeat: phase === 0 ? Infinity : 0
-        }} className="absolute text-xl" style={{
-          left: `${p.x}%`,
-          top: `${p.y}%`
-        }}>
+      <div className="relative h-56 bg-muted/20 rounded-lg overflow-hidden">
+        {/* Funnel / Source area at top */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-3 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50">
+          {particles.map((p, i) => (
+            <motion.div
+              key={`source-${i}-${cycle}`}
+              initial={{ opacity: 1, scale: 1 }}
+              animate={activeParticle !== null && activeParticle >= i ? { opacity: 0, scale: 0.5 } : { opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: i === activeParticle ? 0 : 0 }}
+              className="text-lg"
+            >
               {p.icon}
-            </motion.div>)}
+            </motion.div>
+          ))}
         </div>
 
-        {/* Folder structure */}
-        <div className="absolute inset-x-4 bottom-4 space-y-1">
-          {["Resources", "Sessions", "Skills"].map((folder, i) => <motion.div key={folder} initial={{
-          opacity: 0.3
-        }} animate={{
-          opacity: phase >= 2 ? 1 : 0.3,
-          boxShadow: phase >= 2 ? "0 0 10px hsl(186 100% 50% / 0.5)" : "none"
-        }} transition={{
-          delay: i * 0.1
-        }} className="flex items-center gap-2 bg-muted/50 rounded px-3 py-1.5">
-              <Folder className="w-4 h-4 text-primary" />
-              <span className="text-sm">{folder}/</span>
-            </motion.div>)}
+        {/* Animated particles traveling to destinations */}
+        {particles.map((p, i) => {
+          const target = targetPositions[p.target];
+          return (
+            <motion.div
+              key={`particle-${i}-${cycle}`}
+              initial={{ 
+                opacity: 0, 
+                x: 100, 
+                y: 12,
+                scale: 1
+              }}
+              animate={activeParticle !== null && activeParticle >= i ? {
+                opacity: [0, 1, 1, 0],
+                x: [100 + (i - 1.5) * 24, target.x],
+                y: [12, target.y],
+                scale: [1, 1, 0.8, 0.5]
+              } : { opacity: 0 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: p.delay,
+                ease: "easeInOut"
+              }}
+              className="absolute text-lg pointer-events-none z-10"
+            >
+              {p.icon}
+            </motion.div>
+          );
+        })}
+
+        {/* Hierarchical Directory Tree */}
+        <div className="absolute left-4 top-14 text-left font-mono">
+          {/* Root */}
+          <div className="flex items-center gap-1.5 mb-1">
+            <Folder className="w-4 h-4 text-primary" />
+            <span className="text-sm text-primary font-medium">viking://</span>
+          </div>
+          
+          {/* User Branch */}
+          <div className="ml-2">
+            <TreeNode name="User/" depth={1} flashTarget={flashTarget} />
+            <div className="relative">
+              <div className="absolute left-[6px] top-0 h-full border-l border-slate-700" />
+              <TreeNode name="User Memories/" depth={2} flashTarget={flashTarget} icon={File} iconColor="text-purple-400" />
+              <TreeNode name="Resources/" depth={2} isLast flashTarget={flashTarget} icon={File} iconColor="text-cyan-400" />
+            </div>
+          </div>
+          
+          {/* Agent Branch */}
+          <div className="ml-2 mt-1">
+            <TreeNode name="Agent/" depth={1} isLast flashTarget={flashTarget} />
+            <div className="relative">
+              <TreeNode name="Skills/" depth={2} flashTarget={flashTarget} icon={File} iconColor="text-amber-400" />
+              <TreeNode name="Agent Memories/" depth={2} isLast flashTarget={flashTarget} icon={File} iconColor="text-emerald-400" />
+            </div>
+          </div>
         </div>
       </div>
-    </motion.div>;
+    </motion.div>
+  );
 };
 const Card2 = () => {
   const ref = useRef(null);
