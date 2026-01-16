@@ -243,22 +243,18 @@ const FeatureCard2 = () => {
   const [phase, setPhase] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [highlightPath, setHighlightPath] = useState<string[]>([]);
-  
   useEffect(() => {
     if (!isInView) return;
     let isCancelled = false;
-    
     const runAnimation = () => {
       if (isCancelled) return;
-      
+
       // Reset state
       setPhase(0);
       setSearchText("");
       setHighlightPath([]);
-      
       const fullText = "How does auth handle errors?";
       let i = 0;
-      
       const typeTimer = setInterval(() => {
         if (isCancelled) {
           clearInterval(typeTimer);
@@ -271,55 +267,54 @@ const FeatureCard2 = () => {
           clearInterval(typeTimer);
           // Phase 1: Cursor scanning around
           if (!isCancelled) setPhase(1);
-          
+
           // Phase 2: Locate Resource/ and drill to error_handler.pdf
-          setTimeout(() => { 
+          setTimeout(() => {
             if (!isCancelled) {
               setPhase(2);
               setHighlightPath(["Resource/", "references/", "error_handler.pdf"]);
             }
           }, 800);
-          
+
           // Phase 3: Locate Skill/ and select validator.py
-          setTimeout(() => { 
+          setTimeout(() => {
             if (!isCancelled) {
               setPhase(3);
               setHighlightPath(["Resource/", "references/", "error_handler.pdf", "Skill/", "validator.py"]);
             }
           }, 1600);
-          
+
           // Phase 4: Locate Memory/ and select Experience in Error Handling
-          setTimeout(() => { 
+          setTimeout(() => {
             if (!isCancelled) {
               setPhase(4);
               setHighlightPath(["Resource/", "references/", "error_handler.pdf", "Skill/", "validator.py", "Memory/", "Experience in Error Handling"]);
             }
           }, 2400);
-          
+
           // Phase 5: Context retrieved
-          setTimeout(() => { 
+          setTimeout(() => {
             if (!isCancelled) setPhase(5);
           }, 3200);
-          
+
           // Hold for 3 seconds, then loop
-          setTimeout(() => { if (!isCancelled) runAnimation(); }, 6200);
+          setTimeout(() => {
+            if (!isCancelled) runAnimation();
+          }, 6200);
         }
       }, 50);
-      
       return () => clearInterval(typeTimer);
     };
-    
     const cleanup = runAnimation();
     return () => {
       isCancelled = true;
       if (cleanup) cleanup();
     };
   }, [isInView]);
-  
+
   // Directory structure per user spec
   const getTreeData = () => {
     const isPathHighlighted = (path: string) => highlightPath.includes(path);
-    
     return [{
       name: "Resource/",
       type: "folder" as const,
@@ -363,7 +358,6 @@ const FeatureCard2 = () => {
       }]
     }];
   };
-  
   return <motion.div ref={ref} initial={{
     opacity: 0,
     y: 50
@@ -401,16 +395,16 @@ const FeatureCard2 = () => {
         {/* Directory with scanning indicator - scrollable */}
         <div className="relative bg-muted/30 rounded-lg p-3 h-[120px] overflow-y-auto">
           {/* Scanning line animation */}
-          {phase >= 1 && phase < 4 && <motion.div 
-            key={`scan-${phase}`}
-            initial={{ top: 0, opacity: 0 }}
-            animate={{ 
-              top: ["0%", "100%"],
-              opacity: [0, 1, 1, 0]
-            }}
-            transition={{ duration: 1.2, repeat: phase < 4 ? Infinity : 0 }}
-            className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-secondary to-transparent rounded z-10" 
-          />}
+          {phase >= 1 && phase < 4 && <motion.div key={`scan-${phase}`} initial={{
+          top: 0,
+          opacity: 0
+        }} animate={{
+          top: ["0%", "100%"],
+          opacity: [0, 1, 1, 0]
+        }} transition={{
+          duration: 1.2,
+          repeat: phase < 4 ? Infinity : 0
+        }} className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-secondary to-transparent rounded z-10" />}
           <DirectoryTree data={getTreeData()} showAnimation={false} />
         </div>
 
@@ -440,28 +434,36 @@ const FeatureCard3 = () => {
   useEffect(() => {
     if (!isInView) return;
     let isCancelled = false;
-    
     const runAnimation = () => {
       if (isCancelled) return;
-      
+
       // Reset state
       setPhase(0);
-      
+
       // Phase 1: Session submitting (arrow animates down)
-      setTimeout(() => { if (!isCancelled) setPhase(1); }, 500);
-      
+      setTimeout(() => {
+        if (!isCancelled) setPhase(1);
+      }, 500);
+
       // Phase 2: OpenViking processing
-      setTimeout(() => { if (!isCancelled) setPhase(2); }, 1500);
-      
+      setTimeout(() => {
+        if (!isCancelled) setPhase(2);
+      }, 1500);
+
       // Phase 3: Memory updates appear
-      setTimeout(() => { if (!isCancelled) setPhase(3); }, 3000);
-      
+      setTimeout(() => {
+        if (!isCancelled) setPhase(3);
+      }, 3000);
+
       // Hold for 3 seconds, then loop
-      setTimeout(() => { if (!isCancelled) runAnimation(); }, 6000);
+      setTimeout(() => {
+        if (!isCancelled) runAnimation();
+      }, 6000);
     };
-    
     runAnimation();
-    return () => { isCancelled = true; };
+    return () => {
+      isCancelled = true;
+    };
   }, [isInView]);
   return <motion.div ref={ref} initial={{
     opacity: 0,
@@ -494,59 +496,65 @@ const FeatureCard3 = () => {
           {/* Flow line down */}
           <div className="relative h-6 w-0.5 my-1">
             <div className="absolute inset-0 bg-border" />
-            <motion.div 
-              className="absolute inset-0 bg-primary"
-              animate={phase >= 1 ? { scaleY: 1, opacity: 1 } : { scaleY: 0, opacity: 0 }}
-              style={{ transformOrigin: 'top' }}
-              transition={{ duration: 0.3 }}
-            />
+            <motion.div className="absolute inset-0 bg-primary" animate={phase >= 1 ? {
+            scaleY: 1,
+            opacity: 1
+          } : {
+            scaleY: 0,
+            opacity: 0
+          }} style={{
+            transformOrigin: 'top'
+          }} transition={{
+            duration: 0.3
+          }} />
           </div>
           
           {/* OpenViking Logo */}
-          <motion.div 
-            className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0"
-            animate={phase >= 2 && phase < 3 ? {
-              boxShadow: ["0 0 0 0 hsl(var(--primary) / 0)", "0 0 20px 8px hsl(var(--primary) / 0.4)", "0 0 0 0 hsl(var(--primary) / 0)"]
-            } : {}}
-            transition={{
-              duration: 1,
-              repeat: phase >= 2 && phase < 3 ? Infinity : 0
-            }}
-          >
+          <motion.div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0" animate={phase >= 2 && phase < 3 ? {
+          boxShadow: ["0 0 0 0 hsl(var(--primary) / 0)", "0 0 20px 8px hsl(var(--primary) / 0.4)", "0 0 0 0 hsl(var(--primary) / 0)"]
+        } : {}} transition={{
+          duration: 1,
+          repeat: phase >= 2 && phase < 3 ? Infinity : 0
+        }}>
             <img src={openVikingLogo} alt="OpenViking" className="w-full h-full object-contain" />
             {/* Glow overlay */}
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl"
-              animate={phase >= 2 && phase < 3 ? { opacity: [0, 0.6, 0] } : { opacity: 0 }}
-              transition={{
-                duration: 0.8,
-                repeat: phase >= 2 && phase < 3 ? Infinity : 0
-              }}
-            />
+            <motion.div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl" animate={phase >= 2 && phase < 3 ? {
+            opacity: [0, 0.6, 0]
+          } : {
+            opacity: 0
+          }} transition={{
+            duration: 0.8,
+            repeat: phase >= 2 && phase < 3 ? Infinity : 0
+          }} />
           </motion.div>
           
-          {phase >= 2 && phase < 3 && (
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 1, 0.7, 1] }}
-              transition={{ duration: 0.8, repeat: Infinity }}
-              className="text-xs text-primary font-medium mt-1"
-            >
+          {phase >= 2 && phase < 3 && <motion.p initial={{
+          opacity: 0
+        }} animate={{
+          opacity: [0, 1, 0.7, 1]
+        }} transition={{
+          duration: 0.8,
+          repeat: Infinity
+        }} className="text-xs text-primary font-medium mt-1">
               Processing...
-            </motion.p>
-          )}
+            </motion.p>}
         </div>
 
         {/* Horizontal flow line to Memory */}
         <div className="flex items-center">
           <div className="relative w-8 h-0.5">
             <div className="absolute inset-0 bg-border" />
-            <motion.div 
-              className="absolute inset-0 bg-primary"
-              animate={phase >= 3 ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
-              style={{ transformOrigin: 'left' }}
-              transition={{ duration: 0.3 }}
-            />
+            <motion.div className="absolute inset-0 bg-primary" animate={phase >= 3 ? {
+            scaleX: 1,
+            opacity: 1
+          } : {
+            scaleX: 0,
+            opacity: 0
+          }} style={{
+            transformOrigin: 'left'
+          }} transition={{
+            duration: 0.3
+          }} />
           </div>
         </div>
 
@@ -557,17 +565,17 @@ const FeatureCard3 = () => {
             
             {/* Initial state items */}
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-              <motion.span 
-                className="w-2 h-2 rounded-full bg-muted-foreground"
-                animate={phase >= 3 ? { 
-                  backgroundColor: ["hsl(var(--warning))", "hsl(var(--warning) / 0.3)", "hsl(var(--warning))"]
-                } : {}}
-                transition={{ duration: 0.8, repeat: phase >= 3 ? Infinity : 0 }}
-              />
-              <motion.span
-                animate={phase >= 3 ? { color: "hsl(var(--warning))" } : {}}
-                transition={{ duration: 0.3 }}
-              >
+              <motion.span className="w-2 h-2 rounded-full bg-muted-foreground" animate={phase >= 3 ? {
+              backgroundColor: ["hsl(var(--warning))", "hsl(var(--warning) / 0.3)", "hsl(var(--warning))"]
+            } : {}} transition={{
+              duration: 0.8,
+              repeat: phase >= 3 ? Infinity : 0
+            }} />
+              <motion.span animate={phase >= 3 ? {
+              color: "hsl(var(--warning))"
+            } : {}} transition={{
+              duration: 0.3
+            }}>
                 Experience in Error Handling
               </motion.span>
             </div>
@@ -577,30 +585,34 @@ const FeatureCard3 = () => {
             </div>
             
             {/* New item appears */}
-            {phase >= 3 && (
-              <motion.div 
-                initial={{ opacity: 0, x: -20, height: 0 }}
-                animate={{ opacity: 1, x: 0, height: 'auto' }}
-                transition={{ delay: 0.2 }}
-                className="flex items-center gap-2 text-sm text-success"
-              >
+            {phase >= 3 && <motion.div initial={{
+            opacity: 0,
+            x: -20,
+            height: 0
+          }} animate={{
+            opacity: 1,
+            x: 0,
+            height: 'auto'
+          }} transition={{
+            delay: 0.2
+          }} className="flex items-center gap-2 text-sm text-success">
                 <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
                 Validator Tool Usage
-              </motion.div>
-            )}
+              </motion.div>}
 
             {/* Completion notification inside container */}
-            {phase >= 3 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="mt-auto pt-2 text-xs text-success flex items-center gap-1"
-              >
+            {phase >= 3 && <motion.div initial={{
+            opacity: 0,
+            y: 5
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            delay: 0.5
+          }} className="mt-auto pt-2 text-xs text-success flex items-center gap-1">
                 <CheckCircle className="w-3 h-3" />
                 Memory Iterated
-              </motion.div>
-            )}
+              </motion.div>}
           </div>
         </div>
       </div>
@@ -619,9 +631,7 @@ const FeatureCards = () => {
         once: true
       }} className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">Core Features</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            A unified file system paradigm for all your AI agent context needs
-          </p>
+          
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
