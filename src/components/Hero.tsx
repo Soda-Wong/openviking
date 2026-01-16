@@ -53,7 +53,7 @@ const Hero = () => {
         }} transition={{
           duration: 0.6,
           delay: 0.2
-        }} className="text-xl md:text-2xl text-primary font-medium mb-4">Unified Context: Memories, Resources, & Skills.</motion.p>
+        }} className="text-xl md:text-2xl text-primary font-medium mb-4">Unified Context: Memories, Resources & Skills.</motion.p>
 
           {/* Subtitle */}
           <motion.p initial={{
