@@ -85,10 +85,10 @@ const Hero = () => {
               </Button>
             </a>
             <a href="https://github.com/volcengine/OpenViking" target="_blank" rel="noopener noreferrer">
-              <Button size="lg" variant="ghost" className="group relative overflow-hidden bg-white/5 backdrop-blur-md border border-white/20 text-white font-semibold px-8 py-6 text-lg rounded-xl hover:bg-white/15 hover:border-white/50 hover:text-white hover:shadow-lg hover:shadow-white/10 hover:scale-[1.02] transition-all duration-300">
-                <Github className="mr-2 h-5 w-5 text-white group-hover:text-white" />
-                <span className="text-white group-hover:text-white">View on Github</span>
-                <ArrowRight className="ml-2 h-5 w-5 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all" />
+              <Button size="lg" variant="outline" className="group relative overflow-hidden bg-white/[0.02] backdrop-blur-sm border-white/20 text-white font-semibold px-8 py-6 text-lg rounded-xl hover:bg-white/15 hover:border-white/50 hover:text-white hover:shadow-lg hover:shadow-white/10 hover:scale-[1.02] transition-all duration-300">
+                <Github className="mr-2 h-5 w-5" />
+                View on Github
+                <ArrowRight className="ml-2 h-5 w-5 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </Button>
             </a>
           </motion.div>
