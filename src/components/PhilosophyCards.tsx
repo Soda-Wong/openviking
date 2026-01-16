@@ -300,103 +300,286 @@ const Card2 = () => {
       </div>
     </motion.div>;
 };
+// LOD Badge component with data injection animation
+const LODBadge = ({ label, color, isActive }: { label: string; color: string; isActive: boolean }) => (
+  <div className="flex flex-col items-center gap-1">
+    <motion.div
+      animate={{
+        y: isActive ? [0, 3, 0] : 0,
+        opacity: isActive ? 1 : 0.5,
+      }}
+      transition={{ duration: 0.4, repeat: isActive ? Infinity : 0, repeatDelay: 0.8 }}
+      className={`text-[9px] px-1.5 py-0.5 rounded-full ${color} font-medium`}
+    >
+      {label}
+    </motion.div>
+    <div className={`w-px h-2 ${isActive ? 'bg-current opacity-60' : 'bg-slate-600'}`} />
+  </div>
+);
+
+// Pipeline Node component
+const PipelineNode = ({ 
+  label, 
+  isActive, 
+  lodBadge,
+  isDiamond = false,
+  className = ""
+}: { 
+  label: string; 
+  isActive: boolean; 
+  lodBadge?: { label: string; color: string };
+  isDiamond?: boolean;
+  className?: string;
+}) => (
+  <div className="flex flex-col items-center gap-0">
+    {lodBadge && <LODBadge {...lodBadge} isActive={isActive} />}
+    <motion.div
+      animate={{
+        scale: isActive ? 1.08 : 1,
+        boxShadow: isActive ? "0 0 12px hsl(186 100% 50% / 0.5)" : "none"
+      }}
+      className={`
+        ${isDiamond ? 'rotate-45 w-7 h-7' : 'rounded px-2 py-1'}
+        bg-slate-800/80 border border-slate-600 flex items-center justify-center
+        ${isActive ? 'border-cyan-500/60' : ''}
+        ${className}
+      `}
+    >
+      <span className={`text-[9px] text-slate-300 font-medium ${isDiamond ? '-rotate-45' : ''}`}>
+        {label}
+      </span>
+    </motion.div>
+  </div>
+);
+
 const Card3 = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, {
     once: true,
     margin: "-100px"
   });
+  
+  // Animation: 0-1 Query, 2 Global, 3 Intent, 4-7 Hierarchical loop (4 DirPos, 5 LocalSem, 6 Rerank, 7 TopK), 
+  // 8-11 second loop, 12 exit to Relevant Context
   const [step, setStep] = useState(0);
+  const totalSteps = 13;
+  
   useEffect(() => {
     if (isInView) {
       const interval = setInterval(() => {
-        setStep(s => (s + 1) % 5);
-      }, 1200);
+        setStep(s => (s + 1) % totalSteps);
+      }, 400);
       return () => clearInterval(interval);
     }
   }, [isInView]);
-  return <motion.div ref={ref} initial={{
-    opacity: 0,
-    y: 50
-  }} animate={isInView ? {
-    opacity: 1,
-    y: 0
-  } : {}} transition={{
-    duration: 0.6,
-    delay: 0.2
-  }} className="glass-card p-6 rounded-2xl glow-border">
+
+  // Determine which node is active based on step
+  const isQueryActive = step <= 1;
+  const isGlobalActive = step === 2;
+  const isIntentActive = step === 3;
+  const isDirPosActive = step === 4 || step === 8;
+  const isLocalSemActive = step === 5 || step === 9;
+  const isRerankActive = step === 6 || step === 10;
+  const isTopKActive = step === 7 || step === 11;
+  const isRelevantActive = step === 12;
+  const isInHierarchical = step >= 4 && step <= 11;
+
+  // Signal dot position calculation
+  const getDotPosition = () => {
+    if (step <= 1) return { x: 0, y: 0 }; // Query
+    if (step === 2) return { x: 52, y: 0 }; // Global Semantic
+    if (step === 3) return { x: 104, y: 0 }; // Intent
+    if (step === 4 || step === 8) return { x: 166, y: 0 }; // Dir Position
+    if (step === 5 || step === 9) return { x: 218, y: 0 }; // Local Semantic
+    if (step === 6 || step === 10) return { x: 270, y: 0 }; // Rerank
+    if (step === 7 || step === 11) return { x: 322, y: 0 }; // Top K
+    if (step === 12) return { x: 394, y: 0 }; // Relevant Context
+    return { x: 0, y: 0 };
+  };
+
+  const dotPos = getDotPosition();
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.2 }}
+      className="glass-card p-6 rounded-2xl glow-border"
+    >
       <h3 className="text-lg font-semibold text-gradient mb-2">
         Recursive Retrieval & Rerank
       </h3>
-      <p className="text-sm text-muted-foreground mb-6">
+      <p className="text-sm text-muted-foreground mb-4">
         Directory positioning + semantic search for precise top-k results.
       </p>
 
-      <div className="relative h-48 flex items-center justify-center">
-        <div className="flex items-center gap-4 w-full">
-          {/* Query */}
-          <motion.div animate={{
-          opacity: step >= 0 ? 1 : 0.3,
-          scale: step === 0 ? 1.1 : 1
-        }} className="flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary flex items-center justify-center">
-              <Search className="w-5 h-5 text-primary" />
+      <div className="relative h-52 overflow-hidden">
+        {/* Main horizontal pipeline */}
+        <div className="absolute inset-0 flex items-center">
+          <div className="relative flex items-center gap-2 w-full pl-2">
+            
+            {/* Query Node */}
+            <div className="flex flex-col items-center gap-0 flex-shrink-0">
+              <div className="h-5" /> {/* Spacer for alignment */}
+              <motion.div
+                animate={{
+                  scale: isQueryActive ? 1.1 : 1,
+                  boxShadow: isQueryActive ? "0 0 12px hsl(186 100% 50% / 0.6)" : "none"
+                }}
+                className="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-500/60 flex items-center justify-center"
+              >
+                <Search className="w-4 h-4 text-cyan-400" />
+              </motion.div>
+              <span className="text-[8px] text-slate-400 mt-1">Query</span>
             </div>
-          </motion.div>
 
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-          {/* Intent Analysis */}
-          <motion.div animate={{
-          opacity: step >= 1 ? 1 : 0.3,
-          scale: step === 1 ? 1.1 : 1
-        }} className="flex-shrink-0 text-center">
-            <div className="w-16 h-8 rounded bg-secondary/20 border border-secondary flex items-center justify-center">
-              <span className="text-xs text-secondary">Intent</span>
+            {/* Global Semantic Search */}
+            <PipelineNode 
+              label="Global Sem" 
+              isActive={isGlobalActive}
+              lodBadge={{ label: "L0", color: "bg-emerald-500/30 text-emerald-300" }}
+            />
+
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+
+            {/* Intent Analyzer */}
+            <div className="flex flex-col items-center gap-0 flex-shrink-0">
+              <div className="h-5" />
+              <motion.div
+                animate={{
+                  scale: isIntentActive ? 1.08 : 1,
+                  boxShadow: isIntentActive ? "0 0 12px hsl(270 80% 60% / 0.5)" : "none"
+                }}
+                className="rounded px-2 py-1 bg-purple-500/20 border border-purple-500/50 flex items-center justify-center"
+              >
+                <span className="text-[9px] text-purple-300 font-medium">Intent</span>
+              </motion.div>
+              <span className="text-[8px] text-slate-400 mt-1">Analyze</span>
             </div>
-          </motion.div>
 
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-          {/* Folders */}
-          <div className="flex flex-col gap-1">
-            {["A", "B", "C"].map((f, i) => <motion.div key={f} animate={{
-            opacity: step >= 2 ? 1 : 0.3,
-            boxShadow: step === 2 ? "0 0 10px hsl(186 100% 50% / 0.5)" : "none"
-          }} transition={{
-            delay: i * 0.1
-          }} className="flex items-center gap-1 bg-muted/50 rounded px-2 py-0.5">
-                <Folder className="w-3 h-3 text-primary" />
-                <span className="text-xs">{f}/</span>
-              </motion.div>)}
+            {/* Hierarchical Retriever Scope - Dashed Container */}
+            <motion.div 
+              animate={{
+                borderColor: isInHierarchical ? "hsl(186 100% 50% / 0.4)" : "hsl(215 20% 35% / 0.6)"
+              }}
+              className="relative border-2 border-dashed rounded-lg px-3 py-3 flex items-center gap-2 flex-shrink-0"
+            >
+              {/* Label for the scope */}
+              <span className="absolute -top-2 left-3 text-[7px] text-slate-500 bg-background px-1">
+                Hierarchical Retriever
+              </span>
+
+              {/* Directory Position */}
+              <PipelineNode 
+                label="Dir Pos" 
+                isActive={isDirPosActive}
+                lodBadge={{ label: "L1", color: "bg-purple-500/30 text-purple-300" }}
+              />
+
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+
+              {/* Local Semantic Search */}
+              <PipelineNode 
+                label="Local Sem" 
+                isActive={isLocalSemActive}
+                lodBadge={{ label: "L2", color: "bg-orange-500/30 text-orange-300" }}
+              />
+
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+
+              {/* Rerank */}
+              <PipelineNode 
+                label="Rerank" 
+                isActive={isRerankActive}
+                lodBadge={{ label: "L1", color: "bg-purple-500/30 text-purple-300" }}
+              />
+
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+
+              {/* Top K - Diamond */}
+              <div className="flex flex-col items-center gap-0 flex-shrink-0">
+                <div className="h-5" />
+                <motion.div
+                  animate={{
+                    scale: isTopKActive ? 1.15 : 1,
+                    boxShadow: isTopKActive ? "0 0 15px hsl(38 92% 50% / 0.6)" : "none"
+                  }}
+                  className="rotate-45 w-7 h-7 bg-amber-500/20 border border-amber-500/60 flex items-center justify-center"
+                >
+                  <span className="text-[8px] text-amber-300 font-bold -rotate-45">K</span>
+                </motion.div>
+                <span className="text-[8px] text-slate-400 mt-1">Top K</span>
+              </div>
+
+              {/* Recursion Loop - SVG curved line underneath */}
+              <svg 
+                className="absolute -bottom-4 left-6 right-6 h-6 pointer-events-none"
+                viewBox="0 0 160 24"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M 145 0 Q 145 20, 80 20 Q 15 20, 15 0"
+                  fill="none"
+                  stroke="hsl(215 20% 40% / 0.5)"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 2"
+                />
+                {/* Animated dot on the recursion path */}
+                {(step === 7 || step === 11) && (
+                  <motion.circle
+                    initial={{ offsetDistance: "0%" }}
+                    animate={{ offsetDistance: "100%" }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    r="3"
+                    fill="hsl(186 100% 50%)"
+                    style={{
+                      offsetPath: "path('M 145 0 Q 145 20, 80 20 Q 15 20, 15 0')"
+                    }}
+                  />
+                )}
+              </svg>
+            </motion.div>
+
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+
+            {/* Relevant Context - Final Output */}
+            <div className="flex flex-col items-center gap-0 flex-shrink-0">
+              <div className="h-5" />
+              <motion.div
+                animate={{
+                  scale: isRelevantActive ? 1.1 : 1,
+                  boxShadow: isRelevantActive ? "0 0 15px hsl(142 76% 45% / 0.6)" : "none"
+                }}
+                className="rounded px-2 py-1 bg-emerald-500/20 border border-emerald-500/60 flex items-center justify-center"
+              >
+                <span className="text-[9px] text-emerald-300 font-medium">Context</span>
+              </motion.div>
+              <span className="text-[8px] text-slate-400 mt-1">Relevant</span>
+            </div>
+
           </div>
-
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
-
-          {/* Rerank */}
-          <motion.div animate={{
-          opacity: step >= 3 ? 1 : 0.3,
-          scale: step === 3 ? 1.1 : 1
-        }} className="flex-shrink-0">
-            <div className="w-14 h-8 rounded bg-warning/20 border border-warning flex items-center justify-center">
-              <span className="text-xs text-warning">Rerank</span>
-            </div>
-          </motion.div>
-
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
-
-          {/* Output */}
-          <motion.div animate={{
-          opacity: step >= 4 ? 1 : 0.3,
-          scale: step === 4 ? 1.1 : 1
-        }} className="flex-shrink-0">
-            <div className="bg-success/20 border border-success rounded px-2 py-1">
-              <p className="text-xs text-success font-medium">Top K</p>
-            </div>
-          </motion.div>
         </div>
+
+        {/* Traveling Signal Dot */}
+        <motion.div
+          animate={{
+            x: dotPos.x,
+            opacity: step <= 12 ? 1 : 0
+          }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 z-10"
+          style={{
+            boxShadow: "0 0 8px hsl(186 100% 50% / 0.8), 0 0 16px hsl(186 100% 50% / 0.4)"
+          }}
+        />
       </div>
-    </motion.div>;
+    </motion.div>
+  );
 };
 const Card4 = () => {
   const ref = useRef(null);
