@@ -268,7 +268,17 @@ const Card2 = () => {
         L0/L1/L2 layers for on-demand loading, reducing token costs by 95%.
       </p>
 
-      <div className="relative h-48 flex flex-col justify-center items-center gap-3">
+      <div className="relative h-48 flex flex-col justify-center items-center gap-3 overflow-hidden">
+        {/* Status message display area */}
+        <motion.div 
+          key={scanY}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`absolute top-2 right-3 text-xs px-2 py-1 rounded bg-background/60 border border-border/50 ${layers[scanY]?.messageColor || 'text-primary'} font-medium`}
+        >
+          {layers[scanY]?.message}
+        </motion.div>
+
         {layers.map((layer, i) => <motion.div key={layer.label} animate={{
         scale: scanY === i ? 1.05 : 1,
         boxShadow: scanY === i ? layer.glowColor : "none"
@@ -277,23 +287,14 @@ const Card2 = () => {
       }}>
             <p className="text-xs font-medium text-white">{layer.label}</p>
             <p className="text-[10px] text-white/70">{layer.tokens}</p>
-            {scanY === i && <motion.div initial={{
-          opacity: 0,
-          x: -10
-        }} animate={{
-          opacity: 1,
-          x: 0
-        }} className={`absolute -right-40 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-background/80 border border-border ${layer.messageColor} font-medium whitespace-nowrap`}>
-                {layer.message}
-              </motion.div>}
           </motion.div>)}
 
         {/* Scanner beam */}
         <motion.div animate={{
-        top: `${scanY * 33 + 16}%`
+        top: `${scanY * 33 + 20}%`
       }} transition={{
         duration: 0.3
-      }} className={`absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent ${layers[scanY]?.scanColor || 'via-primary'} to-transparent`} style={{
+      }} className={`absolute left-4 right-4 h-0.5 bg-gradient-to-r from-transparent ${layers[scanY]?.scanColor || 'via-primary'} to-transparent`} style={{
         boxShadow: scanY === 0 ? '0 0 10px hsl(142 76% 45% / 0.8)' : scanY === 1 ? '0 0 10px hsl(270 80% 60% / 0.8)' : '0 0 10px hsl(38 92% 50% / 0.8)'
       }} />
       </div>
