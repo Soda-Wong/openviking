@@ -34,7 +34,7 @@ const Navbar = () => {
               <Link key={link.name} to={link.path}>
                 <Button
                   variant="ghost"
-                  className={`text-sm font-medium transition-all duration-300 hover:text-primary ${
+                  className={`text-sm font-medium transition-all duration-300 hover:text-primary hover:bg-primary/5 ${
                     location.pathname.startsWith(link.path) ? "text-primary" : "text-muted-foreground"
                   }`}
                 >
