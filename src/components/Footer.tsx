@@ -5,14 +5,14 @@ import openVikingLogo from "@/assets/openviking-logo.png";
 const Footer = () => {
   const links = {
     openSource: [
-      { name: "MineContext", href: "#" },
+      { name: "MineContext", href: "https://github.com/volcengine/MineContext" },
       { name: "OpenViking", href: "https://github.com/volcengine/OpenViking" },
     ],
     commercial: [
-      { name: "VAKA", href: "#" },
-      { name: "Viking AI Search", href: "#" },
-      { name: "Viking Knowledge Base", href: "#" },
-      { name: "VikingDB", href: "#" },
+      { name: "VAKA", href: "https://aisearch.volcengine.com/" },
+      { name: "Viking AI Search", href: "https://www.volcengine.com/product/AI-Search-Rec" },
+      { name: "VikingDB Knowledge Engine", href: "https://www.byteplus.com/en/product/Knowledgebase" },
+      { name: "VikingDB", href: "https://www.byteplus.com/en/product/vectordatabase" },
     ],
     social: [
       { name: "Github", href: "https://github.com/volcengine/OpenViking", icon: Github },
