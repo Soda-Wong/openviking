@@ -41,7 +41,7 @@ const Hero = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30 mb-8"
           >
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm text-muted-foreground">Open Source AI Context System</span>
+            <span className="text-sm text-slate-300">Open Source AI Context System</span>
           </motion.div>
 
           {/* Headline */}
