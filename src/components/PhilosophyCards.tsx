@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Folder, File, Search, ArrowRight, RefreshCw } from "lucide-react";
+import { Folder, File, Search, ArrowRight } from "lucide-react";
 // Tree node component with visual branch lines
 const TreeNode = ({ 
   name, 
@@ -436,61 +436,98 @@ const Card4 = () => {
         Traceable retrieval paths; session insights auto-optimize memories.
       </p>
 
-      <div className="relative h-48 flex items-center justify-center">
-        {/* Infinity Loop */}
-        <div className="relative flex items-center gap-8">
+      <div className="relative h-48 flex items-center justify-center overflow-hidden">
+        {/* Infinity Loop Visualization */}
+        <div className="relative flex items-center gap-6">
           {/* Agent Node */}
-          <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 flex flex-col items-center justify-center">
-            <span className="text-2xl">🤖</span>
-            <span className="text-xs text-primary mt-1">Agent</span>
+          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 border border-cyan-500/30 flex flex-col items-center justify-center z-10">
+            <span className="text-xl">🤖</span>
+            <span className="text-[10px] text-cyan-400 mt-0.5">Agent</span>
           </div>
 
-          {/* Connection Lines */}
-          <div className="relative w-24 h-16">
-            {/* Supply line */}
-            <motion.div animate={{
-            x: [-40, 40],
-            opacity: [0, 1, 1, 0]
-          }} transition={{
-            duration: 2,
-            repeat: Infinity
-          }} className="absolute top-2 left-0 w-3 h-3 rounded-full bg-primary" />
-            {/* Feedback line */}
-            <motion.div animate={{
-            x: [40, -40],
-            opacity: [0, 1, 1, 0]
-          }} transition={{
-            duration: 2,
-            repeat: Infinity,
-            delay: 1
-          }} className="absolute bottom-2 left-0 w-3 h-3 rounded-full bg-secondary" />
-            <RefreshCw className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground animate-spin" style={{
-            animationDuration: "3s"
-          }} />
+          {/* Infinity Loop Connection */}
+          <div className="relative w-28 h-20">
+            {/* Infinity symbol path (visual guide) */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 112 80">
+              <path 
+                d="M 28 40 C 28 20, 56 20, 56 40 C 56 60, 84 60, 84 40 C 84 20, 56 20, 56 40 C 56 60, 28 60, 28 40" 
+                fill="none" 
+                stroke="hsl(var(--border))" 
+                strokeWidth="1.5"
+                strokeDasharray="4 4"
+                opacity="0.4"
+              />
+            </svg>
+            
+            {/* Blue particles: Viking → Agent (Context Supply) - Top path */}
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={`supply-${i}`}
+                animate={{
+                  x: [84, 56, 28],
+                  y: [0, -12, 0],
+                  opacity: [0, 1, 1, 0]
+                }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  delay: i * 0.6,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_hsl(186_100%_50%/0.8)]"
+              />
+            ))}
+            
+            {/* Purple particles: Agent → Viking (Feedback) - Bottom path */}
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={`feedback-${i}`}
+                animate={{
+                  x: [28, 56, 84],
+                  y: [0, 12, 0],
+                  opacity: [0, 1, 1, 0]
+                }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  delay: i * 0.6,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_8px_hsl(270_80%_60%/0.8)]"
+              />
+            ))}
+
+            {/* Center infinity icon */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-muted-foreground/50 text-lg font-light">
+              ∞
+            </div>
           </div>
 
           {/* Viking Node */}
-          <div className="relative">
-            <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold text-gradient">V</span>
-              <span className="text-xs text-secondary mt-1">Viking</span>
-            </div>
-
-            {/* Toast notifications */}
-            <div className="absolute -right-32 top-0 w-28 space-y-1">
-              {logs.map((log, i) => <motion.div key={i} initial={{
-              opacity: 0,
-              x: -10
-            }} animate={{
-              opacity: 1,
-              x: 0
-            }} exit={{
-              opacity: 0
-            }} className="bg-muted/80 border border-border/50 rounded px-2 py-1 text-[10px] text-muted-foreground truncate">
-                  {log}
-                </motion.div>)}
-            </div>
+          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/30 flex flex-col items-center justify-center z-10">
+            <span className="text-lg font-bold text-gradient">V</span>
+            <span className="text-[10px] text-purple-400 mt-0.5">Viking</span>
           </div>
+        </div>
+
+        {/* Toast Notifications / Terminal Logs - Inside container */}
+        <div className="absolute right-3 top-2 bottom-2 w-32 flex flex-col justify-center gap-1 overflow-hidden">
+          {logs.map((log, i) => (
+            <motion.div 
+              key={`${log}-${i}`}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="bg-slate-800/80 border border-purple-500/30 rounded px-2 py-1 text-[9px] text-purple-300/90 font-mono truncate"
+            >
+              <span className="text-purple-400">›</span> {log}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Flow labels */}
+        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-4 text-[8px]">
+          <span className="text-cyan-400/70">← Context Supply</span>
+          <span className="text-purple-400/70">Feedback →</span>
         </div>
       </div>
     </motion.div>;
