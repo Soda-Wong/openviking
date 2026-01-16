@@ -479,9 +479,9 @@ const FeatureCard3 = () => {
         </h3>
       </div>
 
-      <div className="flex gap-6 min-h-[200px]">
+      <div className="flex gap-4 min-h-[180px]">
         {/* Left Column: Session + OpenViking (vertical flow) */}
-        <div className="flex flex-col items-center gap-3 w-40">
+        <div className="flex flex-col items-center w-36">
           {/* Session Log */}
           <div className="w-full bg-muted/50 rounded-lg p-3 border border-border">
             <p className="text-xs text-muted-foreground mb-2">Session Log</p>
@@ -491,20 +491,16 @@ const FeatureCard3 = () => {
             </p>
           </div>
           
-          {/* Arrow down */}
-          <motion.div 
-            animate={phase >= 1 && phase < 2 ? {
-              y: [0, 4, 0],
-              opacity: [0.5, 1, 0.5]
-            } : { opacity: phase >= 2 ? 1 : 0.3 }}
-            transition={{
-              duration: 0.6,
-              repeat: phase >= 1 && phase < 2 ? Infinity : 0
-            }}
-            className="text-primary"
-          >
-            <ArrowRight className="w-5 h-5 rotate-90" />
-          </motion.div>
+          {/* Flow line down */}
+          <div className="relative h-6 w-0.5 my-1">
+            <div className="absolute inset-0 bg-border" />
+            <motion.div 
+              className="absolute inset-0 bg-primary"
+              animate={phase >= 1 ? { scaleY: 1, opacity: 1 } : { scaleY: 0, opacity: 0 }}
+              style={{ transformOrigin: 'top' }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
           
           {/* OpenViking Logo */}
           <motion.div 
@@ -534,66 +530,78 @@ const FeatureCard3 = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0.7, 1] }}
               transition={{ duration: 0.8, repeat: Infinity }}
-              className="text-xs text-primary font-medium"
+              className="text-xs text-primary font-medium mt-1"
             >
               Processing...
             </motion.p>
           )}
         </div>
 
-        {/* Arrow to Memory */}
+        {/* Horizontal flow line to Memory */}
         <div className="flex items-center">
-          <motion.div
-            animate={phase >= 3 ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ArrowRight className="w-5 h-5 text-primary" />
-          </motion.div>
+          <div className="relative w-8 h-0.5">
+            <div className="absolute inset-0 bg-border" />
+            <motion.div 
+              className="absolute inset-0 bg-primary"
+              animate={phase >= 3 ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
+              style={{ transformOrigin: 'left' }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
         </div>
 
         {/* Right Column: Memory Updates */}
         <div className="flex-1">
-          <div className="bg-muted/30 rounded-lg p-3 relative overflow-hidden h-full">
+          <div className="bg-muted/30 rounded-lg p-3 relative overflow-hidden h-full flex flex-col">
             <p className="text-xs text-muted-foreground mb-2">Memory/</p>
-            {phase >= 3 && <>
-                <motion.div initial={{
-              opacity: 0,
-              x: -20
-            }} animate={{
-              opacity: 1,
-              x: 0
-            }} className="flex items-center gap-2 text-sm text-warning mb-1">
-                  <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-                  Experience in Error Handling
-                </motion.div>
-                <motion.div initial={{
-              opacity: 0,
-              x: -20
-            }} animate={{
-              opacity: 1,
-              x: 0
-            }} transition={{
-              delay: 0.2
-            }} className="flex items-center gap-2 text-sm text-warning">
-                  <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-                  Validator Tool Usage
-                </motion.div>
-              </>}
-          </div>
+            
+            {/* Initial state items */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+              <motion.span 
+                className="w-2 h-2 rounded-full bg-muted-foreground"
+                animate={phase >= 3 ? { 
+                  backgroundColor: ["hsl(var(--warning))", "hsl(var(--warning) / 0.3)", "hsl(var(--warning))"]
+                } : {}}
+                transition={{ duration: 0.8, repeat: phase >= 3 ? Infinity : 0 }}
+              />
+              <motion.span
+                animate={phase >= 3 ? { color: "hsl(var(--warning))" } : {}}
+                transition={{ duration: 0.3 }}
+              >
+                Experience in Error Handling
+              </motion.span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+              <span className="w-2 h-2 rounded-full bg-muted-foreground" />
+              Coding Standards
+            </div>
+            
+            {/* New item appears */}
+            {phase >= 3 && (
+              <motion.div 
+                initial={{ opacity: 0, x: -20, height: 0 }}
+                animate={{ opacity: 1, x: 0, height: 'auto' }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center gap-2 text-sm text-success"
+              >
+                <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                Validator Tool Usage
+              </motion.div>
+            )}
 
-          {/* Toast Notification */}
-          {phase >= 3 && <motion.div initial={{
-          opacity: 0,
-          y: 10
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          delay: 0.4
-        }} className="mt-3 bg-success/10 border border-success/30 rounded-lg p-2 text-xs text-success flex items-center gap-2">
-              <CheckCircle className="w-3 h-3" />
-              Context Memory Iterated
-            </motion.div>}
+            {/* Completion notification inside container */}
+            {phase >= 3 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-auto pt-2 text-xs text-success flex items-center gap-1"
+              >
+                <CheckCircle className="w-3 h-3" />
+                Memory Iterated
+              </motion.div>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>;
