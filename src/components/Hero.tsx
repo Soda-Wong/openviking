@@ -79,7 +79,7 @@ const Hero = () => {
           delay: 0.4
         }} className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#quick-start">
-              <Button size="lg" className="group relative overflow-hidden bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-primary/25 transition-all duration-300">
+              <Button size="lg" className="group relative overflow-hidden bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] transition-all duration-300">
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
