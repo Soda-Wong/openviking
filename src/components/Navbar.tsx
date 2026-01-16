@@ -61,8 +61,8 @@ const Navbar = () => {
                   variant={link.name === "Github" ? "outline" : "ghost"}
                   className={`text-sm font-medium transition-all duration-300 ${
                     link.name === "Github"
-                      ? "border-primary/50 hover:border-primary hover:bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-primary"
+                      ? "border-primary/50 text-primary hover:border-white/40 hover:bg-white/10 hover:text-white"
+                      : "text-muted-foreground hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   {link.name}
