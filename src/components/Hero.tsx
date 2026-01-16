@@ -81,7 +81,7 @@ const Hero = () => {
             }}
             className="text-xl md:text-2xl text-primary font-medium mb-4"
           >
-            Unified Context: Memory, Resource & Skill.
+            Unified Context: Memory, Resource & Skill
           </motion.p>
 
           {/* Subtitle */}
