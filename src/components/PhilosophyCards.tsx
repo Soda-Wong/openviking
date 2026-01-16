@@ -409,20 +409,18 @@ const Card3 = () => {
     
     return (
       <div className="flex flex-col items-center gap-1 flex-shrink-0">
-        {/* LOD Badge dropping in from top */}
+        {/* LOD Badge - synced with node active state (no independent animation) */}
         {node.lod && (
-          <motion.div 
-            animate={{ 
-              opacity: isActive ? 1 : 0.6,
-              y: isActive ? 0 : -2
-            }}
-            className="flex flex-col items-center"
-          >
-            <div className={`text-[8px] font-bold px-1.5 py-0.5 rounded border ${node.lod.color}`}>
+          <div className="flex flex-col items-center">
+            <div 
+              className={`text-[8px] font-bold px-1.5 py-0.5 rounded border transition-all duration-200 ${node.lod.color} ${
+                isActive ? 'opacity-100 scale-105' : 'opacity-50 scale-100'
+              }`}
+            >
               {node.lod.label}
             </div>
-            <div className={`w-px h-2 ${isActive ? 'bg-cyan-400' : 'bg-slate-600'}`} />
-          </motion.div>
+            <div className={`w-px h-2 transition-colors duration-200 ${isActive ? 'bg-cyan-400' : 'bg-slate-600'}`} />
+          </div>
         )}
         {!node.lod && <div className="h-5" />}
         
@@ -497,18 +495,20 @@ const Card3 = () => {
               {/* Rerank */}
               <PipeNode node={nodes[4]} index={4} />
 
-              {/* Recursion Loop - SVG curved dashed arc from Rerank to Position */}
+              {/* Recursion Loop - Deep elliptical arc from Rerank bottom-center to Position bottom-center */}
               <svg 
-                className="absolute -bottom-5 left-4 right-4 h-8 pointer-events-none overflow-visible"
-                viewBox="0 0 180 32"
-                preserveAspectRatio="none"
+                className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible"
+                viewBox="0 0 200 40"
+                preserveAspectRatio="xMidYMid meet"
               >
+                {/* Deep semi-elliptical arc path: starts at Rerank bottom, curves down deeply, ends at Position bottom */}
                 <path
-                  d="M 155 4 C 155 28, 90 28, 25 28 C 10 28, 10 12, 25 4"
+                  d="M 168 8 C 168 38, 100 42, 32 38 C 20 36, 20 20, 32 8"
                   fill="none"
-                  stroke="hsl(215 20% 45% / 0.6)"
-                  strokeWidth="1.5"
-                  strokeDasharray="6 3"
+                  stroke="hsl(215 20% 50% / 0.7)"
+                  strokeWidth="2"
+                  strokeDasharray="8 4"
+                  strokeLinecap="round"
                 />
                 {/* Animated dot on recursion path when looping */}
                 {isLooping && (
@@ -516,11 +516,11 @@ const Card3 = () => {
                     initial={{ offsetDistance: "0%" }}
                     animate={{ offsetDistance: "100%" }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
-                    r="4"
+                    r="5"
                     fill="hsl(186 100% 50%)"
                     style={{
-                      offsetPath: "path('M 155 4 C 155 28, 90 28, 25 28 C 10 28, 10 12, 25 4')",
-                      filter: "drop-shadow(0 0 6px hsl(186 100% 50% / 0.8))"
+                      offsetPath: "path('M 168 8 C 168 38, 100 42, 32 38 C 20 36, 20 20, 32 8')",
+                      filter: "drop-shadow(0 0 8px hsl(186 100% 50% / 0.9))"
                     }}
                   />
                 )}
