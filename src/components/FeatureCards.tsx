@@ -189,7 +189,7 @@ const FeatureCard1 = () => {
         duration: 0.4,
         repeat: phase === 2 ? 2 : 0
       }} className="flex flex-col items-center flex-shrink-0">
-          <motion.div className="relative w-16 h-16 rounded-xl overflow-hidden" animate={phase >= 2 ? {
+          <motion.div className="relative w-20 h-20 rounded-xl overflow-hidden" animate={phase >= 2 ? {
           boxShadow: ["0 0 0 0 hsl(var(--primary) / 0)", "0 0 20px 8px hsl(var(--primary) / 0.4)", "0 0 0 0 hsl(var(--primary) / 0)"]
         } : {}} transition={{
           duration: 1,
