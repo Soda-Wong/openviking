@@ -87,21 +87,21 @@ const FeatureCard1 = () => {
   const getTreeData = () => {
     if (phase < 3) {
       return [{
-        name: "Resource/",
+        name: "Resources/",
         type: "folder" as const,
         children: []
       }, {
-        name: "Memory/",
+        name: "Memories/",
         type: "folder" as const,
         children: []
       }, {
-        name: "Skill/",
+        name: "Skills/",
         type: "folder" as const,
         children: []
       }];
     }
     return [{
-      name: "Resource/",
+      name: "Resources/",
       type: "folder" as const,
       highlight: true,
       children: [{
@@ -114,7 +114,7 @@ const FeatureCard1 = () => {
         highlight: true
       }]
     }, {
-      name: "Memory/",
+      name: "Memories/",
       type: "folder" as const,
       highlight: true,
       children: [{
@@ -123,7 +123,7 @@ const FeatureCard1 = () => {
         highlight: true
       }]
     }, {
-      name: "Skill/",
+      name: "Skills/",
       type: "folder" as const,
       highlight: true,
       children: [{
@@ -268,27 +268,27 @@ const FeatureCard2 = () => {
           // Phase 1: Cursor scanning around
           if (!isCancelled) setPhase(1);
 
-          // Phase 2: Locate Resource/ and drill to error_handler.pdf
+          // Phase 2: Locate Resources/ and drill to error_handler.pdf
           setTimeout(() => {
             if (!isCancelled) {
               setPhase(2);
-              setHighlightPath(["Resource/", "references/", "error_handler.pdf"]);
+              setHighlightPath(["Resources/", "references/", "error_handler.pdf"]);
             }
           }, 800);
 
-          // Phase 3: Locate Skill/ and select validator.py
+          // Phase 3: Locate Skills/ and select validator.py
           setTimeout(() => {
             if (!isCancelled) {
               setPhase(3);
-              setHighlightPath(["Resource/", "references/", "error_handler.pdf", "Skill/", "validator.py"]);
+              setHighlightPath(["Resources/", "references/", "error_handler.pdf", "Skills/", "validator.py"]);
             }
           }, 1600);
 
-          // Phase 4: Locate Memory/ and select Experience in Error Handling
+          // Phase 4: Locate Memories/ and select Experience in Error Handling
           setTimeout(() => {
             if (!isCancelled) {
               setPhase(4);
-              setHighlightPath(["Resource/", "references/", "error_handler.pdf", "Skill/", "validator.py", "Memory/", "Experience in Error Handling"]);
+              setHighlightPath(["Resources/", "references/", "error_handler.pdf", "Skills/", "validator.py", "Memories/", "Experience in Error Handling"]);
             }
           }, 2400);
 
@@ -316,9 +316,9 @@ const FeatureCard2 = () => {
   const getTreeData = () => {
     const isPathHighlighted = (path: string) => highlightPath.includes(path);
     return [{
-      name: "Resource/",
+      name: "Resources/",
       type: "folder" as const,
-      highlight: isPathHighlighted("Resource/"),
+      highlight: isPathHighlighted("Resources/"),
       children: [{
         name: "references/",
         type: "folder" as const,
@@ -333,9 +333,9 @@ const FeatureCard2 = () => {
         }]
       }]
     }, {
-      name: "Skill/",
+      name: "Skills/",
       type: "folder" as const,
-      highlight: isPathHighlighted("Skill/"),
+      highlight: isPathHighlighted("Skills/"),
       children: [{
         name: "validator.py",
         type: "file" as const,
@@ -345,9 +345,9 @@ const FeatureCard2 = () => {
         type: "file" as const
       }]
     }, {
-      name: "Memory/",
+      name: "Memories/",
       type: "folder" as const,
-      highlight: isPathHighlighted("Memory/"),
+      highlight: isPathHighlighted("Memories/"),
       children: [{
         name: "Experience in Error Handling",
         type: "file" as const,
@@ -561,7 +561,7 @@ const FeatureCard3 = () => {
         {/* Right Column: Memory Updates */}
         <div className="flex-1">
           <div className="bg-muted/30 rounded-lg p-3 relative overflow-hidden h-full flex flex-col">
-            <p className="text-xs text-muted-foreground mb-2">Memory/</p>
+            <p className="text-xs text-muted-foreground mb-2">Memories/</p>
             
             {/* Initial state items */}
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
