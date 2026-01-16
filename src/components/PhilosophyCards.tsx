@@ -359,45 +359,92 @@ const Card3 = () => {
     margin: "-100px"
   });
   
-  // Animation: 0-1 Query, 2 Global, 3 Intent, 4-7 Hierarchical loop (4 DirPos, 5 LocalSem, 6 Rerank, 7 TopK), 
-  // 8-11 second loop, 12 exit to Relevant Context
-  const [step, setStep] = useState(0);
-  const totalSteps = 13;
+  // Simplified steps: 0 Global, 1 Intent, 2 Position, 3 Local, 4 Rerank, 5 Loop back, 6 Position (2nd), 7 Local (2nd), 8 Rerank (2nd), 9 Context
+  const [currentStep, setCurrentStep] = useState(0);
+  const totalSteps = 10;
   
   useEffect(() => {
     if (isInView) {
       const interval = setInterval(() => {
-        setStep(s => (s + 1) % totalSteps);
-      }, 400);
+        setCurrentStep(s => (s + 1) % totalSteps);
+      }, 500);
       return () => clearInterval(interval);
     }
   }, [isInView]);
 
-  // Determine which node is active based on step
-  const isQueryActive = step <= 1;
-  const isGlobalActive = step === 2;
-  const isIntentActive = step === 3;
-  const isDirPosActive = step === 4 || step === 8;
-  const isLocalSemActive = step === 5 || step === 9;
-  const isRerankActive = step === 6 || step === 10;
-  const isTopKActive = step === 7 || step === 11;
-  const isRelevantActive = step === 12;
-  const isInHierarchical = step >= 4 && step <= 11;
+  // Define node data with LOD badges
+  const nodes = [
+    { id: 'global', label: 'Global\nSearch', lod: { label: 'L0', color: 'bg-emerald-500/30 text-emerald-300 border-emerald-500/40' }, inContainer: false },
+    { id: 'intent', label: 'Intent', lod: null, inContainer: false },
+    { id: 'position', label: 'Position', lod: { label: 'L1', color: 'bg-purple-500/30 text-purple-300 border-purple-500/40' }, inContainer: true },
+    { id: 'local', label: 'Local\nSearch', lod: { label: 'L2', color: 'bg-orange-500/30 text-orange-300 border-orange-500/40' }, inContainer: true },
+    { id: 'rerank', label: 'Rerank', lod: { label: 'L1', color: 'bg-purple-500/30 text-purple-300 border-purple-500/40' }, inContainer: true },
+    { id: 'context', label: 'Context', lod: null, inContainer: false, isFinal: true },
+  ];
 
-  // Signal dot position calculation
-  const getDotPosition = () => {
-    if (step <= 1) return { x: 0, y: 0 }; // Query
-    if (step === 2) return { x: 52, y: 0 }; // Global Semantic
-    if (step === 3) return { x: 104, y: 0 }; // Intent
-    if (step === 4 || step === 8) return { x: 166, y: 0 }; // Dir Position
-    if (step === 5 || step === 9) return { x: 218, y: 0 }; // Local Semantic
-    if (step === 6 || step === 10) return { x: 270, y: 0 }; // Rerank
-    if (step === 7 || step === 11) return { x: 322, y: 0 }; // Top K
-    if (step === 12) return { x: 394, y: 0 }; // Relevant Context
-    return { x: 0, y: 0 };
+  // Map step to active node index
+  const getActiveNodeIndex = (step: number) => {
+    if (step === 0) return 0; // Global
+    if (step === 1) return 1; // Intent
+    if (step === 2 || step === 6) return 2; // Position
+    if (step === 3 || step === 7) return 3; // Local
+    if (step === 4 || step === 8) return 4; // Rerank
+    if (step === 5) return -1; // Looping back (no node active)
+    if (step === 9) return 5; // Context
+    return -1;
   };
 
-  const dotPos = getDotPosition();
+  const activeNodeIndex = getActiveNodeIndex(currentStep);
+  const isLooping = currentStep === 5;
+  const isInHierarchical = currentStep >= 2 && currentStep <= 8;
+
+  // Node component with glow sync
+  const PipeNode = ({ node, index }: { node: typeof nodes[0], index: number }) => {
+    const isActive = activeNodeIndex === index;
+    const baseClasses = node.isFinal 
+      ? 'bg-emerald-500/20 border-emerald-500/60' 
+      : node.id === 'intent'
+      ? 'bg-purple-500/20 border-purple-500/50'
+      : 'bg-slate-800/80 border-slate-600';
+    
+    return (
+      <div className="flex flex-col items-center gap-1 flex-shrink-0">
+        {/* LOD Badge dropping in from top */}
+        {node.lod && (
+          <motion.div 
+            animate={{ 
+              opacity: isActive ? 1 : 0.6,
+              y: isActive ? 0 : -2
+            }}
+            className="flex flex-col items-center"
+          >
+            <div className={`text-[8px] font-bold px-1.5 py-0.5 rounded border ${node.lod.color}`}>
+              {node.lod.label}
+            </div>
+            <div className={`w-px h-2 ${isActive ? 'bg-cyan-400' : 'bg-slate-600'}`} />
+          </motion.div>
+        )}
+        {!node.lod && <div className="h-5" />}
+        
+        {/* Node box */}
+        <motion.div
+          animate={{
+            scale: isActive ? 1.08 : 1,
+            boxShadow: isActive ? "0 0 16px hsl(186 100% 50% / 0.7)" : "none",
+            borderColor: isActive ? "hsl(186 100% 50% / 0.8)" : undefined
+          }}
+          transition={{ duration: 0.2 }}
+          className={`rounded px-2.5 py-2 border flex items-center justify-center min-w-[48px] ${baseClasses}`}
+        >
+          <span className={`text-[11px] font-medium text-center whitespace-pre-line leading-tight ${
+            node.isFinal ? 'text-emerald-300' : node.id === 'intent' ? 'text-purple-300' : 'text-slate-200'
+          }`}>
+            {node.label}
+          </span>
+        </motion.div>
+      </div>
+    );
+  };
 
   return (
     <motion.div
@@ -414,131 +461,66 @@ const Card3 = () => {
         Directory positioning + semantic search for precise top-k results.
       </p>
 
-      <div className="relative h-52 overflow-hidden">
+      <div className="relative h-44 overflow-hidden">
         {/* Main horizontal pipeline */}
-        <div className="absolute inset-0 flex items-center">
-          <div className="relative flex items-center gap-2 w-full pl-2">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative flex items-center gap-3">
             
-            {/* Query Node */}
-            <div className="flex flex-col items-center gap-0 flex-shrink-0">
-              <div className="h-5" /> {/* Spacer for alignment */}
-              <motion.div
-                animate={{
-                  scale: isQueryActive ? 1.1 : 1,
-                  boxShadow: isQueryActive ? "0 0 12px hsl(186 100% 50% / 0.6)" : "none"
-                }}
-                className="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-500/60 flex items-center justify-center"
-              >
-                <Search className="w-4 h-4 text-cyan-400" />
-              </motion.div>
-              <span className="text-[8px] text-slate-400 mt-1">Query</span>
-            </div>
-
+            {/* Global Search */}
+            <PipeNode node={nodes[0]} index={0} />
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-            {/* Global Semantic Search */}
-            <PipelineNode 
-              label="Global Sem" 
-              isActive={isGlobalActive}
-              lodBadge={{ label: "L0", color: "bg-emerald-500/30 text-emerald-300" }}
-            />
-
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
-
-            {/* Intent Analyzer */}
-            <div className="flex flex-col items-center gap-0 flex-shrink-0">
-              <div className="h-5" />
-              <motion.div
-                animate={{
-                  scale: isIntentActive ? 1.08 : 1,
-                  boxShadow: isIntentActive ? "0 0 12px hsl(270 80% 60% / 0.5)" : "none"
-                }}
-                className="rounded px-2 py-1 bg-purple-500/20 border border-purple-500/50 flex items-center justify-center"
-              >
-                <span className="text-[9px] text-purple-300 font-medium">Intent</span>
-              </motion.div>
-              <span className="text-[8px] text-slate-400 mt-1">Analyze</span>
-            </div>
-
+            {/* Intent */}
+            <PipeNode node={nodes[1]} index={1} />
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Hierarchical Retriever Scope - Dashed Container */}
             <motion.div 
               animate={{
-                borderColor: isInHierarchical ? "hsl(186 100% 50% / 0.4)" : "hsl(215 20% 35% / 0.6)"
+                borderColor: isInHierarchical ? "hsl(186 100% 50% / 0.5)" : "hsl(215 20% 35% / 0.6)"
               }}
-              className="relative border-2 border-dashed rounded-lg px-3 py-3 flex items-center gap-2 flex-shrink-0"
+              className="relative border-2 border-dashed rounded-lg px-4 py-4 flex items-center gap-3 flex-shrink-0"
             >
               {/* Label for the scope */}
-              <span className="absolute -top-2 left-3 text-[7px] text-slate-500 bg-background px-1">
+              <span className="absolute -top-2 left-3 text-[8px] text-slate-500 bg-background px-1">
                 Hierarchical Retriever
               </span>
 
-              {/* Directory Position */}
-              <PipelineNode 
-                label="Dir Pos" 
-                isActive={isDirPosActive}
-                lodBadge={{ label: "L1", color: "bg-purple-500/30 text-purple-300" }}
-              />
-
+              {/* Position */}
+              <PipeNode node={nodes[2]} index={2} />
               <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-              {/* Local Semantic Search */}
-              <PipelineNode 
-                label="Local Sem" 
-                isActive={isLocalSemActive}
-                lodBadge={{ label: "L2", color: "bg-orange-500/30 text-orange-300" }}
-              />
-
+              {/* Local Search */}
+              <PipeNode node={nodes[3]} index={3} />
               <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
               {/* Rerank */}
-              <PipelineNode 
-                label="Rerank" 
-                isActive={isRerankActive}
-                lodBadge={{ label: "L1", color: "bg-purple-500/30 text-purple-300" }}
-              />
+              <PipeNode node={nodes[4]} index={4} />
 
-              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
-
-              {/* Top K - Diamond */}
-              <div className="flex flex-col items-center gap-0 flex-shrink-0">
-                <div className="h-5" />
-                <motion.div
-                  animate={{
-                    scale: isTopKActive ? 1.15 : 1,
-                    boxShadow: isTopKActive ? "0 0 15px hsl(38 92% 50% / 0.6)" : "none"
-                  }}
-                  className="rotate-45 w-7 h-7 bg-amber-500/20 border border-amber-500/60 flex items-center justify-center"
-                >
-                  <span className="text-[8px] text-amber-300 font-bold -rotate-45">K</span>
-                </motion.div>
-                <span className="text-[8px] text-slate-400 mt-1">Top K</span>
-              </div>
-
-              {/* Recursion Loop - SVG curved line underneath */}
+              {/* Recursion Loop - SVG curved dashed arc from Rerank to Position */}
               <svg 
-                className="absolute -bottom-4 left-6 right-6 h-6 pointer-events-none"
-                viewBox="0 0 160 24"
+                className="absolute -bottom-5 left-4 right-4 h-8 pointer-events-none overflow-visible"
+                viewBox="0 0 180 32"
                 preserveAspectRatio="none"
               >
                 <path
-                  d="M 145 0 Q 145 20, 80 20 Q 15 20, 15 0"
+                  d="M 155 4 C 155 28, 90 28, 25 28 C 10 28, 10 12, 25 4"
                   fill="none"
-                  stroke="hsl(215 20% 40% / 0.5)"
+                  stroke="hsl(215 20% 45% / 0.6)"
                   strokeWidth="1.5"
-                  strokeDasharray="4 2"
+                  strokeDasharray="6 3"
                 />
-                {/* Animated dot on the recursion path */}
-                {(step === 7 || step === 11) && (
+                {/* Animated dot on recursion path when looping */}
+                {isLooping && (
                   <motion.circle
                     initial={{ offsetDistance: "0%" }}
                     animate={{ offsetDistance: "100%" }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                    r="3"
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    r="4"
                     fill="hsl(186 100% 50%)"
                     style={{
-                      offsetPath: "path('M 145 0 Q 145 20, 80 20 Q 15 20, 15 0')"
+                      offsetPath: "path('M 155 4 C 155 28, 90 28, 25 28 C 10 28, 10 12, 25 4')",
+                      filter: "drop-shadow(0 0 6px hsl(186 100% 50% / 0.8))"
                     }}
                   />
                 )}
@@ -547,36 +529,34 @@ const Card3 = () => {
 
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-            {/* Relevant Context - Final Output */}
-            <div className="flex flex-col items-center gap-0 flex-shrink-0">
-              <div className="h-5" />
-              <motion.div
-                animate={{
-                  scale: isRelevantActive ? 1.1 : 1,
-                  boxShadow: isRelevantActive ? "0 0 15px hsl(142 76% 45% / 0.6)" : "none"
-                }}
-                className="rounded px-2 py-1 bg-emerald-500/20 border border-emerald-500/60 flex items-center justify-center"
-              >
-                <span className="text-[9px] text-emerald-300 font-medium">Context</span>
-              </motion.div>
-              <span className="text-[8px] text-slate-400 mt-1">Relevant</span>
-            </div>
-
+            {/* Context - Final Output */}
+            <PipeNode node={nodes[5]} index={5} />
           </div>
         </div>
 
-        {/* Traveling Signal Dot */}
-        <motion.div
-          animate={{
-            x: dotPos.x,
-            opacity: step <= 12 ? 1 : 0
-          }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 z-10"
-          style={{
-            boxShadow: "0 0 8px hsl(186 100% 50% / 0.8), 0 0 16px hsl(186 100% 50% / 0.4)"
-          }}
-        />
+        {/* Traveling Signal Dot (only visible when not in loop-back phase) */}
+        {!isLooping && (
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 z-20 pointer-events-none"
+            style={{
+              boxShadow: "0 0 10px hsl(186 100% 50% / 0.9), 0 0 20px hsl(186 100% 50% / 0.5)",
+              // Position dot at active node (simplified positioning)
+              left: activeNodeIndex === 0 ? '8%' : 
+                    activeNodeIndex === 1 ? '18%' :
+                    activeNodeIndex === 2 ? '33%' :
+                    activeNodeIndex === 3 ? '48%' :
+                    activeNodeIndex === 4 ? '63%' :
+                    activeNodeIndex === 5 ? '88%' : '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)'
+            }}
+          />
+        )}
       </div>
     </motion.div>
   );
