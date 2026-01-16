@@ -138,7 +138,7 @@ const Card1 = () => {
   } : {}} transition={{
     duration: 0.6
   }} className="glass-card p-6 rounded-2xl glow-border">
-      <h3 className="text-lg font-semibold text-gradient mb-2">
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
         File System Paradigm
       </h3>
       <p className="text-sm text-muted-foreground mb-4">Abandoning the traditional flat structure, all contexts (memories, resources, and skill) are uniformly organized in a file-system Paradigm.</p>
@@ -270,7 +270,7 @@ const Card2 = () => {
     duration: 0.6,
     delay: 0.1
   }} className="glass-card p-6 rounded-2xl glow-border">
-      <h3 className="text-lg font-semibold text-gradient mb-2">Hierarchical Context (LOD)</h3>
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Hierarchical Context (LOD)</h3>
       <p className="text-sm text-muted-foreground mb-6">Contexts are extracted into three layers. Agents offload and retrieve contexts on demand per needs, cutting token costs by as much as 95%.</p>
 
       <div className="relative h-48 flex flex-col justify-center items-center gap-3 overflow-hidden">
@@ -485,7 +485,7 @@ const Card3 = () => {
     duration: 0.6,
     delay: 0.2
   }} className="glass-card p-6 rounded-2xl glow-border">
-      <h3 className="text-lg font-semibold text-gradient mb-2">Recursive Retrieval Paradigm</h3>
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Recursive Retrieval Paradigm</h3>
       <p className="text-sm text-muted-foreground mb-4">Integrated with directory positioning and semantic search, leveraging global context and directory structure to deliver the most relevant context.</p>
 
       <div className="relative h-44 overflow-hidden">
@@ -599,7 +599,7 @@ const Card4 = () => {
     duration: 0.6,
     delay: 0.3
   }} className="glass-card p-6 rounded-2xl glow-border">
-      <h3 className="text-lg font-semibold text-gradient mb-2">
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
         Observable & Self-Iterative
       </h3>
       <p className="text-sm text-muted-foreground mb-6">Traceable retrieval makes an Agent's "retrieval reasoning" visible. Experience is distilled from conversations to automatically optimize memory.</p>
