@@ -102,20 +102,20 @@ const Hero = () => {
           duration: 1,
           delay: 0.6
         }} className="mt-20 relative">
-            <div className="flex justify-center items-center gap-8 text-muted-foreground/50">
+            <div className="flex justify-center items-center gap-8 text-slate-300">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-success" />
-                <span className="text-sm">Hierarchical Context</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-success shadow-sm shadow-success/50" />
+                <span className="text-sm font-medium">Hierarchical Context</span>
               </div>
-              <div className="w-px h-4 bg-border" />
+              <div className="w-px h-4 bg-slate-600" />
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-primary" />
-                <span className="text-sm">Self-Iterative</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-primary shadow-sm shadow-primary/50" />
+                <span className="text-sm font-medium">Self-Iterative</span>
               </div>
-              <div className="w-px h-4 bg-border" />
+              <div className="w-px h-4 bg-slate-600" />
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-secondary" />
-                <span className="text-sm">Observable</span>
+                <div className="w-2.5 h-2.5 rounded-full bg-secondary shadow-sm shadow-secondary/50" />
+                <span className="text-sm font-medium">Observable</span>
               </div>
             </div>
           </motion.div>
