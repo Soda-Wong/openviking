@@ -17,7 +17,7 @@ const Footer = () => {
     social: [
       { name: "Github", href: "https://github.com/volcengine/OpenViking", icon: Github },
       { name: "Discord", href: "https://discord.gg/eHvx8E9XF3", icon: MessageCircle },
-      { name: "X", href: "#", icon: () => <span className="font-bold">𝕏</span> },
+      { name: "X", href: "https://x.com/VikingOpen78058", icon: () => <span className="font-bold">𝕏</span> },
     ],
   };
 
