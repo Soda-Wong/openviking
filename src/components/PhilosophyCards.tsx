@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { Folder, File, Search, ArrowRight } from "lucide-react";
+import vikingLogo from "@/assets/viking-logo.png";
 // Tree node component with visual branch lines
 const TreeNode = ({
   name,
@@ -651,8 +652,7 @@ const Card4 = () => {
 
           {/* Viking Node */}
           <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/30 flex flex-col items-center justify-center z-10">
-            <span className="text-lg font-bold text-gradient">V</span>
-            <span className="text-[10px] text-purple-400 mt-0.5">Viking</span>
+            <img src={vikingLogo} alt="Viking" className="w-10 h-10 object-contain" />
           </div>
         </div>
 
