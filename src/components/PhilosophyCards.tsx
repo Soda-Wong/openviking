@@ -225,17 +225,17 @@ const Card2 = () => {
   }, [isInView]);
   const layers = [{
     label: "L2 Abstract",
-    tokens: "Perceive: tokens < 100",
+    tokens: "<100 tok",
     width: "40%",
     color: "from-primary to-primary/50"
   }, {
     label: "L1 Overview",
-    tokens: "Operate: tokens < 2k",
+    tokens: "<2k tok",
     width: "70%",
     color: "from-secondary to-secondary/50"
   }, {
     label: "L0 Detail",
-    tokens: "Work Deeply: Uncertain",
+    tokens: "Deep Work",
     width: "100%",
     color: "from-warning to-warning/50"
   }];
@@ -259,7 +259,7 @@ const Card2 = () => {
       <div className="relative h-48 flex flex-col justify-center items-center gap-3">
         {layers.map((layer, i) => <motion.div key={layer.label} animate={{
         scale: scanY === i ? 1.05 : 1,
-        boxShadow: scanY === i ? (i === 0 || i === 1) ? "0 0 20px hsl(142 76% 45% / 0.5)" : "0 0 20px hsl(38 92% 50% / 0.5)" : "none"
+        boxShadow: scanY === i ? i === 0 ? "0 0 20px hsl(142 76% 45% / 0.5)" : i === 2 ? "0 0 20px hsl(38 92% 50% / 0.5)" : "0 0 15px hsl(270 80% 60% / 0.5)" : "none"
       }} className={`relative bg-gradient-to-r ${layer.color} rounded-lg px-4 py-2 text-center`} style={{
         width: layer.width
       }}>
@@ -269,8 +269,8 @@ const Card2 = () => {
           opacity: 0
         }} animate={{
           opacity: 1
-        }} className="absolute -right-20 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-background border border-border">
-                {i === 0 ? "✅ Fast" : i === 1 ? "✅ Normal" : "⚠️ Heavy"}
+        }} className="absolute -right-16 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-background border border-border">
+                {i === 0 ? "✅ Fast" : i === 2 ? "⚠️ Heavy" : "📊 Normal"}
               </motion.div>}
           </motion.div>)}
 
