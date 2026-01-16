@@ -306,15 +306,43 @@ const Card3 = () => {
     once: true,
     margin: "-100px"
   });
+  
+  // Animation steps: 0-Query, 1-GlobalSearch, 2-Intent, 3-DirPos, 4-LocalSearch, 5-Rerank, 6-TopK, 7-Recurse back, 8-DirPos again, 9-LocalSearch, 10-Rerank, 11-TopK, 12-Result
   const [step, setStep] = useState(0);
+  const totalSteps = 13;
+  
   useEffect(() => {
     if (isInView) {
       const interval = setInterval(() => {
-        setStep(s => (s + 1) % 5);
-      }, 1200);
+        setStep(s => (s + 1) % totalSteps);
+      }, 600);
       return () => clearInterval(interval);
     }
   }, [isInView]);
+
+  // Node positions for packet animation (relative percentages)
+  const getPacketPosition = (currentStep: number) => {
+    const positions = [
+      { top: '0%', left: '50%' },    // 0 - Query
+      { top: '8%', left: '50%' },    // 1 - Global Search
+      { top: '16%', left: '50%' },   // 2 - Intent
+      { top: '30%', left: '50%' },   // 3 - Dir Position
+      { top: '42%', left: '50%' },   // 4 - Local Search
+      { top: '54%', left: '50%' },   // 5 - Rerank
+      { top: '66%', left: '50%' },   // 6 - TopK Diamond
+      { top: '50%', left: '85%' },   // 7 - Recurse right
+      { top: '30%', left: '50%' },   // 8 - Back to Dir Position
+      { top: '42%', left: '50%' },   // 9 - Local Search again
+      { top: '54%', left: '50%' },   // 10 - Rerank again
+      { top: '66%', left: '50%' },   // 11 - TopK again
+      { top: '82%', left: '50%' },   // 12 - Result
+    ];
+    return positions[currentStep] || positions[0];
+  };
+
+  const isRecursing = step === 7 || step === 8;
+  const packetPos = getPacketPosition(step);
+
   return <motion.div ref={ref} initial={{
     opacity: 0,
     y: 50
@@ -328,73 +356,263 @@ const Card3 = () => {
       <h3 className="text-lg font-semibold text-gradient mb-2">
         Recursive Retrieval & Rerank
       </h3>
-      <p className="text-sm text-muted-foreground mb-6">
-        Directory positioning + semantic search for precise top-k results.
+      <p className="text-sm text-muted-foreground mb-4">
+        LOD-aware hierarchical search with intelligent recursion.
       </p>
 
-      <div className="relative h-48 flex items-center justify-center">
-        <div className="flex items-center gap-4 w-full">
-          {/* Query */}
-          <motion.div animate={{
-          opacity: step >= 0 ? 1 : 0.3,
-          scale: step === 0 ? 1.1 : 1
-        }} className="flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary flex items-center justify-center">
-              <Search className="w-5 h-5 text-primary" />
+      <div className="relative flex" style={{ minHeight: '320px' }}>
+        {/* Left side - LOD Info inputs */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col justify-around py-8">
+          {/* L0 Info - feeds into Global Search */}
+          <motion.div 
+            animate={{ 
+              opacity: step === 1 ? 1 : 0.5,
+              scale: step === 1 ? 1.1 : 1
+            }}
+            className="flex items-center gap-1"
+          >
+            <div className="bg-emerald-500/20 border border-emerald-500/50 rounded px-1.5 py-0.5">
+              <span className="text-[10px] font-mono text-emerald-400">L0</span>
             </div>
+            <motion.div
+              animate={{ opacity: step === 1 ? 1 : 0 }}
+              className="text-emerald-400 text-xs"
+            >→</motion.div>
           </motion.div>
-
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
-
-          {/* Intent Analysis */}
-          <motion.div animate={{
-          opacity: step >= 1 ? 1 : 0.3,
-          scale: step === 1 ? 1.1 : 1
-        }} className="flex-shrink-0 text-center">
-            <div className="w-16 h-8 rounded bg-secondary/20 border border-secondary flex items-center justify-center">
-              <span className="text-xs text-secondary">Intent</span>
+          
+          {/* L1 Info - feeds into Dir Position */}
+          <motion.div 
+            animate={{ 
+              opacity: (step === 3 || step === 8) ? 1 : 0.5,
+              scale: (step === 3 || step === 8) ? 1.1 : 1
+            }}
+            className="flex items-center gap-1"
+          >
+            <div className="bg-violet-500/20 border border-violet-500/50 rounded px-1.5 py-0.5">
+              <span className="text-[10px] font-mono text-violet-400">L1</span>
             </div>
+            <motion.div
+              animate={{ opacity: (step === 3 || step === 8) ? 1 : 0 }}
+              className="text-violet-400 text-xs"
+            >→</motion.div>
           </motion.div>
-
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
-
-          {/* Folders */}
-          <div className="flex flex-col gap-1">
-            {["A", "B", "C"].map((f, i) => <motion.div key={f} animate={{
-            opacity: step >= 2 ? 1 : 0.3,
-            boxShadow: step === 2 ? "0 0 10px hsl(186 100% 50% / 0.5)" : "none"
-          }} transition={{
-            delay: i * 0.1
-          }} className="flex items-center gap-1 bg-muted/50 rounded px-2 py-0.5">
-                <Folder className="w-3 h-3 text-primary" />
-                <span className="text-xs">{f}/</span>
-              </motion.div>)}
-          </div>
-
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
-
-          {/* Rerank */}
-          <motion.div animate={{
-          opacity: step >= 3 ? 1 : 0.3,
-          scale: step === 3 ? 1.1 : 1
-        }} className="flex-shrink-0">
-            <div className="w-14 h-8 rounded bg-warning/20 border border-warning flex items-center justify-center">
-              <span className="text-xs text-warning">Rerank</span>
+          
+          {/* L2 Info - feeds into Local Search */}
+          <motion.div 
+            animate={{ 
+              opacity: (step === 4 || step === 9) ? 1 : 0.5,
+              scale: (step === 4 || step === 9) ? 1.1 : 1
+            }}
+            className="flex items-center gap-1"
+          >
+            <div className="bg-amber-500/20 border border-amber-500/50 rounded px-1.5 py-0.5">
+              <span className="text-[10px] font-mono text-amber-400">L2</span>
             </div>
+            <motion.div
+              animate={{ opacity: (step === 4 || step === 9) ? 1 : 0 }}
+              className="text-amber-400 text-xs"
+            >→</motion.div>
           </motion.div>
-
-          <ArrowRight className="text-muted-foreground w-4 h-4 flex-shrink-0" />
-
-          {/* Output */}
-          <motion.div animate={{
-          opacity: step >= 4 ? 1 : 0.3,
-          scale: step === 4 ? 1.1 : 1
-        }} className="flex-shrink-0">
-            <div className="bg-success/20 border border-success rounded px-2 py-1">
-              <p className="text-xs text-success font-medium">Top K</p>
+          
+          {/* L1 Info - feeds into Rerank */}
+          <motion.div 
+            animate={{ 
+              opacity: (step === 5 || step === 10) ? 1 : 0.5,
+              scale: (step === 5 || step === 10) ? 1.1 : 1
+            }}
+            className="flex items-center gap-1"
+          >
+            <div className="bg-violet-500/20 border border-violet-500/50 rounded px-1.5 py-0.5">
+              <span className="text-[10px] font-mono text-violet-400">L1</span>
             </div>
+            <motion.div
+              animate={{ opacity: (step === 5 || step === 10) ? 1 : 0 }}
+              className="text-violet-400 text-xs"
+            >→</motion.div>
           </motion.div>
         </div>
+
+        {/* Main vertical flowchart */}
+        <div className="flex-1 flex flex-col items-center gap-1.5 ml-16 mr-8 relative">
+          {/* Animated Packet */}
+          <motion.div
+            animate={{
+              top: packetPos.top,
+              left: packetPos.left,
+              scale: [1, 1.3, 1],
+            }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="absolute w-3 h-3 rounded-full z-20 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              background: isRecursing 
+                ? 'radial-gradient(circle, hsl(38 92% 60%) 0%, hsl(38 92% 40%) 100%)'
+                : 'radial-gradient(circle, hsl(186 100% 60%) 0%, hsl(186 100% 40%) 100%)',
+              boxShadow: isRecursing 
+                ? '0 0 12px hsl(38 92% 50% / 0.8), 0 0 24px hsl(38 92% 50% / 0.4)'
+                : '0 0 12px hsl(186 100% 50% / 0.8), 0 0 24px hsl(186 100% 50% / 0.4)',
+            }}
+          />
+
+          {/* Node 1: Query (Oval) */}
+          <motion.div
+            animate={{ 
+              opacity: step >= 0 ? 1 : 0.3,
+              boxShadow: step === 0 ? '0 0 15px hsl(186 100% 50% / 0.5)' : 'none'
+            }}
+            className="bg-primary/20 border border-primary rounded-full px-3 py-1"
+          >
+            <span className="text-xs text-primary font-medium">Query</span>
+          </motion.div>
+
+          <div className="w-px h-2 bg-slate-600" />
+
+          {/* Node 2: Semantic Search (Global) */}
+          <motion.div
+            animate={{ 
+              opacity: step >= 1 ? 1 : 0.3,
+              boxShadow: step === 1 ? '0 0 15px hsl(142 76% 45% / 0.5)' : 'none'
+            }}
+            className="bg-emerald-500/20 border border-emerald-500/50 rounded px-2 py-1"
+          >
+            <span className="text-[10px] text-emerald-400">Semantic Search (Global)</span>
+          </motion.div>
+
+          <div className="w-px h-2 bg-slate-600" />
+
+          {/* Node 3: Intent Analyzer */}
+          <motion.div
+            animate={{ 
+              opacity: step >= 2 ? 1 : 0.3,
+              boxShadow: step === 2 ? '0 0 15px hsl(270 80% 60% / 0.5)' : 'none'
+            }}
+            className="bg-purple-500/20 border border-purple-500/50 rounded px-2 py-1"
+          >
+            <span className="text-[10px] text-purple-400">Intent Analyzer</span>
+          </motion.div>
+
+          <div className="w-px h-2 bg-slate-600" />
+
+          {/* Node 4: Hierarchical Retriever Container */}
+          <div className="border border-dashed border-slate-600 rounded-lg p-2 relative">
+            <span className="absolute -top-2 left-2 text-[8px] text-slate-500 bg-background px-1">Hierarchical Retriever</span>
+            
+            <div className="flex flex-col items-center gap-1.5 pt-1">
+              {/* Step A: Directory Position */}
+              <motion.div
+                animate={{ 
+                  opacity: (step >= 3) ? 1 : 0.3,
+                  boxShadow: (step === 3 || step === 8) ? '0 0 15px hsl(270 80% 60% / 0.5)' : 'none'
+                }}
+                className="bg-violet-500/20 border border-violet-500/50 rounded px-2 py-1"
+              >
+                <span className="text-[10px] text-violet-400">Directory Position</span>
+              </motion.div>
+
+              <div className="w-px h-1.5 bg-slate-600" />
+
+              {/* Step B: Semantic Search (Local) */}
+              <motion.div
+                animate={{ 
+                  opacity: (step >= 4) ? 1 : 0.3,
+                  boxShadow: (step === 4 || step === 9) ? '0 0 15px hsl(38 92% 50% / 0.5)' : 'none'
+                }}
+                className="bg-amber-500/20 border border-amber-500/50 rounded px-2 py-1"
+              >
+                <span className="text-[10px] text-amber-400">Semantic Search (Local)</span>
+              </motion.div>
+
+              <div className="w-px h-1.5 bg-slate-600" />
+
+              {/* Step C: Rerank */}
+              <motion.div
+                animate={{ 
+                  opacity: (step >= 5) ? 1 : 0.3,
+                  boxShadow: (step === 5 || step === 10) ? '0 0 15px hsl(270 80% 60% / 0.5)' : 'none'
+                }}
+                className="bg-violet-500/20 border border-violet-500/50 rounded px-2 py-1"
+              >
+                <span className="text-[10px] text-violet-400">Rerank</span>
+              </motion.div>
+
+              <div className="w-px h-1.5 bg-slate-600" />
+
+              {/* Step D: Top K Check (Diamond) */}
+              <motion.div
+                animate={{ 
+                  opacity: (step >= 6) ? 1 : 0.3,
+                  boxShadow: (step === 6 || step === 11) ? '0 0 15px hsl(48 96% 53% / 0.5)' : 'none'
+                }}
+                className="relative"
+              >
+                <div 
+                  className="w-10 h-10 bg-yellow-500/20 border border-yellow-500/50 flex items-center justify-center"
+                  style={{ transform: 'rotate(45deg)' }}
+                >
+                  <span className="text-[9px] text-yellow-400 font-medium" style={{ transform: 'rotate(-45deg)' }}>Top K?</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          <div className="w-px h-2 bg-slate-600" />
+
+          {/* Node 5: Relevant Context (Green Pill) */}
+          <motion.div
+            animate={{ 
+              opacity: step === 12 ? 1 : 0.3,
+              boxShadow: step === 12 ? '0 0 15px hsl(142 76% 45% / 0.5)' : 'none'
+            }}
+            className="bg-emerald-500/20 border border-emerald-500 rounded-full px-3 py-1"
+          >
+            <span className="text-xs text-emerald-400 font-medium">Relevant Context</span>
+          </motion.div>
+        </div>
+
+        {/* Right side - Recursion loop line */}
+        <div className="absolute right-0 top-0 bottom-0 w-12 flex flex-col items-center justify-center">
+          {/* Recursion path visualization */}
+          <svg className="absolute inset-0 w-full h-full" style={{ overflow: 'visible' }}>
+            {/* Curved recursion line */}
+            <motion.path
+              d="M 0 210 Q 40 210, 40 170 Q 40 100, 0 100"
+              fill="none"
+              stroke="hsl(38 92% 50% / 0.3)"
+              strokeWidth="2"
+              strokeDasharray="4 2"
+              animate={{
+                stroke: (step === 7 || step === 8) ? 'hsl(38 92% 50% / 0.8)' : 'hsl(38 92% 50% / 0.3)',
+              }}
+            />
+          </svg>
+          
+          {/* No (Recurse) label */}
+          <motion.div
+            animate={{ opacity: (step === 6 || step === 7) ? 1 : 0.4 }}
+            className="absolute top-[55%] right-1 text-[8px] text-amber-400 font-mono bg-background/80 px-1 rounded"
+          >
+            No
+          </motion.div>
+          
+          {/* Arrow indicator */}
+          <motion.div
+            animate={{ 
+              opacity: (step === 7 || step === 8) ? 1 : 0.3,
+              y: step === 7 ? [0, -5, 0] : 0
+            }}
+            transition={{ duration: 0.3, repeat: step === 7 ? Infinity : 0 }}
+            className="absolute top-[32%] right-2 text-amber-400 text-xs"
+          >
+            ↑
+          </motion.div>
+        </div>
+
+        {/* Yes label below diamond */}
+        <motion.div
+          animate={{ opacity: step === 11 || step === 12 ? 1 : 0.4 }}
+          className="absolute bottom-[22%] left-1/2 -translate-x-1/2 ml-8 text-[8px] text-emerald-400 font-mono bg-background/80 px-1 rounded"
+        >
+          Yes ↓
+        </motion.div>
       </div>
     </motion.div>;
 };
