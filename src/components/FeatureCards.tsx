@@ -143,7 +143,7 @@ const FeatureCard1 = () => {
     duration: 0.6
   }} className="glass-card p-6 rounded-2xl glow-border h-full">
       <div className="mb-4">
-        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-cyan-300 to-primary mb-2">All Context in One</h3>
+        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">All Context in One</h3>
         
       </div>
 
@@ -369,7 +369,7 @@ const FeatureCard2 = () => {
     delay: 0.1
   }} className="glass-card p-6 rounded-2xl glow-border h-full">
       <div className="mb-4">
-        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-cyan-300 to-primary mb-2">
+        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
           Recursive Context Search
         </h3>
         
@@ -476,7 +476,7 @@ const FeatureCard3 = () => {
     delay: 0.2
   }} className="glass-card p-6 rounded-2xl glow-border h-full md:col-span-2 lg:col-span-1">
       <div className="mb-4">
-        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-cyan-300 to-primary mb-2">
+        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
           Context Self-Iteration
         </h3>
       </div>
