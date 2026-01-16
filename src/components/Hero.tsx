@@ -65,7 +65,7 @@ const Hero = () => {
         }} transition={{
           duration: 0.6,
           delay: 0.3
-        }} className="text-lg text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">Unify Agent context via a File System Paradigm. Featuring LOD supply and Self-Iteration to lower development barriers—so you can focus on innovation, not infrastructure.</motion.p>
+        }} className="text-lg text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">Unify Agent context via a File System Paradigm. Featuring LOD supply and Self-Iteration to lower development barriers—so you can focus on innovation, not infrastructure.</motion.p>
 
           {/* CTA Buttons */}
           <motion.div initial={{
