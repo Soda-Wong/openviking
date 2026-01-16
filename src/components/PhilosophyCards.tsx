@@ -224,20 +224,32 @@ const Card2 = () => {
     }
   }, [isInView]);
   const layers = [{
-    label: "L2 Abstract",
-    tokens: "<100 tok",
+    label: "L0 Abstract",
+    tokens: "tokens < 100",
     width: "40%",
-    color: "from-primary to-primary/50"
+    color: "from-emerald-500 to-emerald-500/50",
+    glowColor: "0 0 20px hsl(142 76% 45% / 0.6)",
+    scanColor: "bg-emerald-500",
+    message: "Agent perceive rapidly",
+    messageColor: "text-emerald-400"
   }, {
     label: "L1 Overview",
-    tokens: "<2k tok",
+    tokens: "tokens < 2k",
     width: "70%",
-    color: "from-secondary to-secondary/50"
+    color: "from-purple-500 to-purple-500/50",
+    glowColor: "0 0 20px hsl(270 80% 60% / 0.6)",
+    scanColor: "bg-purple-500",
+    message: "Agent initiate operation",
+    messageColor: "text-purple-400"
   }, {
-    label: "L0 Detail",
-    tokens: "Deep Work",
+    label: "L2 Detail",
+    tokens: "Uncertain Token",
     width: "100%",
-    color: "from-warning to-warning/50"
+    color: "from-orange-500 to-orange-500/50",
+    glowColor: "0 0 20px hsl(38 92% 50% / 0.6)",
+    scanColor: "bg-orange-500",
+    message: "Agent work deeply",
+    messageColor: "text-orange-400"
   }];
   return <motion.div ref={ref} initial={{
     opacity: 0,
@@ -259,18 +271,20 @@ const Card2 = () => {
       <div className="relative h-48 flex flex-col justify-center items-center gap-3">
         {layers.map((layer, i) => <motion.div key={layer.label} animate={{
         scale: scanY === i ? 1.05 : 1,
-        boxShadow: scanY === i ? i === 0 ? "0 0 20px hsl(142 76% 45% / 0.5)" : i === 2 ? "0 0 20px hsl(38 92% 50% / 0.5)" : "0 0 15px hsl(270 80% 60% / 0.5)" : "none"
+        boxShadow: scanY === i ? layer.glowColor : "none"
       }} className={`relative bg-gradient-to-r ${layer.color} rounded-lg px-4 py-2 text-center`} style={{
         width: layer.width
       }}>
-            <p className="text-xs font-medium text-primary-foreground">{layer.label}</p>
-            <p className="text-[10px] text-primary-foreground/70">{layer.tokens}</p>
+            <p className="text-xs font-medium text-white">{layer.label}</p>
+            <p className="text-[10px] text-white/70">{layer.tokens}</p>
             {scanY === i && <motion.div initial={{
-          opacity: 0
+          opacity: 0,
+          x: -10
         }} animate={{
-          opacity: 1
-        }} className="absolute -right-16 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-background border border-border">
-                {i === 0 ? "✅ Fast" : i === 2 ? "⚠️ Heavy" : "📊 Normal"}
+          opacity: 1,
+          x: 0
+        }} className={`absolute -right-40 top-1/2 -translate-y-1/2 text-xs px-2 py-1 rounded bg-background/80 border border-border ${layer.messageColor} font-medium whitespace-nowrap`}>
+                {layer.message}
               </motion.div>}
           </motion.div>)}
 
@@ -279,7 +293,9 @@ const Card2 = () => {
         top: `${scanY * 33 + 16}%`
       }} transition={{
         duration: 0.3
-      }} className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent" />
+      }} className={`absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent ${layers[scanY]?.scanColor || 'via-primary'} to-transparent`} style={{
+        boxShadow: scanY === 0 ? '0 0 10px hsl(142 76% 45% / 0.8)' : scanY === 1 ? '0 0 10px hsl(270 80% 60% / 0.8)' : '0 0 10px hsl(38 92% 50% / 0.8)'
+      }} />
       </div>
     </motion.div>;
 };
