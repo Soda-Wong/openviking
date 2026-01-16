@@ -46,16 +46,8 @@ const Navbar = () => {
 
           {/* Center Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative"
-            >
-              <img 
-                src={openVikingLogo} 
-                alt="OpenViking Logo" 
-                className="w-10 h-10 object-contain"
-              />
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="relative">
+              <img src={openVikingLogo} alt="OpenViking Logo" className="w-10 h-10 object-contain" />
               <div className="absolute inset-0 rounded-lg bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
             <span className="text-xl font-bold text-gradient">OpenViking</span>
@@ -64,12 +56,7 @@ const Navbar = () => {
           {/* Right Links */}
           <div className="hidden md:flex items-center gap-2">
             {rightLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.path}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a key={link.name} href={link.path} target="_blank">
                 <Button
                   variant={link.name === "Github" ? "outline" : "ghost"}
                   className={`text-sm font-medium transition-all duration-300 ${
@@ -85,10 +72,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsOpen(!isOpen)}
-          >
+          <button className="md:hidden text-foreground" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -109,12 +93,7 @@ const Navbar = () => {
               </Link>
             ))}
             {rightLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.path}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a key={link.name} href={link.path} target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-primary">
                   {link.name}
                 </Button>
