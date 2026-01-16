@@ -78,11 +78,17 @@ const Hero = () => {
           duration: 0.6,
           delay: 0.4
         }} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="https://github.com/volcengine/OpenViking" target="_blank" rel="noopener noreferrer">
+            <a href="#quick-start">
               <Button size="lg" className="group relative overflow-hidden bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-primary/25 transition-all duration-300">
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </a>
+            <a href="https://github.com/volcengine/OpenViking" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" variant="outline" className="group relative overflow-hidden bg-white/5 backdrop-blur-sm border-white/20 text-slate-300 font-semibold px-8 py-6 text-lg rounded-xl hover:bg-white/10 hover:border-white/30 transition-all duration-300">
                 <Github className="mr-2 h-5 w-5" />
                 View on Github
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 h-5 w-5 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </Button>
             </a>
           </motion.div>
