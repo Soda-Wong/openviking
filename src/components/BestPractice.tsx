@@ -56,20 +56,6 @@ const BestPractice = () => {
                 </div>
               </div>
 
-              <div className="mt-6 flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Sessions</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Brain className="w-4 h-4" />
-                  <span>Memory</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <FileText className="w-4 h-4" />
-                  <span>Documents</span>
-                </div>
-              </div>
             </motion.div>
           ))}
         </div>
