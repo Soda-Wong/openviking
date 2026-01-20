@@ -36,20 +36,20 @@ const QuickStart = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Install Command */}
           <motion.div initial={{
-            opacity: 0,
-            x: -30
-          }} whileInView={{
-            opacity: 1,
-            x: 0
-          }} viewport={{
-            once: true
-          }} className="glass-card p-6 rounded-2xl glow-border h-full flex flex-col">
+          opacity: 0,
+          x: -30
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} viewport={{
+          once: true
+        }} className="glass-card p-6 rounded-2xl glow-border h-full flex flex-col">
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-1">
                 <Terminal className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold">1. Install</h3>
               </div>
-              <p className="text-sm text-slate-400">One command to launch</p>
+              <p className="text-sm text-slate-400">Get started with a single command</p>
             </div>
             <div className="bg-muted/50 rounded-lg p-4 flex items-center justify-between group flex-1">
               <code className="font-mono text-sm text-foreground">
@@ -64,33 +64,33 @@ const QuickStart = () => {
 
           {/* API Examples */}
           <motion.div initial={{
-            opacity: 0,
-            x: 30
-          }} whileInView={{
-            opacity: 1,
-            x: 0
-          }} viewport={{
-            once: true
-          }} className="glass-card p-6 rounded-2xl glow-border h-full flex flex-col">
+          opacity: 0,
+          x: 30
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} viewport={{
+          once: true
+        }} className="glass-card p-6 rounded-2xl glow-border h-full flex flex-col">
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-primary font-mono text-lg">{"</>"}</span>
                 <h3 className="text-lg font-semibold">2. Integration</h3>
               </div>
-              <p className="text-sm text-slate-400">One set of APIs to use</p>
+              <p className="text-sm text-slate-400">A minimal API surface for context operations</p>
             </div>
             <div className="bg-muted/50 rounded-lg p-4 space-y-2 flex-1">
               {codeExamples.map((example, i) => <motion.div key={i} initial={{
-                opacity: 0,
-                x: -10
-              }} whileInView={{
-                opacity: 1,
-                x: 0
-              }} viewport={{
-                once: true
-              }} transition={{
-                delay: i * 0.1
-              }} className="flex items-center justify-between font-mono text-sm">
+              opacity: 0,
+              x: -10
+            }} whileInView={{
+              opacity: 1,
+              x: 0
+            }} viewport={{
+              once: true
+            }} transition={{
+              delay: i * 0.1
+            }} className="flex items-center justify-between font-mono text-sm">
                 <code className="text-primary">{example.code}</code>
                 <code className="text-muted-foreground text-xs">{example.comment}</code>
               </motion.div>)}
