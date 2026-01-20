@@ -139,9 +139,9 @@ const Card1 = () => {
     duration: 0.6
   }} className="glass-card p-6 rounded-2xl glow-border">
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
-        File System Paradigm
+        Context Organization as a File System
       </h3>
-      <p className="text-sm text-muted-foreground mb-4">Abandoning the traditional flat structure, all contexts (memories, resources, and skill) are uniformly organized in a file-system Paradigm.</p>
+      <p className="text-sm text-muted-foreground mb-4">Instead of flat context pools, all memories, resources, and skills are organized within a file system–like hierarchy, giving agents a stable and navigable context structure.</p>
 
       <div className="relative h-56 bg-muted/20 rounded-lg overflow-hidden">
         {/* Funnel / Source area at top */}
@@ -270,8 +270,8 @@ const Card2 = () => {
     duration: 0.6,
     delay: 0.1
   }} className="glass-card p-6 rounded-2xl glow-border">
-      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Hierarchical Context (LOD)</h3>
-      <p className="text-sm text-muted-foreground mb-6">Contexts are extracted into three layers. Agents offload and retrieve contexts on demand per needs, cutting token costs by as much as 95%.</p>
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Hierarchical Context Layer (LOD)</h3>
+      <p className="text-sm text-muted-foreground mb-6">Context is decomposed into L0, L1, and L2 layers. Agents load and offload context on demand, reducing token usage by up to 95%.</p>
 
       <div className="relative h-48 flex flex-col justify-center items-center gap-3 overflow-hidden">
         {/* Status message display area */}
@@ -486,8 +486,8 @@ const Card3 = () => {
     duration: 0.6,
     delay: 0.2
   }} className="glass-card p-6 rounded-2xl glow-border">
-      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Recursive Retrieval Paradigm</h3>
-      <p className="text-sm text-muted-foreground mb-4">Integrated with directory positioning and semantic search, leveraging global context and directory structure to deliver the most relevant context.</p>
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Recursive Context Retrieval</h3>
+      <p className="text-sm text-muted-foreground mb-4">By combining directory-aware positioning with semantic search, agents retrieve context recursively—leveraging both global structure and local relevance.</p>
 
       <div className="relative h-44 overflow-hidden">
         {/* Main horizontal pipeline */}
@@ -601,9 +601,9 @@ const Card4 = () => {
     delay: 0.3
   }} className="glass-card p-6 rounded-2xl glow-border">
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
-        Observable & Self-Iterative
+        Observable and Self-Evolving Context
       </h3>
-      <p className="text-sm text-muted-foreground mb-6">Traceable retrieval makes an Agent's "retrieval reasoning" visible. Experience is distilled from conversations to automatically optimize memory.</p>
+      <p className="text-sm text-muted-foreground mb-6">Every retrieval path is traceable, making an agent's context reasoning observable. Experiences are distilled from execution and conversations to continuously refine memory.</p>
 
       <div className="relative h-48 flex items-center justify-center overflow-hidden">
         {/* Infinity Loop Visualization */}
@@ -692,7 +692,9 @@ const PhilosophyCards = () => {
         once: true
       }} className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">Design Philosophy</h2>
-          
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Principles for building scalable, long-running AI agents
+          </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6">
