@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Folder, File, Search, ArrowRight } from "lucide-react";
+import { Folder, File, Search, ArrowRight, ArrowDown } from "lucide-react";
 import vikingLogo from "@/assets/viking-logo.png";
 // Tree node component with visual branch lines
 const TreeNode = ({
@@ -489,17 +489,33 @@ const Card3 = () => {
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Recursive Retrieval Paradigm</h3>
       <p className="text-sm text-muted-foreground mb-4">Integrated with directory positioning and semantic search, leveraging global context and directory structure to deliver the most relevant context.</p>
 
-      <div className="relative h-44 overflow-hidden">
+      <div className="relative h-48 overflow-hidden">
         {/* Main horizontal pipeline */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative flex items-center gap-3">
+          <div className="relative flex items-center gap-4">
             
-            {/* Session (Input) */}
-            <PipeNode node={nodes[0]} index={0} />
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+            {/* Session above Intent with Query input */}
+            <div className="flex flex-col items-center gap-1">
+              {/* Session on top */}
+              <PipeNode node={nodes[0]} index={0} />
+              <ArrowDown className="text-slate-600 w-3 h-3 flex-shrink-0" />
+            </div>
 
-            {/* Intent */}
-            <PipeNode node={nodes[1]} index={1} />
+            {/* Query input + Intent */}
+            <div className="flex items-center gap-2">
+              <motion.div 
+                animate={{
+                  scale: activeNodeIndex === 1 ? 1.05 : 1,
+                  boxShadow: activeNodeIndex === 1 ? "0 0 12px hsl(186 100% 50% / 0.5)" : "none"
+                }}
+                className="rounded px-2 py-1.5 bg-slate-800/60 border border-slate-600 text-[10px] text-slate-400"
+              >
+                Query
+              </motion.div>
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+              <PipeNode node={nodes[1]} index={1} />
+            </div>
+
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Hierarchical Retriever Scope - Dashed Container */}
@@ -547,25 +563,6 @@ const Card3 = () => {
             <PipeNode node={nodes[5]} index={5} />
           </div>
         </div>
-
-        {/* Traveling Signal Dot (only visible when not in loop-back phase) */}
-        {!isLooping && <motion.div key={currentStep} initial={{
-        opacity: 0,
-        scale: 0.5
-      }} animate={{
-        opacity: 1,
-        scale: 1
-      }} exit={{
-        opacity: 0
-      }} transition={{
-        duration: 0.15
-      }} className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 z-20 pointer-events-none" style={{
-        boxShadow: "0 0 10px hsl(186 100% 50% / 0.9), 0 0 20px hsl(186 100% 50% / 0.5)",
-        // Position dot at active node (simplified positioning)
-        left: activeNodeIndex === 0 ? '8%' : activeNodeIndex === 1 ? '18%' : activeNodeIndex === 2 ? '33%' : activeNodeIndex === 3 ? '48%' : activeNodeIndex === 4 ? '63%' : activeNodeIndex === 5 ? '88%' : '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)'
-      }} />}
       </div>
     </motion.div>;
 };
