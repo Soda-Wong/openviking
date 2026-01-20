@@ -16,7 +16,7 @@ const QuickStart = () => {
     comment: "# Search context"
   }, {
     code: "session.commit()",
-    comment: "# Save insights"
+    comment: "# Persist learned context"
   }];
   return <section id="quick-start" className="py-24 relative">
       <div className="container mx-auto px-6">
