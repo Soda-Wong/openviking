@@ -10,21 +10,8 @@ const Footer = () => {
       name: "OpenViking",
       href: "https://github.com/volcengine/OpenViking"
     }],
-    commercial: [{
-      name: "VAKA",
-      href: "https://aisearch.volcengine.com/"
-    }, {
-      name: "Viking AI Search",
-      href: "https://www.volcengine.com/product/AI-Search-Rec"
-    }, {
-      name: "VikingDB Knowledge Engine",
-      href: "https://www.byteplus.com/en/product/Knowledgebase"
-    }, {
-      name: "VikingDB",
-      href: "https://www.byteplus.com/en/product/vectordatabase"
-    }],
     social: [{
-      name: "Github",
+      name: "GitHub",
       href: "https://github.com/volcengine/OpenViking",
       icon: Github
     }, {
@@ -40,7 +27,7 @@ const Footer = () => {
   return <footer className="relative pt-24 pb-8 border-t border-border/30">
       <div className="absolute inset-0 bg-gradient-to-t from-muted/20 to-transparent" />
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid md:grid-cols-3 gap-12 mb-16">
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
@@ -56,18 +43,6 @@ const Footer = () => {
             <ul className="space-y-2">
               {links.openSource.map(link => <li key={link.name}>
                   <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {link.name}
-                  </a>
-                </li>)}
-            </ul>
-          </div>
-
-          {/* Commercial */}
-          <div>
-            <h4 className="font-semibold mb-4 text-foreground">Commercial</h4>
-            <ul className="space-y-2">
-              {links.commercial.map(link => <li key={link.name}>
-                  <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </a>
                 </li>)}
