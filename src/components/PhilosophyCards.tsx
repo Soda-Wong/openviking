@@ -368,7 +368,7 @@ const Card3 = () => {
     margin: "-100px"
   });
 
-  // Simplified steps: 0 Global, 1 Intent, 2 Position, 3 Local, 4 Rerank, 5 Loop back, 6 Position (2nd), 7 Local (2nd), 8 Rerank (2nd), 9 Context
+  // Simplified steps: 0 Session, 1 Intent, 2 Position, 3 Local, 4 Rerank, 5 Loop back, 6 Position (2nd), 7 Local (2nd), 8 Rerank (2nd), 9 Context
   const [currentStep, setCurrentStep] = useState(0);
   const totalSteps = 10;
   useEffect(() => {
@@ -382,13 +382,11 @@ const Card3 = () => {
 
   // Define node data with LOD badges
   const nodes = [{
-    id: 'global',
-    label: 'Global\nSearch',
-    lod: {
-      label: 'L0',
-      color: 'bg-emerald-500/30 text-emerald-300 border-emerald-500/40'
-    },
-    inContainer: false
+    id: 'session',
+    label: 'Session',
+    lod: null,
+    inContainer: false,
+    isInput: true
   }, {
     id: 'intent',
     label: 'Intent',
@@ -398,37 +396,40 @@ const Card3 = () => {
     id: 'position',
     label: 'Position',
     lod: {
-      label: 'L1',
-      color: 'bg-purple-500/30 text-purple-300 border-purple-500/40'
+      label: 'L0',
+      color: 'bg-emerald-500/30 text-emerald-300 border-emerald-500/40'
     },
     inContainer: true
   }, {
     id: 'local',
     label: 'Local\nSearch',
     lod: {
-      label: 'L2',
-      color: 'bg-orange-500/30 text-orange-300 border-orange-500/40'
+      label: 'L0',
+      color: 'bg-emerald-500/30 text-emerald-300 border-emerald-500/40'
     },
     inContainer: true
   }, {
     id: 'rerank',
     label: 'Rerank',
     lod: {
-      label: 'L1',
-      color: 'bg-purple-500/30 text-purple-300 border-purple-500/40'
+      label: 'L0',
+      color: 'bg-emerald-500/30 text-emerald-300 border-emerald-500/40'
     },
     inContainer: true
   }, {
     id: 'context',
     label: 'Context',
-    lod: null,
+    lod: {
+      label: 'L1',
+      color: 'bg-purple-500/30 text-purple-300 border-purple-500/40'
+    },
     inContainer: false,
     isFinal: true
   }];
 
   // Map step to active node index
   const getActiveNodeIndex = (step: number) => {
-    if (step === 0) return 0; // Global
+    if (step === 0) return 0; // Session
     if (step === 1) return 1; // Intent
     if (step === 2 || step === 6) return 2; // Position
     if (step === 3 || step === 7) return 3; // Local
@@ -450,7 +451,7 @@ const Card3 = () => {
     index: number;
   }) => {
     const isActive = activeNodeIndex === index;
-    const baseClasses = node.isFinal ? 'bg-emerald-500/20 border-emerald-500/60' : node.id === 'intent' ? 'bg-purple-500/20 border-purple-500/50' : 'bg-slate-800/80 border-slate-600';
+    const baseClasses = node.isFinal ? 'bg-emerald-500/20 border-emerald-500/60' : node.id === 'intent' ? 'bg-purple-500/20 border-purple-500/50' : node.isInput ? 'bg-sky-500/20 border-sky-500/50' : 'bg-slate-800/80 border-slate-600';
     return <div className="flex flex-col items-center gap-1 flex-shrink-0">
         {/* LOD Badge - synced with node active state (no independent animation) */}
         {node.lod && <div className="flex flex-col items-center">
@@ -469,7 +470,7 @@ const Card3 = () => {
       }} transition={{
         duration: 0.2
       }} className={`rounded px-2.5 py-2 border flex items-center justify-center min-w-[48px] ${baseClasses}`}>
-          <span className={`text-[11px] font-medium text-center whitespace-pre-line leading-tight ${node.isFinal ? 'text-emerald-300' : node.id === 'intent' ? 'text-purple-300' : 'text-slate-200'}`}>
+          <span className={`text-[11px] font-medium text-center whitespace-pre-line leading-tight ${node.isFinal ? 'text-emerald-300' : node.id === 'intent' ? 'text-purple-300' : node.isInput ? 'text-sky-300' : 'text-slate-200'}`}>
             {node.label}
           </span>
         </motion.div>
@@ -493,7 +494,7 @@ const Card3 = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative flex items-center gap-3">
             
-            {/* Global Search */}
+            {/* Session (Input) */}
             <PipeNode node={nodes[0]} index={0} />
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
