@@ -4,14 +4,14 @@ const BestPractice = () => {
   const practices = [{
     logo: "🦜",
     name: "LangChain",
-    description: "Change the Agent context with One Line",
+    description: "Swap your agent's context backend with a single line—bringing structured, evolvable context into LangChain workflows.",
     icon: Link2,
     gradient: "from-green-500/20 to-emerald-500/20",
     borderColor: "border-green-500/30"
   }, {
     logo: "🦌",
     name: "DeerFlow",
-    description: "Support for long document, session management, and long-term memory",
+    description: "Native support for long documents, session-level context management, and durable long-term memory.",
     icon: FileText,
     gradient: "from-amber-500/20 to-orange-500/20",
     borderColor: "border-amber-500/30"
