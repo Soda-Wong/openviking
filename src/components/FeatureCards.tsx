@@ -626,29 +626,6 @@ const FeatureCard3 = () => {
     </motion.div>;
 };
 const FeatureCards = () => {
-  return <section className="py-24 relative">
-      <div className="container mx-auto px-6">
-        <motion.div initial={{
-        opacity: 0,
-        y: 30
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true
-      }} className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">Core Features</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Core primitives for building long-running, self-improving agents
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <FeatureCard1 />
-          <FeatureCard2 />
-          <FeatureCard3 />
-        </div>
-      </div>
-    </section>;
+  return;
 };
 export default FeatureCards;

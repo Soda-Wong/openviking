@@ -75,7 +75,7 @@ const QuickStart = () => {
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-primary font-mono text-lg">{"</>"}</span>
-                <h3 className="text-lg font-semibold">2. Integration</h3>
+                <h3 className="text-lg font-semibold">2. API</h3>
               </div>
               <p className="text-sm text-slate-400">A minimal API surface for context operations</p>
             </div>

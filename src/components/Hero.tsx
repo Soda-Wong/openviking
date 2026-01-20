@@ -13,18 +13,7 @@ const Hero = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <motion.div initial={{
-          opacity: 0,
-          y: 20
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.5
-        }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30 mb-8">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm text-slate-300">Open-source context infrastructure for AI agents</span>
-          </motion.div>
+          
 
           {/* Headline */}
           <motion.h1 initial={{
@@ -52,20 +41,10 @@ for AI Agents<span className="text-gradient">Context File System</span>
         }} transition={{
           duration: 0.6,
           delay: 0.2
-        }} className="text-xl md:text-2xl text-primary font-medium mb-4">Unify memory, resources, and skills into a single context layer</motion.p>
+        }} className="text-xl md:text-2xl text-primary font-medium mb-4">Memory. Knowledge. Skills. Unified in one context layer.</motion.p>
 
           {/* Subtitle */}
-          <motion.p initial={{
-          opacity: 0,
-          y: 30
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.6,
-          delay: 0.3
-        }} className="text-lg text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">Move beyond flat vector stores.
-OpenViking is a context file system for AI agents—handling organization, retrieval, and evolution by design.</motion.p>
+          
 
           {/* CTA Buttons */}
           <motion.div initial={{

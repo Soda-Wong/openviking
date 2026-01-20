@@ -270,7 +270,7 @@ const Card2 = () => {
     duration: 0.6,
     delay: 0.1
   }} className="glass-card p-6 rounded-2xl glow-border">
-      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Hierarchical Context Layer (LOD)</h3>
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Layered Context Loading</h3>
       <p className="text-sm text-muted-foreground mb-6">Context is decomposed into L0, L1, and L2 layers. Agents load and offload context on demand, reducing token usage by up to 95%.</p>
 
       <div className="relative h-48 flex flex-col justify-center items-center gap-3 overflow-hidden">
