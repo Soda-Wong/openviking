@@ -133,108 +133,7 @@ const FeatureCard1 = () => {
       }]
     }];
   };
-  return <motion.div ref={ref} initial={{
-    opacity: 0,
-    y: 50
-  }} animate={isInView ? {
-    opacity: 1,
-    y: 0
-  } : {}} transition={{
-    duration: 0.6
-  }} className="glass-card p-6 rounded-2xl glow-border h-full">
-      <div className="mb-4">
-        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Unified Context Layer</h3>
-        <p className="text-sm text-muted-foreground">
-          Organize memories, resources, and skills in a single, hierarchical context structure—so agents always know what they know and where to find it.
-        </p>
-      </div>
-
-      <div className="flex items-center gap-4 min-h-[220px]">
-        {/* Chaos Zone */}
-        <div className="flex-1 relative h-52">
-          {chaosIcons.map(({
-          Icon,
-          label,
-          color,
-          delay
-        }, i) => <motion.div key={`${label}-${phase}`} initial={{
-          opacity: 0,
-          scale: 0
-        }} animate={phase >= 1 && phase < 3 ? {
-          opacity: 1,
-          scale: 1,
-          x: [0, 10, -10, 5],
-          y: [0, -5, 10, -5]
-        } : phase >= 3 ? {
-          opacity: 0,
-          x: 100,
-          scale: 0.5
-        } : {
-          opacity: 0,
-          scale: 0
-        }} transition={{
-          duration: phase >= 3 ? 0.5 : 2,
-          delay: phase >= 3 ? delay : delay,
-          repeat: phase >= 1 && phase < 3 ? Infinity : 0
-        }} className={`absolute ${color}`} style={{
-          top: `${i % 3 * 25 + 15}%`,
-          left: `${Math.floor(i / 3) * 45 + 10}%`
-        }}>
-              <Icon className="w-8 h-8" />
-            </motion.div>)}
-        </div>
-
-        {/* OpenViking Logo Funnel */}
-        <motion.div animate={phase === 2 ? {
-        scale: [1, 1.15, 1]
-      } : {}} transition={{
-        duration: 0.4,
-        repeat: phase === 2 ? 2 : 0
-      }} className="flex flex-col items-center flex-shrink-0">
-          <motion.div className="relative w-20 h-20 rounded-xl overflow-hidden" animate={phase >= 2 ? {
-          boxShadow: ["0 0 0 0 hsl(var(--primary) / 0)", "0 0 20px 8px hsl(var(--primary) / 0.4)", "0 0 0 0 hsl(var(--primary) / 0)"]
-        } : {}} transition={{
-          duration: 1,
-          repeat: phase === 2 ? Infinity : 0
-        }}>
-            <img src={openVikingLogo} alt="OpenViking" className="w-full h-full object-contain" />
-            {/* Glow overlay */}
-            <motion.div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl" animate={phase >= 2 ? {
-            opacity: [0, 0.6, 0]
-          } : {
-            opacity: 0
-          }} transition={{
-            duration: 0.8,
-            repeat: phase === 2 ? Infinity : 0
-          }} />
-          </motion.div>
-          <ArrowRight className="text-primary mt-2 w-5 h-5" />
-          {phase === 2 && <motion.p initial={{
-          opacity: 0
-        }} animate={{
-          opacity: [0, 1, 0.7, 1]
-        }} transition={{
-          duration: 0.8,
-          repeat: Infinity
-        }} className="text-xs text-primary mt-1 font-medium">
-              Processing...
-            </motion.p>}
-        </motion.div>
-
-        {/* Directory Tree with Dynamic Expansion */}
-        <div className="flex-1 bg-muted/30 rounded-lg p-3 min-h-[210px] overflow-visible">
-          <motion.div key={phase >= 3 ? "expanded" : "collapsed"} initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} transition={{
-          duration: 0.3
-        }}>
-            <DirectoryTree data={getTreeData()} showAnimation={phase >= 3} />
-          </motion.div>
-        </div>
-      </div>
-    </motion.div>;
+  return;
 };
 const FeatureCard2 = () => {
   const ref = useRef(null);
@@ -360,73 +259,7 @@ const FeatureCard2 = () => {
       }]
     }];
   };
-  return <motion.div ref={ref} initial={{
-    opacity: 0,
-    y: 50
-  }} animate={isInView ? {
-    opacity: 1,
-    y: 0
-  } : {}} transition={{
-    duration: 0.6,
-    delay: 0.1
-  }} className="glass-card p-6 rounded-2xl glow-border h-full">
-      <div className="mb-4">
-        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
-          Hierarchical Context Search
-        </h3>
-        <p className="text-sm text-muted-foreground">
-          Search context the way agents reason: traversing structure and semantics together, not just top-K vector similarity.
-        </p>
-      </div>
-
-      <div className="space-y-4">
-        {/* Search Bar */}
-        <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-4 py-3 border border-border">
-          <Search className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm text-foreground font-mono">
-            {searchText}
-            <motion.span animate={{
-            opacity: [1, 0]
-          }} transition={{
-            duration: 0.5,
-            repeat: Infinity
-          }}>
-              |
-            </motion.span>
-          </span>
-        </div>
-
-        {/* Directory with scanning indicator - scrollable */}
-        <div className="relative bg-muted/30 rounded-lg p-3 h-[120px] overflow-y-auto">
-          {/* Scanning line animation */}
-          {phase >= 1 && phase < 4 && <motion.div key={`scan-${phase}`} initial={{
-          top: 0,
-          opacity: 0
-        }} animate={{
-          top: ["0%", "100%"],
-          opacity: [0, 1, 1, 0]
-        }} transition={{
-          duration: 1.2,
-          repeat: phase < 4 ? Infinity : 0
-        }} className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-secondary to-transparent rounded z-10" />}
-          <DirectoryTree data={getTreeData()} showAnimation={false} />
-        </div>
-
-        {/* Context Window */}
-        {phase >= 5 && <motion.div initial={{
-        opacity: 0,
-        scale: 0.9
-      }} animate={{
-        opacity: 1,
-        scale: 1
-      }} className="bg-success/10 border border-success/30 rounded-lg p-2">
-            <div className="flex items-center gap-2 text-success text-xs">
-              <CheckCircle className="w-3 h-3" />
-              <span>3 contexts retrieved</span>
-            </div>
-          </motion.div>}
-      </div>
-    </motion.div>;
+  return;
 };
 const FeatureCard3 = () => {
   const ref = useRef(null);
@@ -471,14 +304,7 @@ const FeatureCard3 = () => {
   }, [isInView]);
   return null;
 };
-
 const FeatureCards = () => {
-  return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <FeatureCard1 />
-      <FeatureCard2 />
-      <FeatureCard3 />
-    </div>
-  );
+  return;
 };
 export default FeatureCards;
