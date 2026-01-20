@@ -626,6 +626,12 @@ const FeatureCard3 = () => {
     </motion.div>;
 };
 const FeatureCards = () => {
-  return;
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <FeatureCard1 />
+      <FeatureCard2 />
+      <FeatureCard3 />
+    </div>
+  );
 };
 export default FeatureCards;
