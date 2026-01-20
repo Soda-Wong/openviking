@@ -143,8 +143,10 @@ const FeatureCard1 = () => {
     duration: 0.6
   }} className="glass-card p-6 rounded-2xl glow-border h-full">
       <div className="mb-4">
-        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">All Context in One</h3>
-        
+        <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Unified Context Layer</h3>
+        <p className="text-sm text-muted-foreground">
+          Organize memories, resources, and skills in a single, hierarchical context structure—so agents always know what they know and where to find it.
+        </p>
       </div>
 
       <div className="flex items-center gap-4 min-h-[220px]">
@@ -370,9 +372,11 @@ const FeatureCard2 = () => {
   }} className="glass-card p-6 rounded-2xl glow-border h-full">
       <div className="mb-4">
         <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
-          Recursive Context Search
+          Hierarchical Context Search
         </h3>
-        
+        <p className="text-sm text-muted-foreground">
+          Search context the way agents reason: traversing structure and semantics together, not just top-K vector similarity.
+        </p>
       </div>
 
       <div className="space-y-4">
@@ -477,8 +481,11 @@ const FeatureCard3 = () => {
   }} className="glass-card p-6 rounded-2xl glow-border h-full md:col-span-2 lg:col-span-1">
       <div className="mb-4">
         <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
-          Context Self-Iteration
+          Self-Evolving Context
         </h3>
+        <p className="text-sm text-muted-foreground">
+          Let agents write back what they learn. Execution outcomes and experiences can be promoted into durable memories and reusable skills.
+        </p>
       </div>
 
       <div className="flex gap-4 min-h-[180px]">
@@ -631,7 +638,9 @@ const FeatureCards = () => {
         once: true
       }} className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">Core Features</h2>
-          
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Core primitives for building long-running, self-improving agents
+          </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
