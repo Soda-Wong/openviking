@@ -15,7 +15,7 @@ const Navbar = () => {
   ];
 
   const rightLinks = [
-    { name: "Github", path: "https://github.com/volcengine/OpenViking", external: true },
+    { name: "GitHub", path: "https://github.com/volcengine/OpenViking", external: true },
     { name: "Contact", path: "https://discord.gg/eHvx8E9XF3", external: true },
   ];
 
@@ -58,9 +58,9 @@ const Navbar = () => {
             {rightLinks.map((link) => (
               <a key={link.name} href={link.path} target="_blank" rel="noopener noreferrer">
                 <Button
-                  variant={link.name === "Github" ? "outline" : "ghost"}
+                  variant={link.name === "GitHub" ? "outline" : "ghost"}
                   className={`text-sm font-medium transition-all duration-300 ${
-                    link.name === "Github"
+                    link.name === "GitHub"
                       ? "border-primary/50 text-primary hover:border-primary hover:bg-primary/10 hover:text-primary hover:shadow-[0_0_15px_hsl(186_100%_50%/0.3)]"
                       : "text-muted-foreground hover:text-primary hover:bg-primary/5"
                   }`}
