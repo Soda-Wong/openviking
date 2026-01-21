@@ -301,9 +301,9 @@ const Card2 = () => {
       }} transition={{
         duration: 0.3
       }} className={`absolute h-0.5 bg-gradient-to-r from-transparent ${layers[scanY]?.scanColor || 'via-primary'} to-transparent`} style={{
-        left: scanY === 2 ? '4%' : '16px',
-        right: scanY === 2 ? '4%' : '16px',
-        width: scanY === 2 ? '92%' : 'auto',
+        left: scanY === 2 ? '0' : '16px',
+        right: scanY === 2 ? '0' : '16px',
+        width: scanY === 2 ? '100%' : 'auto',
         boxShadow: scanY === 0 ? '0 0 10px hsl(142 76% 45% / 0.8)' : scanY === 1 ? '0 0 10px hsl(270 80% 60% / 0.8)' : '0 0 10px hsl(38 92% 50% / 0.8)'
       }} />
       </div>
