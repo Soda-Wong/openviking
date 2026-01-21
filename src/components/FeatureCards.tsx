@@ -133,7 +133,70 @@ const FeatureCard1 = () => {
       }]
     }];
   };
-  return;
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 50 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="glass-card p-6 rounded-2xl glow-border">
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Unified Context Layer</h3>
+      <p className="text-sm text-muted-foreground mb-4">All memories, resources, and skills are organized into a unified file system-like structure.</p>
+      
+      <div className="relative h-48 bg-muted/20 rounded-lg overflow-hidden flex">
+        {/* Left side: Chaos icons */}
+        <div className="w-1/2 relative flex items-center justify-center">
+          {phase < 3 && chaosIcons.map((item, i) => (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={phase >= 1 ? { 
+                opacity: 1, 
+                scale: 1,
+                x: [0, (i % 2 === 0 ? 10 : -10), 0],
+                y: [0, (i % 3 === 0 ? -10 : 10), 0]
+              } : {}}
+              transition={{ 
+                delay: item.delay,
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className={`absolute ${item.color}`}
+              style={{ 
+                left: `${20 + (i % 3) * 25}%`, 
+                top: `${20 + Math.floor(i / 3) * 40}%` 
+              }}
+            >
+              <item.Icon className="w-6 h-6" />
+            </motion.div>
+          ))}
+          
+          {/* Processing indicator */}
+          {phase === 2 && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full"
+              />
+            </motion.div>
+          )}
+        </div>
+
+        {/* Center: Arrow */}
+        <div className="flex items-center justify-center px-2">
+          <motion.div animate={{ x: phase >= 2 ? [0, 5, 0] : 0 }} transition={{ duration: 0.5, repeat: phase >= 2 ? Infinity : 0 }}>
+            <ArrowRight className="w-6 h-6 text-primary" />
+          </motion.div>
+        </div>
+
+        {/* Right side: Directory tree */}
+        <div className="w-1/2 p-3 flex items-center">
+          <DirectoryTree data={getTreeData()} />
+        </div>
+      </div>
+    </motion.div>
+  );
 };
 const FeatureCard2 = () => {
   const ref = useRef(null);
@@ -259,7 +322,37 @@ const FeatureCard2 = () => {
       }]
     }];
   };
-  return;
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 50 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="glass-card p-6 rounded-2xl glow-border">
+      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Hierarchical Context Search</h3>
+      <p className="text-sm text-muted-foreground mb-4">Agents search and retrieve context across multiple levels of detail.</p>
+      
+      <div className="relative h-48 bg-muted/20 rounded-lg overflow-hidden p-3">
+        {/* Search bar */}
+        <div className="flex items-center gap-2 mb-3 bg-background/50 rounded-lg px-3 py-2 border border-border/50">
+          <Search className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm text-foreground font-mono">{searchText}<motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.5, repeat: Infinity }}>|</motion.span></span>
+        </div>
+        
+        {/* Directory tree with highlighting */}
+        <div className="overflow-hidden">
+          <DirectoryTree data={getTreeData()} />
+        </div>
+        
+        {/* Context retrieved indicator */}
+        {phase >= 5 && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute bottom-3 right-3 flex items-center gap-2 text-xs text-success bg-success/10 px-2 py-1 rounded border border-success/30"
+          >
+            <CheckCircle className="w-3 h-3" />
+            Context Retrieved
+          </motion.div>
+        )}
+      </div>
+    </motion.div>
+  );
 };
 const FeatureCard3 = () => {
   const ref = useRef(null);
@@ -305,6 +398,12 @@ const FeatureCard3 = () => {
   return null;
 };
 const FeatureCards = () => {
-  return;
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <FeatureCard1 />
+      <FeatureCard2 />
+      <FeatureCard3 />
+    </div>
+  );
 };
 export default FeatureCards;
