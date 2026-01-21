@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Folder, File, Search, ArrowRight } from "lucide-react";
+import { Folder, File, Search, ArrowRight, FileText, MessageSquare, Wrench, Brain } from "lucide-react";
 import vikingLogo from "@/assets/viking-logo.png";
 // Tree node component with visual branch lines
 const TreeNode = ({
@@ -60,22 +60,26 @@ const Card1 = () => {
   const [flashTarget, setFlashTarget] = useState<string | null>(null);
   const [cycle, setCycle] = useState(0);
   const particles = [{
-    icon: "📄",
+    Icon: FileText,
+    color: "text-red-400",
     label: "PDF",
     target: "Resources/",
     delay: 0
   }, {
-    icon: "💬",
+    Icon: MessageSquare,
+    color: "text-blue-400",
     label: "Chat",
     target: "User Memories/",
     delay: 0.8
   }, {
-    icon: "⚙️",
+    Icon: Wrench,
+    color: "text-amber-400",
     label: "Tool",
     target: "Skills/",
     delay: 1.6
   }, {
-    icon: "🧠",
+    Icon: Brain,
+    color: "text-emerald-400",
     label: "Log",
     target: "Agent Memories/",
     delay: 2.4
@@ -158,8 +162,8 @@ const Card1 = () => {
         }} transition={{
           duration: 0.3,
           delay: i === activeParticle ? 0 : 0
-        }} className="text-lg">
-              {p.icon}
+        }} className={p.color}>
+              <p.Icon className="w-5 h-5" />
             </motion.div>)}
         </div>
 
@@ -182,8 +186,8 @@ const Card1 = () => {
           duration: 0.6,
           delay: p.delay,
           ease: "easeInOut"
-        }} className="absolute text-lg pointer-events-none z-10">
-              {p.icon}
+        }} className={`absolute pointer-events-none z-10 ${p.color}`}>
+              <p.Icon className="w-5 h-5" />
             </motion.div>;
       })}
 
