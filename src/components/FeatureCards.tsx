@@ -133,7 +133,7 @@ const FeatureCard1 = () => {
       }]
     }];
   };
-  return;
+  return null;
 };
 const FeatureCard2 = () => {
   const ref = useRef(null);
@@ -259,7 +259,7 @@ const FeatureCard2 = () => {
       }]
     }];
   };
-  return;
+  return null;
 };
 const FeatureCard3 = () => {
   const ref = useRef(null);
@@ -305,6 +305,12 @@ const FeatureCard3 = () => {
   return null;
 };
 const FeatureCards = () => {
-  return;
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <FeatureCard1 />
+      <FeatureCard2 />
+      <FeatureCard3 />
+    </div>
+  );
 };
 export default FeatureCards;
