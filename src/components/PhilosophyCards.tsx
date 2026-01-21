@@ -659,9 +659,9 @@ const Card4 = () => {
       </h3>
       <p className="text-sm text-muted-foreground mb-6">Every retrieval path is traceable, making an agent's context reasoning observable. Experiences are distilled from execution and conversations to continuously refine memory.</p>
 
-      <div className="relative h-56 flex items-center justify-center overflow-hidden">
-        {/* Infinity Loop Visualization */}
-        <div className="relative flex items-center gap-8">
+      <div className="relative h-56 flex items-center justify-between px-4 overflow-hidden">
+        {/* Infinity Loop Visualization - Left/Center area */}
+        <div className="relative flex items-center gap-8 flex-1 justify-center">
           {/* Agent Node */}
           <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 border border-cyan-500/30 flex flex-col items-center justify-center z-10">
             <span className="text-3xl">🤖</span>
@@ -709,10 +709,16 @@ const Card4 = () => {
           <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/30 flex flex-col items-center justify-center z-10">
             <img src={vikingLogo} alt="Viking" className="w-12 h-12 object-contain" />
           </div>
+
+          {/* Flow labels */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-6 text-xs">
+            <span className="text-cyan-400/70">← Context Supply</span>
+            <span className="text-purple-400/70">Feedback →</span>
+          </div>
         </div>
 
-        {/* Toast Notifications / Terminal Logs - Inside container */}
-        <div className="absolute right-3 top-2 bottom-2 w-40 flex flex-col justify-center gap-1.5 overflow-hidden">
+        {/* Toast Notifications / Terminal Logs - Right side, separate from visualization */}
+        <div className="flex-shrink-0 w-40 flex flex-col justify-center gap-1.5 ml-4">
           {logs.map((log, i) => <motion.div key={`${log}-${i}`} initial={{
           opacity: 0,
           x: 20
@@ -722,12 +728,6 @@ const Card4 = () => {
         }} className="bg-slate-800/80 border border-purple-500/30 rounded px-2.5 py-1.5 text-xs text-purple-300/90 font-mono truncate">
               <span className="text-purple-400">›</span> {log}
             </motion.div>)}
-        </div>
-
-        {/* Flow labels */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-6 text-xs">
-          <span className="text-cyan-400/70">← Context Supply</span>
-          <span className="text-purple-400/70">Feedback →</span>
         </div>
       </div>
     </motion.div>;
