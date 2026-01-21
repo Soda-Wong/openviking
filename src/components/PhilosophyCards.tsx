@@ -659,9 +659,9 @@ const Card4 = () => {
       </h3>
       <p className="text-sm text-muted-foreground mb-6">Every retrieval path is traceable, making an agent's context reasoning observable. Experiences are distilled from execution and conversations to continuously refine memory.</p>
 
-      <div className="relative h-48 flex items-center justify-start pl-6 overflow-hidden">
+      <div className="relative h-48 flex items-center justify-start pl-8 overflow-hidden">
         {/* Infinity Loop Visualization */}
-        <div className="relative flex items-center gap-4">
+        <div className="relative flex items-center gap-6">
           {/* Agent Node */}
           <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 border border-cyan-500/30 flex flex-col items-center justify-center z-10">
             <span className="text-xl">🤖</span>
@@ -709,23 +709,23 @@ const Card4 = () => {
           <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/30 flex flex-col items-center justify-center z-10">
             <img src={vikingLogo} alt="Viking" className="w-10 h-10 object-contain" />
           </div>
+        </div>
 
-          {/* Toast Notifications / Terminal Logs - Next to Viking */}
-          <div className="ml-4 w-36 flex flex-col justify-center gap-1.5 overflow-hidden">
-            {logs.map((log, i) => <motion.div key={`${log}-${i}`} initial={{
-              opacity: 0,
-              x: 20
-            }} animate={{
-              opacity: 1,
-              x: 0
-            }} className="bg-slate-800/80 border border-purple-500/30 rounded px-2 py-1 text-[9px] text-purple-300/90 font-mono truncate">
+        {/* Toast Notifications / Terminal Logs - Inside container */}
+        <div className="absolute right-3 top-2 bottom-2 w-32 flex flex-col justify-center gap-1 overflow-hidden">
+          {logs.map((log, i) => <motion.div key={`${log}-${i}`} initial={{
+          opacity: 0,
+          x: 20
+        }} animate={{
+          opacity: 1,
+          x: 0
+        }} className="bg-slate-800/80 border border-purple-500/30 rounded px-2 py-1 text-[9px] text-purple-300/90 font-mono truncate">
               <span className="text-purple-400">›</span> {log}
             </motion.div>)}
-          </div>
         </div>
 
         {/* Flow labels */}
-        <div className="absolute bottom-1 left-[180px] flex gap-4 text-[8px]">
+        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-4 text-[8px]">
           <span className="text-cyan-400/70">← Context Supply</span>
           <span className="text-purple-400/70">Feedback →</span>
         </div>
