@@ -129,14 +129,14 @@ const Card1 = () => {
         }, (p.delay + 0.6) * 1000);
       });
 
-      // Reset and loop
+      // Reset and loop - adjusted for 5 particles (last delay 2.8 + 0.6 animation + buffer)
       setTimeout(() => {
         setActiveParticle(null);
         setCycle(c => c + 1);
-      }, 5000);
+      }, 4500);
     };
     runCycle();
-    const interval = setInterval(runCycle, 6000);
+    const interval = setInterval(runCycle, 5500);
     return () => clearInterval(interval);
   }, [isInView, cycle]);
   return <motion.div ref={ref} initial={{
@@ -183,7 +183,7 @@ const Card1 = () => {
           scale: 1
         }} animate={activeParticle !== null && activeParticle >= i ? {
           opacity: [0, 1, 1, 0],
-          x: [100 + (i - 1.5) * 24, target.x],
+          x: [100 + (i - 2) * 24, target.x],
           y: [12, target.y],
           scale: [1, 1, 0.8, 0.5]
         } : {
