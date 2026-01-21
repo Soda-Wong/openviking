@@ -98,18 +98,18 @@ const BlogPage = () => {
             </p>
           </motion.div>
 
-          {/* Masonry Grid */}
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
+          {/* Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogPosts.map((post, i) => (
               <motion.article
                 key={post.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="break-inside-avoid mb-6"
+                className="h-full"
               >
-                <Link to={`/blog/${post.id}`}>
-                  <div className="glass-card rounded-2xl overflow-hidden glow-border group">
+                <Link to={`/blog/${post.id}`} className="h-full">
+                  <div className="glass-card rounded-2xl overflow-hidden glow-border group h-full flex flex-col">
                     <div className="relative overflow-hidden">
                       <img
                         src={post.image}
@@ -125,14 +125,14 @@ const BlogPage = () => {
                         {post.category}
                       </span>
                     </div>
-                    <div className="p-6">
+                    <div className="p-6 flex flex-col flex-1">
                       <h2 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}
                       </h2>
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">
                         {post.excerpt}
                       </p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground mt-auto">
                         <div className="flex items-center gap-4">
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
