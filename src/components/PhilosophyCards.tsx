@@ -525,22 +525,28 @@ const Card3 = () => {
               {/* Rerank */}
               <PipeNode node={nodes[4]} index={4} />
 
-              {/* Recursion Loop - Deep elliptical arc from Rerank bottom-center to Position bottom-center */}
-              <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 200 40" preserveAspectRatio="xMidYMid meet">
-                {/* Deep semi-elliptical arc path: starts at Rerank bottom, curves down deeply, ends at Position bottom */}
-                <path d="M 168 8 C 168 38, 100 42, 32 38 C 20 36, 20 20, 32 8" fill="none" stroke="hsl(215 20% 50% / 0.7)" strokeWidth="2" strokeDasharray="8 4" strokeLinecap="round" />
+              {/* Recursion Loop - Smooth curved arc from Rerank to Position */}
+              <svg className="absolute -bottom-5 left-0 right-0 h-8 pointer-events-none overflow-visible" viewBox="0 0 200 32" preserveAspectRatio="xMidYMid meet">
+                {/* Smooth bezier curve path */}
+                <path 
+                  d="M 165 4 Q 165 24, 100 24 Q 35 24, 35 4" 
+                  fill="none" 
+                  stroke="hsl(186 100% 50% / 0.3)" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round" 
+                />
                 {/* Animated dot on recursion path when looping */}
-                {isLooping && <motion.circle initial={{
-                offsetDistance: "0%"
-              }} animate={{
-                offsetDistance: "100%"
-              }} transition={{
-                duration: 0.5,
-                ease: "easeInOut"
-              }} r="5" fill="hsl(186 100% 50%)" style={{
-                offsetPath: "path('M 168 8 C 168 38, 100 42, 32 38 C 20 36, 20 20, 32 8')",
-                filter: "drop-shadow(0 0 8px hsl(186 100% 50% / 0.9))"
-              }} />}
+                {isLooping && <motion.circle 
+                  initial={{ offsetDistance: "0%" }} 
+                  animate={{ offsetDistance: "100%" }} 
+                  transition={{ duration: 0.5, ease: "easeInOut" }} 
+                  r="4" 
+                  fill="hsl(186 100% 50%)" 
+                  style={{
+                    offsetPath: "path('M 165 4 Q 165 24, 100 24 Q 35 24, 35 4')",
+                    filter: "drop-shadow(0 0 6px hsl(186 100% 50% / 0.8))"
+                  }} 
+                />}
               </svg>
             </motion.div>
 
