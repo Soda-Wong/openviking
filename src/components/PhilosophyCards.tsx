@@ -159,15 +159,17 @@ const Card1 = () => {
           {particles.map((p, i) => <motion.div key={`source-${i}-${cycle}`} initial={{
           opacity: 1,
           scale: 1
-        }} animate={activeParticle !== null && activeParticle >= i ? {
+        }} animate={activeParticle !== null && activeParticle === i ? {
+          opacity: 0,
+          scale: 0.5
+        } : activeParticle !== null && activeParticle > i ? {
           opacity: 0,
           scale: 0.5
         } : {
           opacity: 1,
           scale: 1
         }} transition={{
-          duration: 0.3,
-          delay: i === activeParticle ? 0 : 0
+          duration: 0.3
         }} className={p.color}>
               <p.Icon className="w-5 h-5" />
             </motion.div>)}
@@ -178,10 +180,10 @@ const Card1 = () => {
         const target = targetPositions[p.target];
         return <motion.div key={`particle-${i}-${cycle}`} initial={{
           opacity: 0,
-          x: 100,
+          x: 100 + (i - 2) * 24,
           y: 12,
           scale: 1
-        }} animate={activeParticle !== null && activeParticle >= i ? {
+        }} animate={activeParticle === i ? {
           opacity: [0, 1, 1, 0],
           x: [100 + (i - 2) * 24, target.x],
           y: [12, target.y],
@@ -190,7 +192,6 @@ const Card1 = () => {
           opacity: 0
         }} transition={{
           duration: 0.6,
-          delay: p.delay,
           ease: "easeInOut"
         }} className={`absolute pointer-events-none z-10 ${p.color}`}>
               <p.Icon className="w-5 h-5" />
