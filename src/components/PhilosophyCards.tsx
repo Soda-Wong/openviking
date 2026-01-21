@@ -381,9 +381,9 @@ const Card3 = () => {
     margin: "-100px"
   });
 
-  // Steps: 0 Query, 1 Session, 2 Intent, 3 Position, 4 Local, 5 Rerank, 6 Loop back, 7 Position (2nd), 8 Local (2nd), 9 Rerank (2nd), 10 Context
+  // Steps: 0 Query, 1 Intent, 2 Position, 3 Local, 4 Rerank, 5 Loop back, 6 Position (2nd), 7 Local (2nd), 8 Rerank (2nd), 9 Context
   const [currentStep, setCurrentStep] = useState(0);
-  const totalSteps = 11;
+  const totalSteps = 10;
   useEffect(() => {
     if (isInView) {
       const interval = setInterval(() => {
@@ -527,15 +527,15 @@ const Card3 = () => {
               </span>
 
               {/* Position */}
-              <PipeNode node={nodes[3]} index={3} />
+              <PipeNode node={nodes[2]} index={2} />
               <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
               {/* Local Search */}
-              <PipeNode node={nodes[4]} index={4} />
+              <PipeNode node={nodes[3]} index={3} />
               <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
               {/* Rerank */}
-              <PipeNode node={nodes[5]} index={5} />
+              <PipeNode node={nodes[4]} index={4} />
 
               {/* Recursion Loop - From Rerank to Position */}
               <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 255 36" preserveAspectRatio="xMidYMid meet">
@@ -583,7 +583,7 @@ const Card3 = () => {
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Context - Final Output */}
-            <PipeNode node={nodes[6]} index={6} />
+            <PipeNode node={nodes[5]} index={5} />
           </div>
         </div>
 
