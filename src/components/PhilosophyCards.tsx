@@ -526,25 +526,43 @@ const Card3 = () => {
               <PipeNode node={nodes[4]} index={4} />
 
               {/* Recursion Loop - Clean rectangular path with rounded corners */}
-              <svg className="absolute -bottom-4 left-0 right-0 h-6 pointer-events-none overflow-visible" viewBox="0 0 200 24" preserveAspectRatio="xMidYMid meet">
-                {/* Rectangular path: down from Rerank, horizontal, up to Position */}
+              <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 200 36" preserveAspectRatio="xMidYMid meet">
+                {/* Background glow effect */}
                 <path 
-                  d="M 165 2 L 165 8 Q 165 14, 159 14 L 41 14 Q 35 14, 35 8 L 35 2" 
+                  d="M 165 4 L 165 16 Q 165 24, 157 24 L 43 24 Q 35 24, 35 16 L 35 4" 
                   fill="none" 
-                  stroke="hsl(215 20% 45% / 0.6)" 
-                  strokeWidth="1.5" 
+                  stroke="hsl(186 100% 50% / 0.15)" 
+                  strokeWidth="6" 
                   strokeLinecap="round" 
+                />
+                {/* Main path line */}
+                <path 
+                  d="M 165 4 L 165 16 Q 165 24, 157 24 L 43 24 Q 35 24, 35 16 L 35 4" 
+                  fill="none" 
+                  stroke="hsl(186 100% 50% / 0.5)" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeDasharray="6 3"
+                />
+                {/* Arrow marker at end */}
+                <path 
+                  d="M 32 8 L 35 2 L 38 8" 
+                  fill="none" 
+                  stroke="hsl(186 100% 50% / 0.5)" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
                 />
                 {/* Animated dot on recursion path when looping */}
                 {isLooping && <motion.circle 
                   initial={{ offsetDistance: "0%" }} 
                   animate={{ offsetDistance: "100%" }} 
-                  transition={{ duration: 0.5, ease: "easeInOut" }} 
-                  r="4" 
+                  transition={{ duration: 0.6, ease: "easeInOut" }} 
+                  r="5" 
                   fill="hsl(186 100% 50%)" 
                   style={{
-                    offsetPath: "path('M 165 2 L 165 8 Q 165 14, 159 14 L 41 14 Q 35 14, 35 8 L 35 2')",
-                    filter: "drop-shadow(0 0 6px hsl(186 100% 50% / 0.8))"
+                    offsetPath: "path('M 165 4 L 165 16 Q 165 24, 157 24 L 43 24 Q 35 24, 35 16 L 35 4')",
+                    filter: "drop-shadow(0 0 8px hsl(186 100% 50%))"
                   }} 
                 />}
               </svg>
