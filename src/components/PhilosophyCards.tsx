@@ -56,7 +56,8 @@ const Card1 = () => {
     once: true,
     margin: "-100px"
   });
-  const [activeParticle, setActiveParticle] = useState<number | null>(null);
+  const [flyingParticle, setFlyingParticle] = useState<number | null>(null);
+  const [flownParticles, setFlownParticles] = useState<Set<number>>(new Set());
   const [flashTarget, setFlashTarget] = useState<string | null>(null);
   const [cycle, setCycle] = useState(0);
   const particles = [{
@@ -115,29 +116,45 @@ const Card1 = () => {
   };
   useEffect(() => {
     if (!isInView) return;
-    const runCycle = () => {
-      particles.forEach((p, i) => {
-        // Start particle animation
-        setTimeout(() => {
-          setActiveParticle(i);
-        }, p.delay * 1000);
+    
+    // Reset state at start of each cycle
+    setFlownParticles(new Set());
+    setFlyingParticle(null);
+    
+    const timeouts: NodeJS.Timeout[] = [];
+    
+    particles.forEach((p, i) => {
+      // Start particle flying animation
+      timeouts.push(setTimeout(() => {
+        setFlyingParticle(i);
+      }, p.delay * 1000));
 
-        // Flash target folder when particle lands
-        setTimeout(() => {
-          setFlashTarget(p.target);
-          setTimeout(() => setFlashTarget(null), 500);
-        }, (p.delay + 0.6) * 1000);
-      });
+      // Mark particle as flown after animation completes
+      timeouts.push(setTimeout(() => {
+        setFlownParticles(prev => new Set([...prev, i]));
+        setFlyingParticle(null);
+      }, (p.delay + 0.5) * 1000));
 
-      // Reset and loop - adjusted for 5 particles (last delay 2.8 + 0.6 animation + buffer)
-      setTimeout(() => {
-        setActiveParticle(null);
-        setCycle(c => c + 1);
-      }, 4500);
+      // Flash target folder when particle lands
+      timeouts.push(setTimeout(() => {
+        setFlashTarget(p.target);
+        setTimeout(() => setFlashTarget(null), 500);
+      }, (p.delay + 0.5) * 1000));
+    });
+
+    // Reset and loop
+    timeouts.push(setTimeout(() => {
+      setCycle(c => c + 1);
+    }, 4500));
+    
+    const interval = setInterval(() => {
+      setCycle(c => c + 1);
+    }, 5500);
+    
+    return () => {
+      timeouts.forEach(t => clearTimeout(t));
+      clearInterval(interval);
     };
-    runCycle();
-    const interval = setInterval(runCycle, 5500);
-    return () => clearInterval(interval);
   }, [isInView, cycle]);
   return <motion.div ref={ref} initial={{
     opacity: 0,
@@ -159,10 +176,7 @@ const Card1 = () => {
           {particles.map((p, i) => <motion.div key={`source-${i}-${cycle}`} initial={{
           opacity: 1,
           scale: 1
-        }} animate={activeParticle !== null && activeParticle === i ? {
-          opacity: 0,
-          scale: 0.5
-        } : activeParticle !== null && activeParticle > i ? {
+        }} animate={flyingParticle === i || flownParticles.has(i) ? {
           opacity: 0,
           scale: 0.5
         } : {
@@ -183,7 +197,7 @@ const Card1 = () => {
           x: 100 + (i - 2) * 24,
           y: 12,
           scale: 1
-        }} animate={activeParticle === i ? {
+        }} animate={flyingParticle === i ? {
           opacity: [0, 1, 1, 0],
           x: [100 + (i - 2) * 24, target.x],
           y: [12, target.y],
@@ -191,7 +205,7 @@ const Card1 = () => {
         } : {
           opacity: 0
         }} transition={{
-          duration: 0.6,
+          duration: 0.5,
           ease: "easeInOut"
         }} className={`absolute pointer-events-none z-10 ${p.color}`}>
               <p.Icon className="w-5 h-5" />
