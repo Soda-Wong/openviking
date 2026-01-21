@@ -511,11 +511,11 @@ const Card3 = () => {
             
             {/* Query (Input) */}
             <PipeNode node={nodes[0]} index={0} />
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mt-5" />
 
             {/* Intent */}
             <PipeNode node={nodes[1]} index={1} />
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mt-5" />
 
             {/* Hierarchical Retriever Scope - Dashed Container */}
             <motion.div animate={{
@@ -528,11 +528,11 @@ const Card3 = () => {
 
               {/* Position */}
               <PipeNode node={nodes[2]} index={2} />
-              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mt-5" />
 
               {/* Local Search */}
               <PipeNode node={nodes[3]} index={3} />
-              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mt-5" />
 
               {/* Rerank */}
               <PipeNode node={nodes[4]} index={4} />
@@ -580,7 +580,7 @@ const Card3 = () => {
               </svg>
             </motion.div>
 
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mt-5" />
 
             {/* Context - Final Output */}
             <PipeNode node={nodes[5]} index={5} />
