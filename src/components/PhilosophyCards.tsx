@@ -507,8 +507,7 @@ const Card3 = () => {
             }}
           />
           <motion.div animate={{
-          scale: isActive ? 1.08 : 1,
-          boxShadow: isActive ? "0 0 16px hsl(186 100% 50% / 0.7)" : "none",
+          scale: isActive ? 1.05 : 1,
           borderColor: isActive ? "hsl(186 100% 50% / 0.8)" : undefined
         }} transition={{
           duration: 0.2
