@@ -659,7 +659,7 @@ const Card4 = () => {
       </h3>
       <p className="text-sm text-muted-foreground mb-6">Every retrieval path is traceable, making an agent's context reasoning observable. Experiences are distilled from execution and conversations to continuously refine memory.</p>
 
-      <div className="relative h-48 flex items-center justify-center overflow-hidden">
+      <div className="relative h-48 flex items-center justify-start pl-8 overflow-hidden">
         {/* Infinity Loop Visualization */}
         <div className="relative flex items-center gap-6">
           {/* Agent Node */}
