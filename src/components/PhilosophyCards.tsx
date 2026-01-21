@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Folder, File, Search, ArrowRight, ArrowDown, FileText, MessageSquare, Wrench, Brain } from "lucide-react";
+import { Folder, File, Search, ArrowRight, ArrowDown, FileText, Music, Video, Image, FolderOpen } from "lucide-react";
 import vikingLogo from "@/assets/viking-logo.png";
 // Tree node component with visual branch lines
 const TreeNode = ({
@@ -60,29 +60,35 @@ const Card1 = () => {
   const [flashTarget, setFlashTarget] = useState<string | null>(null);
   const [cycle, setCycle] = useState(0);
   const particles = [{
-    Icon: FileText,
-    color: "text-red-400",
-    label: "PDF",
+    Icon: FolderOpen,
+    color: "text-amber-400",
+    label: "Folder",
     target: "Resources/",
     delay: 0
   }, {
-    Icon: MessageSquare,
-    color: "text-blue-400",
-    label: "Chat",
+    Icon: Music,
+    color: "text-pink-400",
+    label: "Audio",
     target: "User Memories/",
-    delay: 0.8
+    delay: 0.7
   }, {
-    Icon: Wrench,
-    color: "text-amber-400",
-    label: "Tool",
+    Icon: Video,
+    color: "text-red-400",
+    label: "Video",
     target: "Skills/",
-    delay: 1.6
+    delay: 1.4
   }, {
-    Icon: Brain,
-    color: "text-emerald-400",
-    label: "Log",
+    Icon: Image,
+    color: "text-cyan-400",
+    label: "Image",
     target: "Agent Memories/",
-    delay: 2.4
+    delay: 2.1
+  }, {
+    Icon: FileText,
+    color: "text-emerald-400",
+    label: "Doc",
+    target: "Resources/",
+    delay: 2.8
   }];
 
   // Target positions for each folder (relative to tree container)
