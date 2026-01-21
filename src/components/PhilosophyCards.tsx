@@ -659,73 +659,73 @@ const Card4 = () => {
       </h3>
       <p className="text-sm text-muted-foreground mb-6">Every retrieval path is traceable, making an agent's context reasoning observable. Experiences are distilled from execution and conversations to continuously refine memory.</p>
 
-      <div className="relative h-48 flex items-center justify-center overflow-hidden">
+      <div className="relative h-56 flex items-center justify-center overflow-hidden">
         {/* Infinity Loop Visualization */}
-        <div className="relative flex items-center gap-6">
+        <div className="relative flex items-center gap-8">
           {/* Agent Node */}
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 border border-cyan-500/30 flex flex-col items-center justify-center z-10">
-            <span className="text-xl">🤖</span>
-            <span className="text-[10px] text-cyan-400 mt-0.5">Agent</span>
+          <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 border border-cyan-500/30 flex flex-col items-center justify-center z-10">
+            <span className="text-3xl">🤖</span>
+            <span className="text-xs text-cyan-400 mt-1 font-medium">Agent</span>
           </div>
 
           {/* Infinity Loop Connection */}
-          <div className="relative w-28 h-20">
+          <div className="relative w-36 h-24">
             {/* Infinity symbol path (visual guide) */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 112 80">
-              <path d="M 28 40 C 28 20, 56 20, 56 40 C 56 60, 84 60, 84 40 C 84 20, 56 20, 56 40 C 56 60, 28 60, 28 40" fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.4" />
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 144 96">
+              <path d="M 36 48 C 36 24, 72 24, 72 48 C 72 72, 108 72, 108 48 C 108 24, 72 24, 72 48 C 72 72, 36 72, 36 48" fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.4" />
             </svg>
             
             {/* Blue particles: Viking → Agent (Context Supply) - Top path */}
             {[0, 1, 2].map(i => <motion.div key={`supply-${i}`} animate={{
-            x: [84, 56, 28],
-            y: [0, -12, 0],
+            x: [108, 72, 36],
+            y: [0, -16, 0],
             opacity: [0, 1, 1, 0]
           }} transition={{
             duration: 1.8,
             repeat: Infinity,
             delay: i * 0.6,
             ease: "easeInOut"
-          }} className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_hsl(186_100%_50%/0.8)]" />)}
+          }} className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_hsl(186_100%_50%/0.8)]" />)}
             
             {/* Purple particles: Agent → Viking (Feedback) - Bottom path */}
             {[0, 1, 2].map(i => <motion.div key={`feedback-${i}`} animate={{
-            x: [28, 56, 84],
-            y: [0, 12, 0],
+            x: [36, 72, 108],
+            y: [0, 16, 0],
             opacity: [0, 1, 1, 0]
           }} transition={{
             duration: 1.8,
             repeat: Infinity,
             delay: i * 0.6,
             ease: "easeInOut"
-          }} className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_8px_hsl(270_80%_60%/0.8)]" />)}
+          }} className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-purple-400 shadow-[0_0_8px_hsl(270_80%_60%/0.8)]" />)}
 
             {/* Center infinity icon */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-muted-foreground/50 text-lg font-light">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-muted-foreground/50 text-2xl font-light">
               ∞
             </div>
           </div>
 
           {/* Viking Node */}
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/30 flex flex-col items-center justify-center z-10">
-            <img src={vikingLogo} alt="Viking" className="w-10 h-10 object-contain" />
+          <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/30 flex flex-col items-center justify-center z-10">
+            <img src={vikingLogo} alt="Viking" className="w-12 h-12 object-contain" />
           </div>
         </div>
 
         {/* Toast Notifications / Terminal Logs - Inside container */}
-        <div className="absolute right-3 top-2 bottom-2 w-32 flex flex-col justify-center gap-1 overflow-hidden">
+        <div className="absolute right-3 top-2 bottom-2 w-40 flex flex-col justify-center gap-1.5 overflow-hidden">
           {logs.map((log, i) => <motion.div key={`${log}-${i}`} initial={{
           opacity: 0,
           x: 20
         }} animate={{
           opacity: 1,
           x: 0
-        }} className="bg-slate-800/80 border border-purple-500/30 rounded px-2 py-1 text-[9px] text-purple-300/90 font-mono truncate">
+        }} className="bg-slate-800/80 border border-purple-500/30 rounded px-2.5 py-1.5 text-xs text-purple-300/90 font-mono truncate">
               <span className="text-purple-400">›</span> {log}
             </motion.div>)}
         </div>
 
         {/* Flow labels */}
-        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-4 text-[8px]">
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-6 text-xs">
           <span className="text-cyan-400/70">← Context Supply</span>
           <span className="text-purple-400/70">Feedback →</span>
         </div>
