@@ -494,18 +494,22 @@ const Card3 = () => {
         
         {/* Node box with highlight dot */}
         <div className="relative">
-          {/* Highlight dot - fixed at top-left corner of node border */}
-          <motion.div
-            animate={{
-              opacity: isActive ? 1 : 0,
-              scale: isActive ? 1 : 0.5
+          {/* Highlight dot - ONLY render when active to prevent flicker on inactive nodes */}
+          {isActive ? <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.7
             }}
-            transition={{ duration: 0.2 }}
-            className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-cyan-400 z-10"
+            animate={{
+              opacity: 1,
+              scale: 1
+            }}
+            transition={{ duration: 0.12 }}
+            className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-cyan-400 z-10 pointer-events-none"
             style={{
               boxShadow: "0 0 8px hsl(186 100% 50% / 0.8)"
             }}
-          />
+          /> : null}
           <motion.div animate={{
           scale: isActive ? 1.05 : 1,
           borderColor: isActive ? "hsl(186 100% 50% / 0.8)" : undefined
@@ -615,24 +619,7 @@ const Card3 = () => {
           </div>
         </div>
 
-        {/* Traveling Signal Dot (only visible when not in loop-back phase) */}
-        {!isLooping && <motion.div key={currentStep} initial={{
-        opacity: 0,
-        scale: 0.5
-      }} animate={{
-        opacity: 1,
-        scale: 1
-      }} exit={{
-        opacity: 0
-      }} transition={{
-        duration: 0.15
-      }} className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 z-20 pointer-events-none" style={{
-        boxShadow: "0 0 10px hsl(186 100% 50% / 0.9), 0 0 20px hsl(186 100% 50% / 0.5)",
-        // Position dot at active node: 0 Query, 1 Intent, 2 Position, 3 Local, 4 Rerank, 5 Context
-        left: activeNodeIndex === 0 ? '6%' : activeNodeIndex === 1 ? '14%' : activeNodeIndex === 2 ? '36%' : activeNodeIndex === 3 ? '50%' : activeNodeIndex === 4 ? '64%' : activeNodeIndex === 5 ? '92%' : '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)'
-      }} />}
+        {/* Traveling Signal Dot removed: active-node indicator is the top-left dot only */}
       </div>
     </motion.div>;
 };
