@@ -253,7 +253,7 @@ const Card2 = () => {
   }, {
     label: "L2 Detail",
     tokens: "Uncertain Token",
-    width: "100%",
+    width: "92%",
     color: "from-orange-500 to-orange-500/50",
     glowColor: "0 0 20px hsl(38 92% 50% / 0.6)",
     scanColor: "bg-orange-500",
