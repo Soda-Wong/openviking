@@ -564,10 +564,10 @@ const Card3 = () => {
               <PipeNode node={nodes[5]} index={5} />
 
               {/* Recursion Loop - From Rerank to Position */}
-              <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 270 36" preserveAspectRatio="xMidYMid meet">
+              <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 255 36" preserveAspectRatio="xMidYMid meet">
                 {/* Background glow effect */}
                 <path 
-                  d="M 230 4 L 230 16 Q 230 24, 222 24 L 53 24 Q 45 24, 45 16 L 45 4" 
+                  d="M 215 4 L 215 16 Q 215 24, 207 24 L 53 24 Q 45 24, 45 16 L 45 4" 
                   fill="none" 
                   stroke="hsl(186 100% 50% / 0.15)" 
                   strokeWidth="6" 
@@ -575,7 +575,7 @@ const Card3 = () => {
                 />
                 {/* Main path line */}
                 <path 
-                  d="M 230 4 L 230 16 Q 230 24, 222 24 L 53 24 Q 45 24, 45 16 L 45 4" 
+                  d="M 215 4 L 215 16 Q 215 24, 207 24 L 53 24 Q 45 24, 45 16 L 45 4" 
                   fill="none" 
                   stroke="hsl(186 100% 50% / 0.5)" 
                   strokeWidth="2" 
@@ -599,7 +599,7 @@ const Card3 = () => {
                   r="5" 
                   fill="hsl(186 100% 50%)" 
                   style={{
-                    offsetPath: "path('M 230 4 L 230 16 Q 230 24, 222 24 L 53 24 Q 45 24, 45 16 L 45 4')",
+                    offsetPath: "path('M 215 4 L 215 16 Q 215 24, 207 24 L 53 24 Q 45 24, 45 16 L 45 4')",
                     filter: "drop-shadow(0 0 8px hsl(186 100% 50%))"
                   }} 
                 />}
