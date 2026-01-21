@@ -946,10 +946,7 @@ const Card4 = () => {
           </div>
 
           {/* Flow labels */}
-          <div
-            className="absolute -bottom-14 inset-x-0 flex justify-center gap-6 text-xs left-[50%]"
-            style={{ transform: "translateX(10%)" }}
-          >
+          <div className="absolute -bottom-14 inset-x-0 flex justify-center gap-6 text-xs left-[50%]">
             <span className="text-cyan-400/70">← Context Supply</span>
             <span className="text-purple-400/70">Feedback →</span>
           </div>
