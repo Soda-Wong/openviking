@@ -495,20 +495,21 @@ const Card3 = () => {
         {/* Node box with highlight dot */}
         <div className="relative">
           {/* Highlight dot - fixed at top-left corner of node border */}
+          {/* Highlight dot - fixed at top-left corner of node border */}
           <motion.div
             animate={{
               opacity: isActive ? 1 : 0,
               scale: isActive ? 1 : 0.5
             }}
             transition={{ duration: 0.2 }}
-            className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-cyan-400 z-10"
+            className="absolute -top-1 w-2.5 h-2.5 rounded-full bg-cyan-400 z-10"
             style={{
+              left: "-6px",
               boxShadow: "0 0 8px hsl(186 100% 50% / 0.8)"
             }}
           />
           <motion.div animate={{
           scale: isActive ? 1.08 : 1,
-          boxShadow: isActive ? "0 0 16px hsl(186 100% 50% / 0.7)" : "none",
           borderColor: isActive ? "hsl(186 100% 50% / 0.8)" : undefined
         }} transition={{
           duration: 0.2
