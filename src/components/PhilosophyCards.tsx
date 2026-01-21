@@ -507,20 +507,20 @@ const Card3 = () => {
       <div className="relative h-44 overflow-hidden">
         {/* Main horizontal pipeline */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative flex items-end gap-3">
+          <div className="relative flex items-center gap-3">
             
             {/* Query (Input) */}
             <PipeNode node={nodes[0]} index={0} />
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mb-3" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Intent */}
             <PipeNode node={nodes[1]} index={1} />
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mb-3" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Hierarchical Retriever Scope - Dashed Container */}
             <motion.div animate={{
             borderColor: isInHierarchical ? "hsl(186 100% 50% / 0.5)" : "hsl(215 20% 35% / 0.6)"
-          }} className="relative border-2 border-dashed rounded-lg px-4 py-4 flex items-end gap-3 flex-shrink-0">
+          }} className="relative border-2 border-dashed rounded-lg px-4 py-4 flex items-center gap-3 flex-shrink-0">
               {/* Label for the scope */}
               <span className="absolute -top-2 left-3 text-[8px] text-slate-500 bg-background px-1">
                 Hierarchical Retriever
@@ -528,11 +528,11 @@ const Card3 = () => {
 
               {/* Position */}
               <PipeNode node={nodes[2]} index={2} />
-              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mb-3" />
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
               {/* Local Search */}
               <PipeNode node={nodes[3]} index={3} />
-              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mb-3" />
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
               {/* Rerank */}
               <PipeNode node={nodes[4]} index={4} />
@@ -580,7 +580,7 @@ const Card3 = () => {
               </svg>
             </motion.div>
 
-            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0 mb-3" />
+            <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Context - Final Output */}
             <PipeNode node={nodes[5]} index={5} />
