@@ -563,11 +563,11 @@ const Card3 = () => {
               {/* Rerank */}
               <PipeNode node={nodes[5]} index={5} />
 
-              {/* Recursion Loop - Clean rectangular path with rounded corners */}
+              {/* Recursion Loop - From Rerank to Position */}
               <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 200 36" preserveAspectRatio="xMidYMid meet">
                 {/* Background glow effect */}
                 <path 
-                  d="M 125 4 L 125 16 Q 125 24, 117 24 L 43 24 Q 35 24, 35 16 L 35 4" 
+                  d="M 145 4 L 145 16 Q 145 24, 137 24 L 53 24 Q 45 24, 45 16 L 45 4" 
                   fill="none" 
                   stroke="hsl(186 100% 50% / 0.15)" 
                   strokeWidth="6" 
@@ -575,16 +575,16 @@ const Card3 = () => {
                 />
                 {/* Main path line */}
                 <path 
-                  d="M 125 4 L 125 16 Q 125 24, 117 24 L 43 24 Q 35 24, 35 16 L 35 4" 
+                  d="M 145 4 L 145 16 Q 145 24, 137 24 L 53 24 Q 45 24, 45 16 L 45 4" 
                   fill="none" 
                   stroke="hsl(186 100% 50% / 0.5)" 
                   strokeWidth="2" 
                   strokeLinecap="round" 
                   strokeDasharray="6 3"
                 />
-                {/* Arrow marker at end */}
+                {/* Arrow marker at end (Position) */}
                 <path 
-                  d="M 32 8 L 35 2 L 38 8" 
+                  d="M 42 8 L 45 2 L 48 8" 
                   fill="none" 
                   stroke="hsl(186 100% 50% / 0.5)" 
                   strokeWidth="2" 
@@ -599,7 +599,7 @@ const Card3 = () => {
                   r="5" 
                   fill="hsl(186 100% 50%)" 
                   style={{
-                    offsetPath: "path('M 125 4 L 125 16 Q 125 24, 117 24 L 43 24 Q 35 24, 35 16 L 35 4')",
+                    offsetPath: "path('M 145 4 L 145 16 Q 145 24, 137 24 L 53 24 Q 45 24, 45 16 L 45 4')",
                     filter: "drop-shadow(0 0 8px hsl(186 100% 50%))"
                   }} 
                 />}
