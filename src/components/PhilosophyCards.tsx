@@ -394,7 +394,7 @@ const Card3 = () => {
   }, [isInView]);
 
   // Define node data with LOD badges
-  // Layout: Query (left input) -> Session/Intent (vertical stack) -> Pipeline -> Context
+  // Layout: Query (left input) -> Intent -> Pipeline -> Context
   const nodes = [{
     id: 'query',
     label: 'Query',
@@ -402,17 +402,10 @@ const Card3 = () => {
     inContainer: false,
     isInput: true
   }, {
-    id: 'session',
-    label: 'Session',
-    lod: null,
-    inContainer: false,
-    isVerticalStack: true
-  }, {
     id: 'intent',
     label: 'Intent',
     lod: null,
-    inContainer: false,
-    isVerticalStack: true
+    inContainer: false
   }, {
     id: 'position',
     label: 'Position',
@@ -449,21 +442,20 @@ const Card3 = () => {
   }];
 
   // Map step to active node index
-  // 0: Query, 1: Session, 2: Intent, 3: Position, 4: Local, 5: Rerank, 6: Loop, 7: Position, 8: Local, 9: Rerank, 10: Context
+  // 0: Query, 1: Intent, 2: Position, 3: Local, 4: Rerank, 5: Loop, 6: Position, 7: Local, 8: Rerank, 9: Context
   const getActiveNodeIndex = (step: number) => {
     if (step === 0) return 0; // Query
-    if (step === 1) return 1; // Session
-    if (step === 2) return 2; // Intent
-    if (step === 3 || step === 7) return 3; // Position
-    if (step === 4 || step === 8) return 4; // Local
-    if (step === 5 || step === 9) return 5; // Rerank
-    if (step === 6) return -1; // Looping back (no node active)
-    if (step === 10) return 6; // Context
+    if (step === 1) return 1; // Intent
+    if (step === 2 || step === 6) return 2; // Position
+    if (step === 3 || step === 7) return 3; // Local
+    if (step === 4 || step === 8) return 4; // Rerank
+    if (step === 5) return -1; // Looping back (no node active)
+    if (step === 9) return 5; // Context
     return -1;
   };
   const activeNodeIndex = getActiveNodeIndex(currentStep);
-  const isLooping = currentStep === 6;
-  const isInHierarchical = currentStep >= 3 && currentStep <= 9;
+  const isLooping = currentStep === 5;
+  const isInHierarchical = currentStep >= 2 && currentStep <= 8;
 
   // Node component with glow sync
   const PipeNode = ({
@@ -521,26 +513,8 @@ const Card3 = () => {
             <PipeNode node={nodes[0]} index={0} />
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-            {/* Session & Intent - Vertical Stack with animated arrow */}
-            <div className="flex flex-col items-center flex-shrink-0">
-              <PipeNode node={nodes[1]} index={1} />
-              <motion.div 
-                animate={{
-                  y: (activeNodeIndex === 1 || activeNodeIndex === 2) ? [0, 2, 0] : 0,
-                  opacity: (activeNodeIndex === 1 || activeNodeIndex === 2) ? 1 : 0.5
-                }}
-                transition={{
-                  duration: 0.5,
-                  repeat: (activeNodeIndex === 1 || activeNodeIndex === 2) ? Infinity : 0,
-                  repeatDelay: 0.3
-                }}
-                className="flex flex-col items-center my-0.5"
-              >
-                <div className={`w-px h-1.5 transition-colors duration-200 ${(activeNodeIndex === 1 || activeNodeIndex === 2) ? 'bg-cyan-400' : 'bg-slate-600'}`} />
-                <ArrowDown className={`w-3 h-3 transition-colors duration-200 ${(activeNodeIndex === 1 || activeNodeIndex === 2) ? 'text-cyan-400' : 'text-slate-600'}`} />
-              </motion.div>
-              <PipeNode node={nodes[2]} index={2} />
-            </div>
+            {/* Intent */}
+            <PipeNode node={nodes[1]} index={1} />
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Hierarchical Retriever Scope - Dashed Container */}
@@ -626,9 +600,9 @@ const Card3 = () => {
         duration: 0.15
       }} className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 z-20 pointer-events-none" style={{
         boxShadow: "0 0 10px hsl(186 100% 50% / 0.9), 0 0 20px hsl(186 100% 50% / 0.5)",
-        // Position dot at active node: 0 Query, 1 Session, 2 Intent, 3 Position, 4 Local, 5 Rerank, 6 Context
-        left: activeNodeIndex === 0 ? '6%' : activeNodeIndex === 1 ? '14%' : activeNodeIndex === 2 ? '14%' : activeNodeIndex === 3 ? '36%' : activeNodeIndex === 4 ? '50%' : activeNodeIndex === 5 ? '64%' : activeNodeIndex === 6 ? '92%' : '50%',
-        top: activeNodeIndex === 1 ? '38%' : activeNodeIndex === 2 ? '62%' : '50%',
+        // Position dot at active node: 0 Query, 1 Intent, 2 Position, 3 Local, 4 Rerank, 5 Context
+        left: activeNodeIndex === 0 ? '6%' : activeNodeIndex === 1 ? '14%' : activeNodeIndex === 2 ? '36%' : activeNodeIndex === 3 ? '50%' : activeNodeIndex === 4 ? '64%' : activeNodeIndex === 5 ? '92%' : '50%',
+        top: '50%',
         transform: 'translate(-50%, -50%)'
       }} />}
       </div>
