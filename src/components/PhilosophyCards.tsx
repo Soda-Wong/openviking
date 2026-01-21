@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Folder, File, Search, ArrowRight, FileText, MessageSquare, Wrench, Brain } from "lucide-react";
+import { Folder, File, Search, ArrowRight, ArrowDown, FileText, MessageSquare, Wrench, Brain } from "lucide-react";
 import vikingLogo from "@/assets/viking-logo.png";
 // Tree node component with visual branch lines
 const TreeNode = ({
@@ -515,10 +515,24 @@ const Card3 = () => {
             <PipeNode node={nodes[0]} index={0} />
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-            {/* Session & Intent - Vertical Stack */}
-            <div className="flex flex-col items-center gap-1 flex-shrink-0">
+            {/* Session & Intent - Vertical Stack with animated arrow */}
+            <div className="flex flex-col items-center flex-shrink-0">
               <PipeNode node={nodes[1]} index={1} />
-              <div className="w-px h-2 bg-slate-600" />
+              <motion.div 
+                animate={{
+                  y: (activeNodeIndex === 1 || activeNodeIndex === 2) ? [0, 2, 0] : 0,
+                  opacity: (activeNodeIndex === 1 || activeNodeIndex === 2) ? 1 : 0.5
+                }}
+                transition={{
+                  duration: 0.5,
+                  repeat: (activeNodeIndex === 1 || activeNodeIndex === 2) ? Infinity : 0,
+                  repeatDelay: 0.3
+                }}
+                className="flex flex-col items-center my-0.5"
+              >
+                <div className={`w-px h-1.5 transition-colors duration-200 ${(activeNodeIndex === 1 || activeNodeIndex === 2) ? 'bg-cyan-400' : 'bg-slate-600'}`} />
+                <ArrowDown className={`w-3 h-3 transition-colors duration-200 ${(activeNodeIndex === 1 || activeNodeIndex === 2) ? 'text-cyan-400' : 'text-slate-600'}`} />
+              </motion.div>
               <PipeNode node={nodes[2]} index={2} />
             </div>
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
