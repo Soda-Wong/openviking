@@ -388,17 +388,27 @@ const Card3 = () => {
   }, [isInView]);
 
   // Define node data with LOD badges
+  // Layout: Query (left input) -> [Session/Intent stacked vertically] -> [Hierarchical Retriever] -> Context
   const nodes = [{
-    id: 'session',
-    label: 'Session',
+    id: 'query',
+    label: 'Query',
     lod: null,
     inContainer: false,
     isInput: true
   }, {
+    id: 'session',
+    label: 'Session',
+    lod: null,
+    inContainer: false,
+    isStacked: true,
+    stackPosition: 'top'
+  }, {
     id: 'intent',
     label: 'Intent',
     lod: null,
-    inContainer: false
+    inContainer: false,
+    isStacked: true,
+    stackPosition: 'bottom'
   }, {
     id: 'position',
     label: 'Position',
@@ -435,30 +445,35 @@ const Card3 = () => {
   }];
 
   // Map step to active node index
+  // Steps: 0 Query, 1 Session+Intent, 2 Position, 3 Local, 4 Rerank, 5 Loop back, 6 Position, 7 Local, 8 Rerank, 9 Context
   const getActiveNodeIndex = (step: number) => {
-    if (step === 0) return 0; // Session
-    if (step === 1) return 1; // Intent
-    if (step === 2 || step === 6) return 2; // Position
-    if (step === 3 || step === 7) return 3; // Local
-    if (step === 4 || step === 8) return 4; // Rerank
+    if (step === 0) return 0; // Query
+    if (step === 1) return 1; // Session+Intent (both active)
+    if (step === 2 || step === 6) return 3; // Position
+    if (step === 3 || step === 7) return 4; // Local
+    if (step === 4 || step === 8) return 5; // Rerank
     if (step === 5) return -1; // Looping back (no node active)
-    if (step === 9) return 5; // Context
+    if (step === 9) return 6; // Context
     return -1;
   };
   const activeNodeIndex = getActiveNodeIndex(currentStep);
+  const isStackedActive = currentStep === 1; // Both Session and Intent active
   const isLooping = currentStep === 5;
   const isInHierarchical = currentStep >= 2 && currentStep <= 8;
 
   // Node component with glow sync
   const PipeNode = ({
     node,
-    index
+    index,
+    forceActive = false
   }: {
     node: typeof nodes[0];
     index: number;
+    forceActive?: boolean;
   }) => {
-    const isActive = activeNodeIndex === index;
-    const baseClasses = node.isFinal ? 'bg-emerald-500/20 border-emerald-500/60' : node.id === 'intent' ? 'bg-purple-500/20 border-purple-500/50' : node.isInput ? 'bg-sky-500/20 border-sky-500/50' : 'bg-slate-800/80 border-slate-600';
+    const isActive = forceActive || activeNodeIndex === index;
+    const baseClasses = node.isFinal ? 'bg-emerald-500/20 border-emerald-500/60' : node.id === 'intent' ? 'bg-purple-500/20 border-purple-500/50' : node.id === 'session' ? 'bg-amber-500/20 border-amber-500/50' : node.isInput ? 'bg-sky-500/20 border-sky-500/50' : 'bg-slate-800/80 border-slate-600';
+    const textColor = node.isFinal ? 'text-emerald-300' : node.id === 'intent' ? 'text-purple-300' : node.id === 'session' ? 'text-amber-300' : node.isInput ? 'text-sky-300' : 'text-slate-200';
     return <div className="flex flex-col items-center gap-1 flex-shrink-0">
         {/* LOD Badge - synced with node active state (no independent animation) */}
         {node.lod && <div className="flex flex-col items-center">
@@ -467,7 +482,7 @@ const Card3 = () => {
             </div>
             <div className={`w-px h-2 transition-colors duration-200 ${isActive ? 'bg-cyan-400' : 'bg-slate-600'}`} />
           </div>}
-        {!node.lod && <div className="h-5" />}
+        {!node.lod && !node.isStacked && <div className="h-5" />}
         
         {/* Node box */}
         <motion.div animate={{
@@ -476,8 +491,8 @@ const Card3 = () => {
         borderColor: isActive ? "hsl(186 100% 50% / 0.8)" : undefined
       }} transition={{
         duration: 0.2
-      }} className={`rounded px-2.5 py-2 border flex items-center justify-center min-w-[48px] ${baseClasses}`}>
-          <span className={`text-[11px] font-medium text-center whitespace-pre-line leading-tight ${node.isFinal ? 'text-emerald-300' : node.id === 'intent' ? 'text-purple-300' : node.isInput ? 'text-sky-300' : 'text-slate-200'}`}>
+      }} className={`rounded px-2.5 py-1.5 border flex items-center justify-center min-w-[48px] ${baseClasses}`}>
+          <span className={`text-[10px] font-medium text-center whitespace-pre-line leading-tight ${textColor}`}>
             {node.label}
           </span>
         </motion.div>
@@ -501,12 +516,15 @@ const Card3 = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative flex items-center gap-3">
             
-            {/* Session (Input) */}
+            {/* Query (Input) */}
             <PipeNode node={nodes[0]} index={0} />
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-            {/* Intent */}
-            <PipeNode node={nodes[1]} index={1} />
+            {/* Session/Intent Stacked Vertically */}
+            <div className="flex flex-col items-center gap-1 flex-shrink-0">
+              <PipeNode node={nodes[1]} index={1} forceActive={isStackedActive} />
+              <PipeNode node={nodes[2]} index={2} forceActive={isStackedActive} />
+            </div>
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Hierarchical Retriever Scope - Dashed Container */}
@@ -519,15 +537,15 @@ const Card3 = () => {
               </span>
 
               {/* Position */}
-              <PipeNode node={nodes[2]} index={2} />
-              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
-
-              {/* Local Search */}
               <PipeNode node={nodes[3]} index={3} />
               <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
-              {/* Rerank */}
+              {/* Local Search */}
               <PipeNode node={nodes[4]} index={4} />
+              <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
+
+              {/* Rerank */}
+              <PipeNode node={nodes[5]} index={5} />
 
               {/* Recursion Loop - Clean rectangular path with rounded corners */}
               <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 200 36" preserveAspectRatio="xMidYMid meet">
@@ -575,7 +593,7 @@ const Card3 = () => {
             <ArrowRight className="text-slate-600 w-3 h-3 flex-shrink-0" />
 
             {/* Context - Final Output */}
-            <PipeNode node={nodes[5]} index={5} />
+            <PipeNode node={nodes[6]} index={6} />
           </div>
         </div>
 
@@ -593,7 +611,7 @@ const Card3 = () => {
       }} className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 z-20 pointer-events-none" style={{
         boxShadow: "0 0 10px hsl(186 100% 50% / 0.9), 0 0 20px hsl(186 100% 50% / 0.5)",
         // Position dot at active node (simplified positioning)
-        left: activeNodeIndex === 0 ? '8%' : activeNodeIndex === 1 ? '18%' : activeNodeIndex === 2 ? '33%' : activeNodeIndex === 3 ? '48%' : activeNodeIndex === 4 ? '63%' : activeNodeIndex === 5 ? '88%' : '50%',
+        left: activeNodeIndex === 0 ? '6%' : activeNodeIndex === 1 || isStackedActive ? '16%' : activeNodeIndex === 3 ? '35%' : activeNodeIndex === 4 ? '50%' : activeNodeIndex === 5 ? '65%' : activeNodeIndex === 6 ? '92%' : '50%',
         top: '50%',
         transform: 'translate(-50%, -50%)'
       }} />}
