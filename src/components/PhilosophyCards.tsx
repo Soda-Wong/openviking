@@ -273,7 +273,7 @@ const Card2 = () => {
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">Layered Context Loading</h3>
       <p className="text-sm text-muted-foreground mb-6">Context is decomposed into L0, L1, and L2 layers. Agents load and offload context on demand, reducing token usage by up to 95%.</p>
 
-      <div className="relative h-48 flex flex-col justify-center items-center gap-3">
+      <div className="relative h-48 flex flex-col justify-center items-center gap-3 overflow-hidden">
         {/* Status message display area */}
         <motion.div key={scanY} initial={{
         opacity: 0,
@@ -281,16 +281,14 @@ const Card2 = () => {
       }} animate={{
         opacity: 1,
         y: 0
-      }} className={`absolute top-2 right-3 text-xs px-2 py-1 rounded bg-background/60 border border-border/50 ${layers[scanY]?.messageColor || 'text-primary'} font-medium z-10`}>
+      }} className={`absolute top-2 right-3 text-xs px-2 py-1 rounded bg-background/60 border border-border/50 ${layers[scanY]?.messageColor || 'text-primary'} font-medium`}>
           {layers[scanY]?.message}
         </motion.div>
 
         {layers.map((layer, i) => <motion.div key={layer.label} animate={{
-        boxShadow: scanY === i ? layer.glowColor : "none",
-        borderColor: scanY === i ? "hsl(var(--primary) / 0.5)" : "transparent"
-      }} transition={{
-        duration: 0.3
-      }} className={`relative bg-gradient-to-r ${layer.color} rounded-lg px-4 py-2 text-center border-2 border-transparent`} style={{
+        scale: scanY === i ? 1.05 : 1,
+        boxShadow: scanY === i ? layer.glowColor : "none"
+      }} className={`relative bg-gradient-to-r ${layer.color} rounded-lg px-4 py-2 text-center`} style={{
         width: layer.width
       }}>
             <p className="text-xs font-medium text-white">{layer.label}</p>
