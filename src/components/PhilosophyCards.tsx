@@ -525,13 +525,13 @@ const Card3 = () => {
               {/* Rerank */}
               <PipeNode node={nodes[4]} index={4} />
 
-              {/* Recursion Loop - Smooth curved arc from Rerank to Position */}
-              <svg className="absolute -bottom-5 left-0 right-0 h-8 pointer-events-none overflow-visible" viewBox="0 0 200 32" preserveAspectRatio="xMidYMid meet">
-                {/* Smooth bezier curve path */}
+              {/* Recursion Loop - Clean rectangular path with rounded corners */}
+              <svg className="absolute -bottom-4 left-0 right-0 h-6 pointer-events-none overflow-visible" viewBox="0 0 200 24" preserveAspectRatio="xMidYMid meet">
+                {/* Rectangular path: down from Rerank, horizontal, up to Position */}
                 <path 
-                  d="M 165 4 Q 165 24, 100 24 Q 35 24, 35 4" 
+                  d="M 165 2 L 165 8 Q 165 14, 159 14 L 41 14 Q 35 14, 35 8 L 35 2" 
                   fill="none" 
-                  stroke="hsl(186 100% 50% / 0.3)" 
+                  stroke="hsl(215 20% 45% / 0.6)" 
                   strokeWidth="1.5" 
                   strokeLinecap="round" 
                 />
@@ -543,7 +543,7 @@ const Card3 = () => {
                   r="4" 
                   fill="hsl(186 100% 50%)" 
                   style={{
-                    offsetPath: "path('M 165 4 Q 165 24, 100 24 Q 35 24, 35 4')",
+                    offsetPath: "path('M 165 2 L 165 8 Q 165 14, 159 14 L 41 14 Q 35 14, 35 8 L 35 2')",
                     filter: "drop-shadow(0 0 6px hsl(186 100% 50% / 0.8))"
                   }} 
                 />}
