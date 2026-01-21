@@ -529,7 +529,7 @@ const Card3 = () => {
               <svg className="absolute -bottom-6 left-0 right-0 h-10 pointer-events-none overflow-visible" viewBox="0 0 200 36" preserveAspectRatio="xMidYMid meet">
                 {/* Background glow effect */}
                 <path 
-                  d="M 118 4 L 118 16 Q 118 24, 110 24 L 43 24 Q 35 24, 35 16 L 35 4" 
+                  d="M 125 4 L 125 16 Q 125 24, 117 24 L 43 24 Q 35 24, 35 16 L 35 4" 
                   fill="none" 
                   stroke="hsl(186 100% 50% / 0.15)" 
                   strokeWidth="6" 
@@ -537,7 +537,7 @@ const Card3 = () => {
                 />
                 {/* Main path line */}
                 <path 
-                  d="M 118 4 L 118 16 Q 118 24, 110 24 L 43 24 Q 35 24, 35 16 L 35 4" 
+                  d="M 125 4 L 125 16 Q 125 24, 117 24 L 43 24 Q 35 24, 35 16 L 35 4" 
                   fill="none" 
                   stroke="hsl(186 100% 50% / 0.5)" 
                   strokeWidth="2" 
@@ -561,7 +561,7 @@ const Card3 = () => {
                   r="5" 
                   fill="hsl(186 100% 50%)" 
                   style={{
-                    offsetPath: "path('M 118 4 L 118 16 Q 118 24, 110 24 L 43 24 Q 35 24, 35 16 L 35 4')",
+                    offsetPath: "path('M 125 4 L 125 16 Q 125 24, 117 24 L 43 24 Q 35 24, 35 16 L 35 4')",
                     filter: "drop-shadow(0 0 8px hsl(186 100% 50%))"
                   }} 
                 />}
