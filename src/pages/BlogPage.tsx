@@ -99,14 +99,14 @@ const BlogPage = () => {
           </motion.div>
 
           {/* Masonry Grid */}
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
             {blogPosts.map((post, i) => (
               <motion.article
                 key={post.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="break-inside-avoid"
+                className="break-inside-avoid mb-6"
               >
                 <Link to={`/blog/${post.id}`}>
                   <div className="glass-card rounded-2xl overflow-hidden glow-border group">
