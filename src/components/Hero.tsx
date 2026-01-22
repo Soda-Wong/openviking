@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
-import { Github, ArrowRight } from "lucide-react";
-import { Button } from "./ui/button";
-import ForceFieldBackground from "./ForceFieldBackground";
+import { motion } from 'framer-motion'
+import { Github, ArrowRight } from 'lucide-react'
+import { Button } from './ui/button'
+import ForceFieldBackground from './ForceFieldBackground'
+import Tea from 'byted-tea-sdk'
 
 const Hero = () => {
   return (
@@ -57,6 +58,11 @@ const Hero = () => {
           >
             <a href="#quick-start">
               <Button
+                onClick={() => {
+                  Tea?.event('hero_cta_click', {
+                    button_name: 'Get Started',
+                  })
+                }}
                 size="lg"
                 className="group relative overflow-hidden bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] transition-all duration-300"
               >
@@ -64,8 +70,17 @@ const Hero = () => {
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </a>
-            <a href="https://github.com/volcengine/OpenViking" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/volcengine/OpenViking"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button
+                onClick={() => {
+                  Tea?.event('hero_cta_click', {
+                    button_name: 'GitHub',
+                  })
+                }}
                 size="lg"
                 variant="outline"
                 className="group relative overflow-hidden bg-white/[0.02] backdrop-blur-sm border-white/20 text-white font-semibold px-8 py-6 text-lg rounded-xl hover:bg-white/15 hover:border-white/50 hover:text-white hover:shadow-lg hover:shadow-white/10 hover:scale-[1.02] transition-all duration-300"
@@ -87,7 +102,9 @@ const Hero = () => {
             <div className="flex justify-center items-center gap-8 text-slate-300">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-success shadow-sm shadow-success/50" />
-                <span className="text-sm font-medium">Hierarchical Contexts</span>
+                <span className="text-sm font-medium">
+                  Hierarchical Contexts
+                </span>
               </div>
               <div className="w-px h-4 bg-slate-600" />
               <div className="flex items-center gap-2">
@@ -97,7 +114,9 @@ const Hero = () => {
               <div className="w-px h-4 bg-slate-600" />
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-secondary shadow-sm shadow-secondary/50" />
-                <span className="text-sm font-medium">Observable by Design</span>
+                <span className="text-sm font-medium">
+                  Observable by Design
+                </span>
               </div>
             </div>
           </motion.div>
@@ -116,7 +135,7 @@ const Hero = () => {
         </div>
       </motion.div>
     </section>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero

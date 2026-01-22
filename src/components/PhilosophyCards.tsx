@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { Folder, File, Search, ArrowRight, ArrowDown, FileText, Music, Video, Image, FolderOpen } from "lucide-react";
 import vikingLogo from "@/assets/viking-logo.png";
+import Tea from 'byted-tea-sdk'
 // Tree node component with visual branch lines
 const TreeNode = ({
   name,
@@ -221,6 +222,18 @@ const Card1 = () => {
         duration: 0.6,
       }}
       className="glass-card p-6 rounded-2xl glow-border"
+      //鼠标移入显示完整内容
+      onMouseEnter={() => {
+        Tea?.event('filesystem_enter', {
+          timestamp: `${Date.now()}`,
+        })
+      }}
+      //鼠标移出隐藏内容
+      onMouseLeave={() => {
+        Tea?.event('filesystem_leave', {
+          timestamp: `${Date.now()}`,  
+        })
+      }}
     >
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
         Context Organization as a File System
@@ -414,6 +427,18 @@ const Card2 = () => {
         delay: 0.1,
       }}
       className="glass-card p-6 rounded-2xl glow-border"
+      //鼠标移入显示完整内容
+      onMouseEnter={() => {
+        Tea?.event('layer_enter', {
+          timestamp: `${Date.now()}`,
+        })
+      }}
+      //鼠标移出隐藏内容
+      onMouseLeave={() => {
+        Tea?.event('layer_leave', {
+          timestamp: `${Date.now()}`,  
+        })
+      }}
     >
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
         Layered Context Loading
@@ -713,6 +738,18 @@ const Card3 = () => {
         delay: 0.2,
       }}
       className="glass-card p-6 rounded-2xl glow-border"
+      //鼠标移入显示完整内容
+      onMouseEnter={() => {
+        Tea?.event('search_enter', {
+          timestamp: `${Date.now()}`,
+        })
+      }}
+      //鼠标移出隐藏内容
+      onMouseLeave={() => {
+        Tea?.event('search_leave', {
+          timestamp: `${Date.now()}`,  
+        })
+      }}
     >
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
         Recursive Context Retrieval
@@ -864,6 +901,18 @@ const Card4 = () => {
         delay: 0.3,
       }}
       className="glass-card p-6 rounded-2xl glow-border"
+      //鼠标移入显示完整内容
+      onMouseEnter={() => {
+        Tea?.event('evolving_enter', {
+          timestamp: `${Date.now()}`,
+        })
+      }}
+      //鼠标移出隐藏内容
+      onMouseLeave={() => {
+        Tea?.event('evolving_leave', {
+          timestamp: `${Date.now()}`,  
+        })
+      }}
     >
       <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-400 to-teal-300 mb-2">
         Observable and Self-Evolving Context
