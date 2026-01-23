@@ -34,7 +34,7 @@ const Footer = () => {
               <img src={openVikingLogo} alt="OpenViking Logo" className="w-10 h-10 object-contain" />
               <span className="text-xl font-bold text-gradient">OpenViking</span>
             </div>
-            <p className="text-sm text-muted-foreground">A Context File System for AI Agents. Memory. Knowledge. Skills. Unified in one context layer.</p>
+            <p className="text-sm text-muted-foreground">A Context Database for AI Agents. Memory. Knowledge. Skills. Unified in one context layer.</p>
           </div>
 
           {/* Open Source */}
