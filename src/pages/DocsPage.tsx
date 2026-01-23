@@ -1,7 +1,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ChevronRight,
   Book,
@@ -13,12 +13,21 @@ import {
   FileText,
 } from 'lucide-react'
 import { docs } from '@/pages/Docs/docInfo'
+// import { docList } from '@/pages/Docs/docParser'
+
+import useGetDocData from '@/hooks/useGetDocData'
 
 const DocsPage = () => {
   const [selectedSection, setSelectedSection] = useState(docs[0].children[0])
   const [expandedSections, setExpandedSections] = useState<string[]>([
     'getting-started',
   ])
+  const { loading, error, docs: data } = useGetDocData()
+
+  useEffect(() => {
+    console.log({ loading, error, data }, 'docData+++')
+  }, [loading, error, data])
+  // console.log(docList, 'docList+++')
 
   const toggleSection = (id: string) => {
     setExpandedSections((prev) =>
@@ -96,90 +105,11 @@ const DocsPage = () => {
               className="prose prose-invert max-w-none"
             >
               <div className="bg-card/30 rounded-2xl border border-border/30 p-8">
-                <pre className="whitespace-pre-wrap font-sans text-foreground leading-relaxed">
-                  {selectedSection.content.split('\n').map((line, i) => {
-                    if (line.startsWith('# ')) {
-                      return (
-                        <h1
-                          key={i}
-                          className="text-3xl font-bold text-gradient mb-6"
-                        >
-                          {line.slice(2)}
-                        </h1>
-                      )
-                    }
-                    if (line.startsWith('## ')) {
-                      return (
-                        <h2
-                          key={i}
-                          className="text-xl font-semibold mt-8 mb-4 text-foreground"
-                        >
-                          {line.slice(3)}
-                        </h2>
-                      )
-                    }
-                    if (line.startsWith('### ')) {
-                      return (
-                        <h3
-                          key={i}
-                          className="text-lg font-medium mt-6 mb-3 text-foreground"
-                        >
-                          {line.slice(4)}
-                        </h3>
-                      )
-                    }
-                    if (line.startsWith('```')) {
-                      return null
-                    }
-                    if (line.startsWith('|')) {
-                      return (
-                        <code
-                          key={i}
-                          className="block text-sm font-mono text-muted-foreground bg-muted/30 px-2 rounded"
-                        >
-                          {line}
-                        </code>
-                      )
-                    }
-                    if (
-                      line.trim().startsWith('-') ||
-                      line.trim().match(/^\d+\./)
-                    ) {
-                      return (
-                        <li key={i} className="text-muted-foreground ml-4">
-                          {line
-                            .replace(/^[-\d.]+\s*\*\*/, '')
-                            .replace(/\*\*/g, '')}
-                        </li>
-                      )
-                    }
-                    if (line.includes('`') && !line.startsWith('```')) {
-                      const parts = line.split(/(`[^`]+`)/g)
-                      return (
-                        <p key={i} className="text-muted-foreground mb-2">
-                          {parts.map((part, j) =>
-                            part.startsWith('`') ? (
-                              <code
-                                key={j}
-                                className="bg-muted/50 px-1.5 py-0.5 rounded text-primary font-mono text-sm"
-                              >
-                                {part.slice(1, -1)}
-                              </code>
-                            ) : (
-                              part
-                            ),
-                          )}
-                        </p>
-                      )
-                    }
-                    if (line.trim() === '') return <br key={i} />
-                    return (
-                      <p key={i} className="text-muted-foreground mb-2">
-                        {line}
-                      </p>
-                    )
-                  })}
-                </pre>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: data[0]?.html || '',
+                  }}
+                />
               </div>
             </motion.article>
           </main>
