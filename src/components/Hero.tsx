@@ -23,7 +23,7 @@ const Hero = () => {
           duration: 0.6,
           delay: 0.1
         }} className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            OpenViking：A <span className="text-gradient">Context DataBase</span>
+            A <span className="text-gradient">Context DataBase</span>
             <br />
             for AI Agents
           </motion.h1>
