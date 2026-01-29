@@ -23,11 +23,9 @@ const Hero = () => {
           duration: 0.6,
           delay: 0.1
         }} className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            <span className="text-gradient">OpenViking</span>
+            A <span className="text-gradient">Context DataBase</span>
             <br />
-            <span className="text-3xl md:text-5xl font-semibold text-muted-foreground">
-              A Context DataBase for AI Agents
-            </span>
+            for AI Agents
           </motion.h1>
 
           {/* Slogan */}
